@@ -1,0 +1,134 @@
+/*---------------------------------------------------------------------------------------------
+*
+*  Field: Image
+*
+*---------------------------------------------------------------------------------------------*/
+
+.acf-image-uploader-aspect-ratio-crop {
+    position: relative;
+}
+
+.acf-image-uploader-aspect-ratio-crop .has-image { display: none; float: left; position: relative; max-width: 100%; }
+.acf-image-uploader-aspect-ratio-crop .no-image { display: block; float: left; position: relative; max-width: 100%; }
+
+.acf-image-uploader-aspect-ratio-crop.active .has-image { display: block; }
+.acf-image-uploader-aspect-ratio-crop.active .no-image { display: none; }
+
+
+.acf-image-uploader-aspect-ratio-crop img {
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    height: auto;
+    display: block;
+    min-width: 30px;
+    min-height: 30px;
+    background: #f1f1f1;
+    margin: 0 0 0 2px;
+}
+
+.acf-image-uploader-aspect-ratio-crop .no-image p {
+    display: block;
+    margin: 0 !important;
+}
+
+.acf-image-uploader-aspect-ratio-crop input.button {
+    width: auto;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+
+    .acf-image-uploader-aspect-ratio-crop img {
+        width: auto;
+        max-width: 100%;
+    }
+
+}
+
+
+/*
+*  Hover
+*/
+
+.acf-image-uploader-aspect-ratio-crop .hover {
+    position: absolute;
+    top: -11px;
+    right: -11px;
+
+    -webkit-transition: opacity 0.25s 0s ease-in-out, visibility 0s linear 0.25s;
+    -moz-transition: opacity 0.25s 0s ease-in-out, visibility 0s linear 0.25s;
+    -o-transition: opacity 0.25s 0s ease-in-out, visibility 0s linear 0.25s;
+    transition: opacity 0.25s 0s ease-in-out, visibility 0s linear 0.25s;
+
+    visibility: hidden;
+    opacity: 0;
+}
+
+.acf-image-uploader-aspect-ratio-crop .has-image:hover .hover {
+    -webkit-transition-delay:0s;
+    -moz-transition-delay:0s;
+    -o-transition-delay:0s;
+    transition-delay:0s;
+
+    visibility: visible;
+    opacity: 1;
+}
+
+.acf-image-uploader-aspect-ratio-crop .hover ul {
+    display: block;
+    margin: 0;
+    padding: 0;
+}
+
+.acf-image-uploader-aspect-ratio-crop .hover ul li {
+    margin: 0 0 5px 0;
+}
+
+/*--------------------------------------------------------------------------------------------
+*
+*	Image
+*
+*--------------------------------------------------------------------------------------------*/
+.acf-image-uploader-aspect-ratio-crop {
+    position: relative;
+    /* image wrap*/
+    /* input */
+    /* rtl */
+}
+.acf-image-uploader-aspect-ratio-crop:after {
+    clear: both;
+    content: "";
+    display: table;
+}
+.acf-image-uploader-aspect-ratio-crop p {
+    margin: 0;
+}
+.acf-image-uploader-aspect-ratio-crop .image-wrap {
+    position: relative;
+    float: left;
+    /* hover */
+}
+.acf-image-uploader-aspect-ratio-crop .image-wrap img {
+    max-width: 100%;
+    width: auto;
+    height: auto;
+    display: block;
+    min-width: 30px;
+    min-height: 30px;
+    background: #f1f1f1;
+    margin: 0;
+    padding: 0;
+    /* svg */
+}
+.acf-image-uploader-aspect-ratio-crop .image-wrap img[src$=".svg"] {
+    min-height: 100px;
+    min-width: 100px;
+}
+.acf-image-uploader-aspect-ratio-crop .image-wrap:hover .acf-actions {
+    display: block;
+}
+.acf-image-uploader-aspect-ratio-crop input.button {
+    width: auto;
+}
+html[dir="rtl"] .acf-image-uploader-aspect-ratio-crop .image-wrap {
+    float: right;
+}
