@@ -35,8 +35,6 @@
 
         focus: function(){
 
-            console.log('ppp', this.$field);
-
             // vars
             this.$el = this.$field.find('.acf-image-uploader-aspect-ratio-crop');
             this.$input = this.$el.find('input[type="hidden"]');
@@ -45,8 +43,6 @@
 
             // options
             this.o = acf.get_data( this.$el );
-
-            console.log(this.o);
 
         },
 
@@ -285,6 +281,23 @@
 
                     }
 
+                    console.log('selected', $field, attachment);
+
+                    var data = {
+                        'action': 'acf_image_aspect_ratio_crop_crop',
+                        'data': JSON.stringify({
+                            id: attachment.id,
+                            startX: 0,
+                            startY: 0,
+                            endX: 100,
+                            endY: 100,
+                        }),
+                    };
+
+                    jQuery.post(ajaxurl, data, function(response) {
+                        alert('Got this from the server: ' + response);
+                    });
+
 
                     // render
                     self.set('$field', $field).render( attachment );
@@ -318,6 +331,8 @@
 
             // vars
             var val = this.$input.val();
+
+            console.log('edit', val)
 
 
             // bail early if no val
@@ -403,8 +418,6 @@
 	*/
 
 	function initialize_field( $el ) {
-
-	    console.log('ååå', $el)
 
 		//$field.doStuff();
 
