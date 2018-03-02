@@ -8,7 +8,7 @@ if( ! defined( 'ABSPATH' ) ) exit;
 if( !class_exists('npx_acf_field_image_aspect_ratio_crop') ) :
 
 
-class npx_acf_field_image_aspect_ratio_crop extends acf_field {
+class npx_acf_field_image_aspect_ratio_crop extends acf_field_image {
 	
 	
 	/*
@@ -23,8 +23,8 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field {
 	*  @param	n/a
 	*  @return	n/a
 	*/
-	
-	function __construct( $settings ) {
+
+	function initialize() {
 		
 		/*
 		*  name (string) Single word, no spaces. Underscores allowed
@@ -95,7 +95,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field {
 		
 		
 		// do not delete!
-    	parent::__construct();
+    	//  parent::__construct();
 
 
     	
@@ -381,11 +381,11 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field {
 	*/
 
 	function input_admin_enqueue_scripts() {
-        $url = $this->settings['url'];
+        $url = plugin_dir_url( __FILE__ );
         $version = $this->settings['version'];
-        wp_register_script('acf-image-aspect-ratio-crop', "{$url}assets/js/input.js", array('acf-input'), $version);
+        wp_register_script('acf-image-aspect-ratio-crop', "{$url}../assets/js/input.js", array('acf-input'), $version);
         wp_enqueue_script('acf-image-aspect-ratio-crop');
-        wp_register_style('acf-image-aspect-ratio-crop', "{$url}assets/css/input.css", array('acf-input'), $version);
+        wp_register_style('acf-image-aspect-ratio-crop', "{$url}../assets/css/input.css", array('acf-input'), $version);
         wp_enqueue_style('acf-image-aspect-ratio-crop');
     }
 
