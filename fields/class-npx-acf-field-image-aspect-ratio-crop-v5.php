@@ -329,7 +329,9 @@ if (!class_exists('npx_acf_field_image_aspect_ratio_crop')) :
                     <div class="acf-actions -hover">
                         <?php
                         if ($uploader != 'basic'):
-                            ?><a class="acf-icon -pencil dark" data-name="edit" href="#"
+                            ?><a class="acf-icon -crop dark" data-name="crop" href="#"
+                                 title="<?php _e('Crop', 'acf'); ?>"></a>
+                              <a class="acf-icon -pencil dark" data-name="edit" href="#"
                                  title="<?php _e('Edit', 'acf'); ?>"></a><?php
                         endif;
                         ?><a class="acf-icon -cancel dark" data-name="remove" href="#"
