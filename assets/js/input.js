@@ -16,7 +16,8 @@
             'click a[data-name="add"]': 	'add',
             'click a[data-name="edit"]': 	'edit',
             'click a[data-name="remove"]':	'remove',
-            'change input[type="file"]':	'change'
+            'change input[type="file"]':	'change',
+            'click a[data-name="crop"]': 'crop',
         },
 
 
@@ -283,6 +284,8 @@
 
                     console.log('selected', $field, attachment);
 
+                    tb_show('Crop image', '#TB_inline?width=600&height=550&inlineId=my-content-id');
+
                     var data = {
                         'action': 'acf_image_aspect_ratio_crop_crop',
                         'data': JSON.stringify({
@@ -306,6 +309,10 @@
 
             });
 
+        },
+
+        crop: function() {
+            tb_show('Crop image', '#TB_inline?width=600&height=550&inlineId=acf-aspect-ratio-crop-modal');
         },
 
 

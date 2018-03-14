@@ -321,6 +321,13 @@ if (!class_exists('npx_acf_field_image_aspect_ratio_crop')) :
             $size = acf_get_image_size($field['preview_size']);
 
             ?>
+            <?php add_thickbox(); ?>
+            <div id="acf-aspect-ratio-crop-modal" style="display:none;">
+                <div>
+                    <button class="button button-primary">Crop</button>
+                    <button class="button">Cancel</button>
+                </div>
+            </div>
             <div <?php acf_esc_attr_e($div); ?>>
                 <?php acf_hidden_input(['name' => $field['name'], 'value' => $field['value']]); ?>
                 <div class="show-if-value image-wrap"
