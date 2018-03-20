@@ -17,7 +17,6 @@ ACF field that allows user to crop image to a specific aspect ratio
 
 This ACF field type is compatible with:
 * ACF 5
-* ACF 4
 
 == Installation ==
 
