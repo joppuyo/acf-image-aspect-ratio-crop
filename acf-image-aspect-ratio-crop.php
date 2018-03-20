@@ -55,7 +55,6 @@ class npx_acf_plugin_image_aspect_ratio_crop {
 		
 		// include field
 		add_action('acf/include_field_types', 	array($this, 'include_field_types')); // v5
-		add_action('acf/register_fields', 		array($this, 'include_field_types')); // v4
 
         add_action( 'wp_ajax_acf_image_aspect_ratio_crop_crop', function() {
         	
@@ -82,15 +81,9 @@ class npx_acf_plugin_image_aspect_ratio_crop {
 	*  @return	n/a
 	*/
 	
-	function include_field_types( $version = false ) {
-		
-		// support empty $version
-		if( !$version ) $version = 4;
-		
-		
+	function include_field_types() {
 		// include
-		include_once('fields/class-npx-acf-field-image-aspect-ratio-crop-v' . $version . '.php');
-		
+		include_once('fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php');
 	}
 	
 }
