@@ -144,6 +144,17 @@ if (!class_exists('npx_acf_field_image_aspect_ratio_crop')) :
 
             }
 
+            acf_render_field_setting($field, [
+                'label' => __('Aspect Ratio Width', 'acf-image-aspect-ratio-crop'),
+                'type' => 'number',
+                'name' => 'aspect_ratio_width',
+            ]);
+
+            acf_render_field_setting($field, [
+                'label' => __('Aspect Ratio Height', 'acf-image-aspect-ratio-crop'),
+                'type' => 'number',
+                'name' => 'aspect_ratio_height',
+            ]);
 
             // return_format
             acf_render_field_setting($field, [
@@ -295,7 +306,9 @@ if (!class_exists('npx_acf_field_image_aspect_ratio_crop')) :
                 'data-preview_size' => $field['preview_size'],
                 'data-library' => $field['library'],
                 'data-mime_types' => $field['mime_types'],
-                'data-uploader' => $uploader
+                'data-uploader' => $uploader,
+                'data-aspect_ratio_width' => $field['aspect_ratio_width'],
+                'data-aspect_ratio_height' => $field['aspect_ratio_height'],
             ];
 
             // has value?
