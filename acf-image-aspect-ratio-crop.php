@@ -117,6 +117,8 @@ class npx_acf_plugin_image_aspect_ratio_crop {
             require_once(ABSPATH . "wp-admin" . '/includes/image.php');
             $attachment_data = wp_generate_attachment_metadata( $attachmentId, $targetFilePath);
             wp_update_attachment_metadata($attachmentId,  $attachment_data);
+            add_post_meta($attachmentId, 'acf_image_aspect_ratio_crop', true, true);
+            add_post_meta($attachmentId, 'acf_image_aspect_ratio_crop_original_image_id', $data['id'], true);
 
             wp_send_json(['id' => $attachmentId]);
             wp_die();

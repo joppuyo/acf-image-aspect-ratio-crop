@@ -677,7 +677,16 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 
         } elseif ($field['return_format'] == 'array') {
 
-            return acf_get_attachment($value);
+            $output = acf_get_attachment($value);
+            $output['original_image'] = null;
+
+            $original = get_post_meta($value, 'acf_image_aspect_ratio_crop_original_image_id');
+
+            if(count($original)) {
+                $output['original_image'] = acf_get_attachment($original[0]);
+            }
+
+            return $output;
 
         }
 
