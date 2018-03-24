@@ -331,13 +331,6 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         $size = acf_get_image_size($field['preview_size']);
 
         ?>
-        <?php add_thickbox(); ?>
-        <div id="acf-aspect-ratio-crop-modal" style="display:none;">
-            <div>
-                <button class="button button-primary">Crop</button>
-                <button class="button">Cancel</button>
-            </div>
-        </div>
         <div <?php acf_esc_attr_e($div); ?>>
             <?php acf_hidden_input(['name' => $field['name'], 'value' => $field['value']]); ?>
             <div class="show-if-value image-wrap"
@@ -395,6 +388,14 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
     {
         $url = $this->settings['url'];
         $version = $this->settings['version'];
+
+        wp_register_script('acf-image-aspect-ratio-crop-cropper', "{$url}assets/js/vendor/cropper.min.js", ['acf-input'], $version);
+        wp_enqueue_script('acf-image-aspect-ratio-crop-cropper');
+
+        wp_register_style('acf-image-aspect-ratio-crop-cropper', "{$url}assets/css/vendor/cropper.css", ['acf-input'],
+            $version);
+        wp_enqueue_style('acf-image-aspect-ratio-crop-cropper');
+
         wp_register_script('acf-image-aspect-ratio-crop', "{$url}assets/js/input.js", ['acf-input'], $version);
         wp_enqueue_script('acf-image-aspect-ratio-crop');
         wp_register_style('acf-image-aspect-ratio-crop', "{$url}assets/css/input.css", ['acf-input'],

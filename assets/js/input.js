@@ -1,5 +1,44 @@
 (function($){
 
+    var performCrop = function (data) {
+        console.log('data', data.attachment);
+
+        var url = data.attachment.attributes.url;
+        var field = data.field;
+
+        console.log('field', field);
+
+
+        var aspectRatioWidth = $(field).find('.acf-image-uploader-aspect-ratio-crop').data('aspect_ratio_width');
+        var aspectRatioHeight = $(field).find('.acf-image-uploader-aspect-ratio-crop').data('aspect_ratio_height');
+
+        var options = {
+            aspectRatio: aspectRatioWidth / aspectRatioHeight,
+            viewMode: 1,
+            autoCropArea: 1,
+        };
+
+        $('body').append('<div class="acf-image-aspect-ratio-crop-backdrop">' +
+            '<div class="acf-image-aspect-ratio-crop-modal-wrapper">' +
+            '<div class="acf-image-aspect-ratio-crop-modal">' +
+            '<div class="acf-image-aspect-ratio-crop-modal-heading">' +
+            '<div class="acf-image-aspect-ratio-crop-modal-heading-text">Crop image</div>' +
+            '<div class="acf-image-aspect-ratio-crop-modal-heading-close">' +
+            '</div>' +
+            '</div>' +
+            '<div class="acf-image-aspect-ratio-crop-modal-image-container">' +
+            '<img class="acf-image-aspect-ratio-crop-modal-image js-acf-image-aspect-ratio-crop-modal-image" src="' + url + '">' +
+            '</div>' +
+            '<div class="acf-image-aspect-ratio-crop-modal-footer">' +
+            '<button class="button">Cancel</button>' +
+            '<button class="button button-primary">Crop</button>' +
+            '</div>' +
+            '</div>' +
+            '</div>');
+
+        new Cropper($('.js-acf-image-aspect-ratio-crop-modal-image')[0], options);
+    };
+
     acf.fields.image_aspect_ratio_crop = acf.field.extend({
 
         type: 'image_aspect_ratio_crop',
@@ -284,7 +323,7 @@
 
                     console.log('selected', $field, attachment);
 
-                    tb_show('Crop image', '#TB_inline?width=600&height=550&inlineId=my-content-id');
+                    performCrop({attachment: attachment, field: $field});
 
                     var data = {
                         'action': 'acf_image_aspect_ratio_crop_crop',
@@ -311,8 +350,8 @@
 
         },
 
-        crop: function() {
-            tb_show('Crop image', '#TB_inline?width=600&height=550&inlineId=acf-aspect-ratio-crop-modal');
+        crop: function(data) {
+            var val = this.$input.val(); // id
         },
 
 
