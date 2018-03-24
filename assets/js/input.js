@@ -1,81 +1,5 @@
 (function($){
 
-    var cropComplete = function(data) {
-        // Cropping successful, change image to cropped version
-        console.log(data);
-        console.log(field);
-        $(field).find('input').val(data.id);
-        acf.do_action('render')
-    }
-
-    var cropper = null;
-    var field = null;
-
-    $(document).on('click', '.js-acf-image-aspect-ratio-crop-crop', function() {
-        console.log('crop!');
-        var cropData = cropper.getData(true);
-
-        var data = {
-            'action': 'acf_image_aspect_ratio_crop_crop',
-            'data': JSON.stringify({
-                id: $(this).data('id'),
-                aspectRatioHeight: $(this).data('aspect-ratio-height'),
-                aspectRatioWidth: $(this).data('aspect-ratio-width'),
-                x: cropData.x,
-                y: cropData.y,
-                width: cropData.width,
-                height: cropData.height,
-            }),
-        };
-
-        $.post(ajaxurl, data)
-            .done(function(data) {
-                cropComplete(data);
-            })
-            .fail(function () {
-                alert('failure')
-            })
-    });
-
-    var openModal = function (data) {
-        console.log('data', data.attachment);
-
-        var url = data.attachment.attributes.url;
-        var id = data.attachment.attributes.id;
-        field = data.field;
-
-        console.log('field', field);
-
-        var aspectRatioWidth = $(field).find('.acf-image-uploader-aspect-ratio-crop').data('aspect_ratio_width');
-        var aspectRatioHeight = $(field).find('.acf-image-uploader-aspect-ratio-crop').data('aspect_ratio_height');
-
-        var options = {
-            aspectRatio: aspectRatioWidth / aspectRatioHeight,
-            viewMode: 1,
-            autoCropArea: 1,
-        };
-
-        $('body').append('<div class="acf-image-aspect-ratio-crop-backdrop">' +
-            '<div class="acf-image-aspect-ratio-crop-modal-wrapper">' +
-            '<div class="acf-image-aspect-ratio-crop-modal">' +
-            '<div class="acf-image-aspect-ratio-crop-modal-heading">' +
-            '<div class="acf-image-aspect-ratio-crop-modal-heading-text">Crop image</div>' +
-            '<div class="acf-image-aspect-ratio-crop-modal-heading-close">' +
-            '</div>' +
-            '</div>' +
-            '<div class="acf-image-aspect-ratio-crop-modal-image-container">' +
-            '<img class="acf-image-aspect-ratio-crop-modal-image js-acf-image-aspect-ratio-crop-modal-image" src="' + url + '">' +
-            '</div>' +
-            '<div class="acf-image-aspect-ratio-crop-modal-footer">' +
-            '<button class="button js-acf-image-aspect-ratio-crop-cancel">Cancel</button>' +
-            '<button class="button button-primary js-acf-image-aspect-ratio-crop-crop" data-id="' + id + '" data-aspect-ratio-height="' + aspectRatioHeight + '" data-aspect-ratio-width="' + aspectRatioWidth +'">Crop</button>' +
-            '</div>' +
-            '</div>' +
-            '</div>');
-
-        cropper = new Cropper($('.js-acf-image-aspect-ratio-crop-modal-image')[0], options);
-    };
-
     acf.fields.image_aspect_ratio_crop = acf.field.extend({
 
         type: 'image_aspect_ratio_crop',
@@ -139,12 +63,38 @@
 
         initialize: function(){
 
+            var self = this;
+
             // add attribute to form
             if( this.o.uploader == 'basic' ) {
-
                 this.$el.closest('form').attr('enctype', 'multipart/form-data');
-
             }
+
+            $(document).on('click', '.js-acf-image-aspect-ratio-crop-crop', function() {
+                console.log('crop!');
+                var cropData = self.cropper.getData(true);
+
+                var data = {
+                    'action': 'acf_image_aspect_ratio_crop_crop',
+                    'data': JSON.stringify({
+                        id: $(this).data('id'),
+                        aspectRatioHeight: $(this).data('aspect-ratio-height'),
+                        aspectRatioWidth: $(this).data('aspect-ratio-width'),
+                        x: cropData.x,
+                        y: cropData.y,
+                        width: cropData.width,
+                        height: cropData.height,
+                    }),
+                };
+
+                $.post(ajaxurl, data)
+                    .done(function(data) {
+                        self.cropComplete(data);
+                    })
+                    .fail(function () {
+                        alert('failure')
+                    })
+            });
 
         },
 
@@ -224,6 +174,10 @@
 
         render: function( data ){
 
+            console.log('redenr');
+
+            console.log(data);
+
             // prepare
             data = this.prepare(data);
 
@@ -280,8 +234,6 @@
         */
 
         add: function() {
-
-            console.log('render');
 
             // reference
             var self = this,
@@ -362,7 +314,7 @@
 
                     console.log('selected', $field, attachment);
 
-                    openModal({attachment: attachment, field: $field});
+                    self.openModal({attachment: attachment, field: $field});
 
                     // render
                     self.set('$field', $field).render( attachment );
@@ -470,7 +422,65 @@
 
             acf.fields.file.get_file_info( e.$el, this.$input );
 
-        }
+        },
+
+        openModal: function (data) {
+            console.log('data', data.attachment);
+
+            var url = data.attachment.attributes.url;
+            var id = data.attachment.attributes.id;
+            field = data.field;
+
+            console.log('field', field);
+
+            var aspectRatioWidth = $(field).find('.acf-image-uploader-aspect-ratio-crop').data('aspect_ratio_width');
+            var aspectRatioHeight = $(field).find('.acf-image-uploader-aspect-ratio-crop').data('aspect_ratio_height');
+
+            var options = {
+                aspectRatio: aspectRatioWidth / aspectRatioHeight,
+                viewMode: 1,
+                autoCropArea: 1,
+            };
+
+            $('body').append('<div class="acf-image-aspect-ratio-crop-backdrop">' +
+                '<div class="acf-image-aspect-ratio-crop-modal-wrapper">' +
+                '<div class="acf-image-aspect-ratio-crop-modal">' +
+                '<div class="acf-image-aspect-ratio-crop-modal-heading">' +
+                '<div class="acf-image-aspect-ratio-crop-modal-heading-text">Crop image</div>' +
+                '<div class="acf-image-aspect-ratio-crop-modal-heading-close">' +
+                '</div>' +
+                '</div>' +
+                '<div class="acf-image-aspect-ratio-crop-modal-image-container">' +
+                '<img class="acf-image-aspect-ratio-crop-modal-image js-acf-image-aspect-ratio-crop-modal-image" src="' + url + '">' +
+                '</div>' +
+                '<div class="acf-image-aspect-ratio-crop-modal-footer">' +
+                '<button class="button js-acf-image-aspect-ratio-crop-cancel">Cancel</button>' +
+                '<button class="button button-primary js-acf-image-aspect-ratio-crop-crop" data-id="' + id + '" data-aspect-ratio-height="' + aspectRatioHeight + '" data-aspect-ratio-width="' + aspectRatioWidth +'">Crop</button>' +
+                '</div>' +
+                '</div>' +
+                '</div>');
+
+            this.cropper = new Cropper($('.js-acf-image-aspect-ratio-crop-modal-image')[0], options);
+        },
+
+        cropComplete: function(data) {
+            // Cropping successful, change image to cropped version
+
+            $(field).find('input').val(data.id);
+
+            var attachment = new wp.media.model.Attachment.get(data.id);
+
+            var self = this;
+
+            attachment.fetch({success: function(response) {
+                self.render(response)
+            }});
+            this.closeModal();
+        },
+
+        closeModal: function() {
+            $('.acf-image-aspect-ratio-crop-backdrop').remove();
+        },
 
     });
 
