@@ -62,8 +62,68 @@ class npx_acf_plugin_image_aspect_ratio_crop {
             $post = array_map('stripslashes_deep', $_POST);
 
             $data = json_decode($post['data'], true);
-            print_r($data);
+
+            $imageData = wp_get_attachment_metadata($data['id']);
+
+            $mediaDir = wp_upload_dir();
+
+            $image = wp_get_image_editor($mediaDir['basedir'] . '/' . $imageData['file']);
+
+            if (is_wp_error($image)) {
+                wp_send_json('Failed to open image', 500);
+                wp_die();
+            }
+
+            $image->crop($data['x'], $data['y'], $data['width'], $data['height']);
+
+            // Retrieve original filename and seperate it from its file extension
+            $originalFileName = explode('.', basename($imageData['file']));
+
+            // Retrieve and remove file extension from array
+            $originalFileExtension = array_pop($originalFileName);
+
+            // Generate new base filename
+            $targetFileName = implode('.', $originalFileName) . '-aspect-ratio-' . $data['aspectRatioWidth'] . 'x' . $data['aspectRatioHeight'] . '.' . $originalFileExtension;
+
+            // Generate target path new file using existing media library
+            $targetFilePath = $mediaDir['path'] . '/' . wp_unique_filename( $mediaDir['path'], $targetFileName);
+
+            // Get the relative path to save as the actual image url
+            $targetRelativePath = str_replace($mediaDir['basedir'] . '/', '', $targetFilePath);
+
+            //$save = $image->save('test.jpg');
+            $save = $image->save($targetFilePath);
+            if (is_wp_error($save)) {
+                wp_send_json('Failed to crop', 500);
+                wp_die();
+            }
+
+            $wp_filetype = wp_check_filetype($targetRelativePath, null );
+
+            $attachment = [
+                'post_mime_type' => $wp_filetype['type'],
+                'post_title' => preg_replace('/\.[^.]+$/', '', $targetFileName),
+                'post_content' => '',
+                'post_status' => 'publish'
+            ];
+
+            $attachmentId = wp_insert_attachment( $attachment, $targetRelativePath );
+
+            if (is_wp_error($attachmentId)) {
+                wp_send_json('Failed to save attachment', 500);
+                wp_die();
+            }
+
+            require_once(ABSPATH . "wp-admin" . '/includes/image.php');
+            $attachment_data = wp_generate_attachment_metadata( $attachmentId, $targetFilePath);
+            wp_update_attachment_metadata($attachmentId,  $attachment_data);
+
+            wp_send_json(['id' => $attachmentId]);
             wp_die();
+
+
+            //print_r($image);
+            //wp_die();
         } );
 	}
 	
