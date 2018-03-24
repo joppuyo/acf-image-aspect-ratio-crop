@@ -17,7 +17,7 @@
             'click a[data-name="edit"]': 	'edit',
             'click a[data-name="remove"]':	'remove',
             'change input[type="file"]':	'change',
-            'click a[data-name="crop"]': 'crop',
+            'click a[data-name="crop"]': 'changeCrop',
         },
 
 
@@ -325,8 +325,13 @@
 
         },
 
-        crop: function(data) {
-            var val = this.$input.val(); // id
+        changeCrop: function() {
+            var originalImageId = $(this.$field).find('.acf-image-uploader-aspect-ratio-crop').data('original-image-id');
+            var attachment = new wp.media.model.Attachment.get(originalImageId);
+            var self = this;
+            attachment.fetch({success: function(response) {
+                self.openModal({attachment: response, field: self.$field});
+            }});
         },
 
 

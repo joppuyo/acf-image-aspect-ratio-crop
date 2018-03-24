@@ -122,10 +122,6 @@ class npx_acf_plugin_image_aspect_ratio_crop {
 
             wp_send_json(['id' => $attachmentId]);
             wp_die();
-
-
-            //print_r($image);
-            //wp_die();
         } );
 	}
 	

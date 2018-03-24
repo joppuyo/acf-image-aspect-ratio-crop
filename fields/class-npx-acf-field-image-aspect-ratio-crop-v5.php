@@ -314,10 +314,15 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             // update vars
             $url = wp_get_attachment_image_src($field['value'], $field['preview_size']);
             $alt = get_post_meta($field['value'], '_wp_attachment_image_alt', true);
+            $original = get_post_meta($field['value'], 'acf_image_aspect_ratio_crop_original_image_id', true);
 
             // url exists
             if ($url) {
                 $url = $url[0];
+            }
+
+            if ($original) {
+                $div['data-original-image-id'] = $original;
             }
 
             // url exists
