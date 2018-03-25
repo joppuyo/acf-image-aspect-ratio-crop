@@ -133,6 +133,10 @@ html[dir="rtl"] .acf-image-uploader-aspect-ratio-crop .image-wrap {
     float: right;
 }
 
+.acf-icon.-crop {
+    margin-right: -2px;
+}
+
 .acf-icon.-crop:before {
     content: '';
     margin-top: 5px;
