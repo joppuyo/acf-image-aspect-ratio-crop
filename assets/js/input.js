@@ -71,7 +71,6 @@
             }
 
             $(document).on('click', '.js-acf-image-aspect-ratio-crop-crop', function() {
-                console.log('crop!');
                 var cropData = self.cropper.getData(true);
 
                 var data = {
@@ -87,12 +86,16 @@
                     }),
                 };
 
+                $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', true);
+
                 $.post(ajaxurl, data)
                     .done(function(data) {
                         self.cropComplete(data);
+                        $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
                     })
                     .fail(function () {
-                        alert('failure')
+                        alert('Failed to crop image');
+                        $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
                     })
             });
 
