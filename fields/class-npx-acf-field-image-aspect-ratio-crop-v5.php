@@ -346,8 +346,8 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                     if ($uploader != 'basic'):
                         ?><a class="acf-icon -crop dark" data-name="crop" href="#"
                              title="<?php _e('Crop', 'acf'); ?>"></a>
-                          <a class="acf-icon -pencil dark" data-name="edit" href="#"
-                             title="<?php _e('Edit', 'acf'); ?>"></a><?php
+                    <a class="acf-icon -pencil dark" data-name="edit" href="#"
+                       title="<?php _e('Edit', 'acf'); ?>"></a><?php
                     endif;
                     ?><a class="acf-icon -cancel dark" data-name="remove" href="#"
                          title="<?php _e('Remove', 'acf'); ?>"></a>
@@ -394,7 +394,8 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         $url = $this->settings['url'];
         $version = $this->settings['version'];
 
-        wp_register_script('acf-image-aspect-ratio-crop-cropper', "{$url}assets/js/vendor/cropper.min.js", ['acf-input'], $version);
+        wp_register_script('acf-image-aspect-ratio-crop-cropper', "{$url}assets/js/vendor/cropper.min.js",
+            ['acf-input'], $version);
         wp_enqueue_script('acf-image-aspect-ratio-crop-cropper');
 
         wp_register_style('acf-image-aspect-ratio-crop-cropper', "{$url}assets/css/vendor/cropper.css", ['acf-input'],
@@ -687,7 +688,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 
             $original = get_post_meta($value, 'acf_image_aspect_ratio_crop_original_image_id');
 
-            if(count($original)) {
+            if (count($original)) {
                 $output['original_image'] = acf_get_attachment($original[0]);
             }
 
