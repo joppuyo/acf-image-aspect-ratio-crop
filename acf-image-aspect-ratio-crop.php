@@ -71,7 +71,17 @@ if (!class_exists('npx_acf_plugin_image_aspect_ratio_crop')) :
 
                 $mediaDir = wp_upload_dir();
 
-                $image = wp_get_image_editor($mediaDir['basedir'] . '/' . $imageData['file']);
+                // WP Smush compat: use original image if it exists
+                $file = $mediaDir['basedir'] . '/' . $imageData['file'];
+                $parts = explode('.', $file);
+                $extension = array_pop($parts);
+                $backupFile = implode('.', $parts) . '.bak.' . $extension;
+
+                if (file_exists($backupFile)) {
+                    $image = wp_get_image_editor($backupFile);
+                } else {
+                    $image = wp_get_image_editor($file);
+                }
 
                 if (is_wp_error($image)) {
                     wp_send_json('Failed to open image', 500);
