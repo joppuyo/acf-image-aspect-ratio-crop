@@ -1,0 +1,13 @@
+{
+    "name": "joppuyo/acf-image-aspect-ratio-crop",
+    "description": "ACF field that allows user to crop image to a specific aspect ratio",
+    "type": "wordpress-plugin",
+    "license": "GPL-3.0-or-later",
+    "authors": [
+        {
+            "name": "Johannes Siipola",
+            "email": "johannes@siipo.la"
+        }
+    ],
+    "require": {}
+}
