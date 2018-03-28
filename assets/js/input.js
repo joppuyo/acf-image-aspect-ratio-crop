@@ -55,12 +55,27 @@
         */
 
     initialize: function() {
+      this.isFirstCrop = null;
       var self = this;
 
       // add attribute to form
       if (this.o.uploader == 'basic') {
         this.$el.closest('form').attr('enctype', 'multipart/form-data');
       }
+
+      $(document).on(
+        'click',
+        '.js-acf-image-aspect-ratio-crop-cancel',
+        function() {
+          if (self.isFirstCrop) {
+            // If it's the first time cropping an image, we don't want to
+            // leave the incorrect aspect ratio image in the field
+            acf.val(self.$input, '');
+            self.render({});
+          }
+          self.closeModal();
+        }
+      );
 
       $(document).on(
         'click',
@@ -273,6 +288,8 @@
 
           console.log('selected', $field, attachment);
 
+          self.isFirstCrop = true;
+
           self.openModal({ attachment: attachment, field: $field });
 
           // render
@@ -282,6 +299,7 @@
     },
 
     changeCrop: function() {
+      this.isFirstCrop = false;
       var originalImageId = $(this.$field)
         .find('.acf-image-uploader-aspect-ratio-crop')
         .data('original-image-id');
