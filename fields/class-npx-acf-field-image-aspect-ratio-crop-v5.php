@@ -323,6 +323,9 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 
             if ($original) {
                 $div['data-original-image-id'] = $original;
+            } else {
+                // Normal image field compat
+                $div['data-original-image-id'] = $field['value'];
             }
 
             // url exists
