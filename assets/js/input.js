@@ -77,10 +77,9 @@
         }
       );
 
-      $(document).on(
-        'click',
-        '.js-acf-image-aspect-ratio-crop-crop',
-        function() {
+      $(document)
+        .off('click', '.js-acf-image-aspect-ratio-crop-crop')
+        .on('click', '.js-acf-image-aspect-ratio-crop-crop', function() {
           var cropData = self.cropper.getData(true);
 
           var data = {
