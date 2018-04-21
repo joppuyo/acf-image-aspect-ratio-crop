@@ -414,21 +414,20 @@
       // prettier-ignore
       $('body').append(
         '<div class="acf-image-aspect-ratio-crop-backdrop">' +
-        '<div class="acf-image-aspect-ratio-crop-modal-wrapper">' +
-        '<div class="acf-image-aspect-ratio-crop-modal">' +
-        '<div class="acf-image-aspect-ratio-crop-modal-heading">' +
-        '<div class="acf-image-aspect-ratio-crop-modal-heading-text">Crop image</div>' +
-        '<div class="acf-image-aspect-ratio-crop-modal-heading-close">' +
-        '</div>' +
-        '</div>' +
-        '<div class="acf-image-aspect-ratio-crop-modal-image-container">' +
-        '<img class="acf-image-aspect-ratio-crop-modal-image js-acf-image-aspect-ratio-crop-modal-image" src="' + url + '">' +
-        '</div>' +
-        '<div class="acf-image-aspect-ratio-crop-modal-footer">' +
-        '<button class="button js-acf-image-aspect-ratio-crop-cancel">Cancel</button>' +
-        '<button class="button button-primary js-acf-image-aspect-ratio-crop-crop" data-id="' + id + '" data-aspect-ratio-height="' + aspectRatioHeight + '" data-aspect-ratio-width="' + aspectRatioWidth +'">Crop</button>' +
-        '</div>' +
-        '</div>' +
+          '<div class="acf-image-aspect-ratio-crop-modal-wrapper">' +
+            '<div class="acf-image-aspect-ratio-crop-modal">' +
+              '<div class="acf-image-aspect-ratio-crop-modal-heading">' +
+                '<div class="acf-image-aspect-ratio-crop-modal-heading-text">Crop image</div>' +
+                '<div class="acf-image-aspect-ratio-crop-modal-heading-close"></div>' + 
+              '</div>' +
+              '<div class="acf-image-aspect-ratio-crop-modal-image-container">' +
+                '<img class="acf-image-aspect-ratio-crop-modal-image js-acf-image-aspect-ratio-crop-modal-image" src="' + url + '">' +
+              '</div>' +
+            '<div class="acf-image-aspect-ratio-crop-modal-footer">' +
+              '<button class="button js-acf-image-aspect-ratio-crop-cancel">Cancel</button>' +
+              '<button class="button button-primary js-acf-image-aspect-ratio-crop-crop" data-id="' + id + '" data-aspect-ratio-height="' + aspectRatioHeight + '" data-aspect-ratio-width="' + aspectRatioWidth +'">Crop</button>' +
+            '</div>' +
+          '</div>' +
         '</div>');
 
       this.cropper = new Cropper(
