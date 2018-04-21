@@ -164,27 +164,25 @@ html[dir="rtl"] .acf-image-uploader-aspect-ratio-crop .image-wrap {
 }
 
 .acf-image-aspect-ratio-crop-modal {
-    height: calc(100vh - 60px);
-    /*width: 500px;*/
-    width: 100%;
-    max-width: 800px;
-
+    max-height: 100%;
+    max-width: 100%;
     background-color: white;
     z-index: 159901;
 }
 
 .acf-image-aspect-ratio-crop-modal-wrapper {
-
+    max-width: 800px;
 }
 
 .acf-image-aspect-ratio-crop-modal-image-container {
-    max-height: calc(100% - 45px - 37px);
+    height: 100%;
+    width: 100%;
 }
 
 .acf-image-aspect-ratio-crop-modal-image {
-    max-width: 100%;
-    max-height: 100%;
     display: block;
+    max-height: calc(100vh - 45px - 37px - 80px );
+    max-width: 100%;
 }
 
 .acf-image-aspect-ratio-crop-modal-heading {
