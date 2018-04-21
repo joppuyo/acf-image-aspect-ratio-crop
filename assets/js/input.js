@@ -106,8 +106,7 @@
               alert('Failed to crop image');
               $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
             });
-        }
-      );
+        });
     },
 
     /*
@@ -409,6 +408,7 @@
         aspectRatio: aspectRatioWidth / aspectRatioHeight,
         viewMode: 1,
         autoCropArea: 1,
+        zoomable: false,
       };
 
       // prettier-ignore
