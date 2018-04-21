@@ -138,8 +138,21 @@ if (!class_exists('npx_acf_plugin_image_aspect_ratio_crop')) :
                 wp_send_json(['id' => $attachmentId]);
                 wp_die();
             });
-        }
 
+            // Hide cropped images in media library grid view
+            add_filter('ajax_query_attachments_args', function ($args) {
+                // post__in is only defined when clicking edit button in attachment
+                if (empty($args['post__in'])) {
+                    $args['meta_query'] = [
+                        [
+                            'key' => 'acf_image_aspect_ratio_crop',
+                            'compare' => 'NOT EXISTS',
+                        ]
+                    ];
+                }
+                return $args;
+            });
+        }
 
         /*
         *  include_field_types
