@@ -96,6 +96,7 @@
           };
 
           $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', true);
+          self.cropper.disable();
 
           $.post(ajaxurl, data)
             .done(function(data) {
@@ -104,6 +105,7 @@
             })
             .fail(function() {
               alert('Failed to crop image');
+              self.cropper.enable();
               $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
             });
         });
