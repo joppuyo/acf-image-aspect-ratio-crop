@@ -236,7 +236,7 @@
         mode: 'select',
         type: 'image',
         field: $field.data('key'),
-        multiple: $repeater.exists(),
+        multiple: false,
         library: this.o.library,
         mime_types: this.o.mime_types,
 
