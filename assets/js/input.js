@@ -1,3 +1,9 @@
+/*!
+ * Based on assets/js/acf-input.js from
+ * https://github.com/AdvancedCustomFields/acf by elliotcondon, licensed
+ * under GPLv2 or later
+ */
+
 (function($) {
   acf.fields.image_aspect_ratio_crop = acf.field.extend({
     type: 'image_aspect_ratio_crop',
