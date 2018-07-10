@@ -178,10 +178,6 @@
         */
 
     render: function(data) {
-      console.log('redenr');
-
-      console.log(data);
-
       // prepare
       data = this.prepare(data);
 
@@ -286,9 +282,12 @@
             }
           }
 
-          console.log('selected', $field, attachment);
-
           self.isFirstCrop = true;
+
+          // Add original id attribe to the image so we can recrop it right away without saving the post
+          $field
+            .find('.acf-image-uploader-aspect-ratio-crop')
+            .attr('data-original-image-id', attachment.id);
 
           self.openModal({ attachment: attachment, field: $field });
 
@@ -332,8 +331,6 @@
 
       // vars
       var val = this.$input.val();
-
-      console.log('edit', val);
 
       // bail early if no val
       if (!val) return;
@@ -391,13 +388,9 @@
     },
 
     openModal: function(data) {
-      console.log('data', data.attachment);
-
       var url = data.attachment.attributes.url;
       var id = data.attachment.attributes.id;
       field = data.field;
-
-      console.log('field', field);
 
       var aspectRatioWidth = $(field)
         .find('.acf-image-uploader-aspect-ratio-crop')
