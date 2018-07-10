@@ -1,5 +1,5 @@
 === Advanced Custom Fields: Image Aspect Ratio Crop Field ===
-Contributors: Johannes Siipola
+Contributors: joppuyo
 Tags: acf, field, image, crop
 Requires at least: 3.6.0
 Tested up to: 4.9.0
@@ -20,12 +20,17 @@ This ACF field type is compatible with:
 
 == Installation ==
 
-1. Copy the `textdomain` folder into your `wp-content/plugins` folder
+1. Copy the `acf-image-aspect-ratio-crop` folder into your `wp-content/plugins` folder
 2. Activate the Image Aspect Ratio Crop plugin via the plugins admin page
 3. Create a new field via ACF and select the Image Aspect Ratio Crop type
 4. Read the description above for usage instructions
 
 == Changelog ==
+
+= 1.0.1 =
+* Fix issue where the cropper broke if multiple images were selected inside a repeater
+* Cropper is now disabled while cropping is in progress
+* Fix issue where is was not possible to re-crop image before saving the post
 
 = 1.0.0 =
 * Initial Release.
