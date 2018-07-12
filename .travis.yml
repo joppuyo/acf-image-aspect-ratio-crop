@@ -2,12 +2,24 @@ language: node_js
 node_js:
   - '8'
 script:
-  - rm -fr node_modules && rm -fr .git && rm -f package.json yarn.lock .prettierrc.js .gitignore .editorconfig
-  - zip -r acf-image-aspect-ratio-crop.zip .
+  - ls -al
+before_deploy:
+  - mkdir -p acf-image-aspect-ratio-crop
+  - cp -r *.php *.md readme.txt assets fields lang acf-image-aspect-ratio-crop
+  - zip -r acf-image-aspect-ratio-crop.zip acf-image-aspect-ratio-crop
 deploy:
-  provider: releases
-  api_key: '$GITHUB_API_KEY'
-  file: "acf-image-aspect-ratio-crop.zip"
-  skip_cleanup: true
-  on:
-    tags: true
+  - provider: releases
+    api_key: '$GITHUB_API_KEY'
+    file: "acf-image-aspect-ratio-crop.zip"
+    skip_cleanup: true
+    on:
+      tags: true
+  - provider: script
+    script: './deploy.sh'
+    skip_cleanup: true
+    # Restrict deployment only for tags
+    on:
+      tags: true
+env:
+  global:
+  - SVN_REPOSITORY=https://plugins.svn.wordpress.org/acf-image-aspect-ratio-crop
