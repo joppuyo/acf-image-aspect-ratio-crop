@@ -6,7 +6,7 @@ A field for Advanced Custom Field that forces the user to crop their image to sp
 
 After cropping, a new cropped image variant is created in the gallery and saved into the post. Thumbnails are also generated for the new image. User can re-crop the original image at any time from the post page.
 
-The cropped image variants are hidden by default in the media browser and on the media page but you can view then my selecting the "list view".
+The cropped image variants are hidden by default in the media browser and on the media page but you can view them by selecting the "list view" on the media page.
 
 ## Cropping an image to 16:9 aspect ratio
 
