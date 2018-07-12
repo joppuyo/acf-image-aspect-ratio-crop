@@ -1,6 +1,7 @@
 # ACF Image Aspect Ratio Crop Field
 
 [![Build Status](https://travis-ci.org/joppuyo/acf-image-aspect-ratio-crop.svg?branch=master)](https://travis-ci.org/joppuyo/acf-image-aspect-ratio-crop)
+[![WordPress plugin](https://img.shields.io/wordpress/plugin/v/acf-image-aspect-ratio-crop.svg)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/)
 
 A field for Advanced Custom Field that forces the user to crop their image to specific aspect ratio after uploading. This is especially useful in responsive image use cases.
 
