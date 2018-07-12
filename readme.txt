@@ -38,6 +38,9 @@ This ACF field type is compatible with:
 
 == Changelog ==
 
+= 1.0.3 =
+* Release on w.org
+
 = 1.0.2 =
 * Update readme
 
