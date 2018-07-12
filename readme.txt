@@ -24,6 +24,10 @@ This ACF field type is compatible with:
 
 * ACF 5
 
+= Thanks =
+
+Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/andersthorborg/ACF-Image-Crop) which served as a inspiration for this plugin. Also, thanks to Fengyuan Chen for the [cropper.js](https://fengyuanchen.github.io/cropperjs/) library!
+
 == Installation ==
 
 1. Copy the `acf-image-aspect-ratio-crop` folder into your `wp-content/plugins` folder
