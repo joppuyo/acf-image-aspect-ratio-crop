@@ -42,6 +42,9 @@ Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/anders
 
 == Changelog ==
 
+= 1.0.4 =
+* Fix incompatibility with ACF 5.7
+
 = 1.0.3 =
 * Release on w.org
 
