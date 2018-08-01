@@ -491,10 +491,10 @@
 
   acf.add_action(
     'ready_field/type=image_aspect_ratio_crop',
-    'initialize_field'
+    initialize_field
   );
   acf.add_action(
     'append_field/type=image_aspect_ratio_crop',
-    'initialize_field'
+    initialize_field
   );
 })(jQuery);
