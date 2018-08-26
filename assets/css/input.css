@@ -181,12 +181,12 @@ html[dir="rtl"] .acf-image-uploader-aspect-ratio-crop .image-wrap {
 
 .acf-image-aspect-ratio-crop-modal-image {
     display: block;
-    max-height: calc(100vh - 45px - 37px - 80px );
+    max-height: calc(100vh - 60px - 50px - 80px );
     max-width: 100%;
 }
 
 .acf-image-aspect-ratio-crop-modal-heading {
-    height: 37px;
+    height: 50px;
     background-color: #FCFCFC;
     display: flex;
     align-items: center;
@@ -194,13 +194,13 @@ html[dir="rtl"] .acf-image-uploader-aspect-ratio-crop .image-wrap {
 
 .acf-image-aspect-ratio-crop-modal-heading-text {
     font-weight: bold;
-    font-size: 18px;
+    font-size: 20px;
     color: #24282D;
     margin-left: 16px;
 }
 
 .acf-image-aspect-ratio-crop-modal-footer {
-    height: 45px;
+    height: 60px;
     background-color: #FCFCFC;
     display: flex;
     align-items: center;
