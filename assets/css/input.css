@@ -186,6 +186,7 @@ html[dir="rtl"] .acf-image-uploader-aspect-ratio-crop .image-wrap {
 }
 
 .acf-image-aspect-ratio-crop-modal-heading {
+    position: relative;
     height: 50px;
     background-color: #FCFCFC;
     display: flex;
@@ -211,4 +212,32 @@ html[dir="rtl"] .acf-image-uploader-aspect-ratio-crop .image-wrap {
 
 .acf-image-aspect-ratio-crop-modal-footer .button {
     margin-left: 16px;
+}
+
+.acf-image-aspect-ratio-crop-modal-heading-close {
+    height: 50px;
+    width: 50px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    position: absolute;
+    right: 0;
+    cursor: pointer;
+}
+
+.acf-image-aspect-ratio-crop-modal-heading-close:hover svg path,
+.acf-image-aspect-ratio-crop-modal-heading-close:active svg path {
+    fill: #00a0d2;
 }
