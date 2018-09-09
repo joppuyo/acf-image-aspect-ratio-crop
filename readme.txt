@@ -42,6 +42,9 @@ Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/anders
 
 == Changelog ==
 
+= 1.0.6 =
+* Fix bug with detecting the same aspect ration
+
 = 1.0.5 =
 * User interface improvements
 * Fixed issue where cropper sometimes showed a wrong image
