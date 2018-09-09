@@ -42,6 +42,11 @@ Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/anders
 
 == Changelog ==
 
+= 1.0.5 =
+* User interface improvements
+* Fixed issue where cropper sometimes showed a wrong image
+* Improved performance in cases uploaded image had the correct aspect ratio. Thanks to @hrohh on w.org for the tip!
+
 = 1.0.4 =
 * Fix incompatibility with ACF 5.7
 
