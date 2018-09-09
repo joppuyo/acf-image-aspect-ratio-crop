@@ -7,7 +7,7 @@
   "license": "GPL-3.0",
   "private": false,
   "devDependencies": {
-    "@prettier/plugin-php": "^0.6.0",
+    "@prettier/plugin-php": "github:prettier/plugin-php",
     "prettier": "^1.14.2"
   }
 }
