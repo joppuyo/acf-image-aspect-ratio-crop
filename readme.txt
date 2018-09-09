@@ -2,7 +2,7 @@
 Contributors: joppuyo
 Tags: acf, field, image, crop
 Requires at least: 4.9.0
-Tested up to: 4.9.0
+Tested up to: 4.9.8
 Requires PHP: 5.3
 Stable tag: trunk
 License: GPLv2 or later
@@ -42,8 +42,11 @@ Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/anders
 
 == Changelog ==
 
+= 1.0.7 =
+* Update compatibility information
+
 = 1.0.6 =
-* Fix bug with detecting the same aspect ration
+* Fix bug with detecting the same aspect ratio
 
 = 1.0.5 =
 * User interface improvements
