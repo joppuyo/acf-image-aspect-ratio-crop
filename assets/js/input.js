@@ -293,6 +293,7 @@
           // Add original id attribe to the image so we can recrop it right away without saving the post
           $field
             .find('.acf-image-uploader-aspect-ratio-crop')
+            .data('original-image-id', attachment.id)
             .attr('data-original-image-id', attachment.id);
 
           self.openModal({ attachment: attachment, field: $field });
@@ -441,6 +442,7 @@
 
     cropComplete: function(data) {
       // Cropping successful, change image to cropped version
+      this.cropper.destroy();
 
       $(field)
         .find('input')
@@ -491,12 +493,6 @@
 		*  @return	n/a
 		*/
 
-  acf.add_action(
-    'ready_field/type=image_aspect_ratio_crop',
-    initialize_field
-  );
-  acf.add_action(
-    'append_field/type=image_aspect_ratio_crop',
-    initialize_field
-  );
+  acf.add_action('ready_field/type=image_aspect_ratio_crop', initialize_field);
+  acf.add_action('append_field/type=image_aspect_ratio_crop', initialize_field);
 })(jQuery);
