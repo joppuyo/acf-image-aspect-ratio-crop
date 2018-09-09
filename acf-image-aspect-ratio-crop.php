@@ -69,8 +69,13 @@ if (!class_exists('npx_acf_plugin_image_aspect_ratio_crop')):
                 $image_data = wp_get_attachment_metadata($data['id']);
 
                 // If the difference between the images is less than half a percentage
-                if (($image_data['height'] - $data['height']) < ($data['height'] * 0.005 &&
-                        ($image_data['height'] - $data['height']) < ($data['height'] * 0.005))
+                if (
+                    ($image_data['height'] - $data['height']) <
+                    (
+                        $data['height'] * 0.005 &&
+                            ($image_data['height'] - $data['height']) <
+                                ($data['height'] * 0.005)
+                    )
                 ) {
                     // The cropped image is the same as original
                     wp_send_json(['id' => $data['id']]);
