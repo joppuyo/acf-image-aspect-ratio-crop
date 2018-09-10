@@ -42,6 +42,9 @@ Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/anders
 
 == Changelog ==
 
+= 1.0.8 =
+* Fix bug with detecting the same aspect ratio
+
 = 1.0.7 =
 * Update compatibility information
 
