@@ -42,6 +42,10 @@ Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/anders
 
 == Changelog ==
 
+= 1.0.9 =
+* Fix: Update screenshots
+* Fix: Update WordPress compatibility information
+
 = 1.0.8 =
 * Fix bug with detecting the same aspect ratio
 
