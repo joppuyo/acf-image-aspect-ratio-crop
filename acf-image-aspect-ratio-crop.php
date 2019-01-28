@@ -77,7 +77,11 @@ if (!class_exists('npx_acf_plugin_image_aspect_ratio_crop')):
                     wp_die();
                 }
 
+                do_action('aiarc_pre_customize_upload_dir');
+
                 $media_dir = wp_upload_dir();
+
+                do_action('aiarc_after_customize_upload_dir');
 
                 // WP Smush compat: use original image if it exists
                 $file = $media_dir['basedir'] . '/' . $image_data['file'];
