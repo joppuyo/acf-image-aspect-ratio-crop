@@ -42,6 +42,9 @@ Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/anders
 
 == Changelog ==
 
+= 1.1.0 =
+* Feature: Allow customizing file upload directory with filters `aiarc_pre_customize_upload_dir` and `aiarc_after_customize_upload_dir`
+
 = 1.0.9 =
 * Fix: Update screenshots
 * Fix: Update WordPress compatibility information
