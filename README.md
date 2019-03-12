@@ -18,6 +18,12 @@ The cropped image variants are hidden by default in the media browser and on the
 
 ![Screenshot of the image field](assets/images/screenshot-2.png)
 
+## Frequently Asked Questions
+
+### Can I access metadata in the original image from a cropped image? 
+
+Yes, the original image id is saved as `acf_image_aspect_ratio_crop_original_image_id` key in the cropped image attachement. Use this key to fetch meta information about the original image.
+
 ## Thanks
 
 Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/andersthorborg/ACF-Image-Crop) which served as a inspiration for this plugin. Also, thanks to Fengyuan Chen for the [cropper.js](https://fengyuanchen.github.io/cropperjs/) library!
