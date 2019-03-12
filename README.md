@@ -22,7 +22,7 @@ The cropped image variants are hidden by default in the media browser and on the
 
 ### Can I access metadata in the original image from a cropped image? 
 
-Yes, the original image id is saved as `acf_image_aspect_ratio_crop_original_image_id` key in the cropped image attachement. Use this key to fetch meta information about the original image.
+Yes, the original image id is saved as `acf_image_aspect_ratio_crop_original_image_id` key in the cropped image attachment. Use this key to fetch meta information about the original image.
 
 ## Thanks
 
