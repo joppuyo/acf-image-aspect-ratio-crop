@@ -48,6 +48,9 @@ Yes, the original image id is saved as `acf_image_aspect_ratio_crop_original_ima
 
 == Changelog ==
 
+= 1.1.1 =
+* Fix: Update readme
+
 = 1.1.0 =
 * Feature: Allow customizing file upload directory with filters `aiarc_pre_customize_upload_dir` and `aiarc_after_customize_upload_dir`
 
