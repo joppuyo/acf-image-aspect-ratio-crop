@@ -35,6 +35,12 @@ Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/anders
 3. Create a new field via ACF and select the Image Aspect Ratio Crop type
 4. Read the description above for usage instructions
 
+== Frequently Asked Questions ==
+
+= Can I access metadata in the original image from a cropped image? =
+
+Yes, the original image id is saved as `acf_image_aspect_ratio_crop_original_image_id` key in the cropped image attachment. Use this key to fetch meta information about the original image.
+
 == Screenshots ==
 
 1. Cropping an image to 16:9 aspect ratio
