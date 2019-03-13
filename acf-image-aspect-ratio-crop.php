@@ -55,10 +55,10 @@ if (!class_exists('npx_acf_plugin_image_aspect_ratio_crop')):
             );
 
             // include field
-            add_action('acf/include_field_types', array(
+            add_action('acf/include_field_types', [
                 $this,
                 'include_field_types',
-            )); // v5
+            ]); // v5
 
             add_action('wp_ajax_acf_image_aspect_ratio_crop_crop', function () {
                 // WTF WordPress
