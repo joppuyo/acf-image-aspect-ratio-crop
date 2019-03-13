@@ -2,7 +2,7 @@
 Contributors: joppuyo
 Tags: acf, field, image, crop
 Requires at least: 4.9
-Tested up to: 5.0
+Tested up to: 5.1
 Requires PHP: 5.3
 Stable tag: trunk
 License: GPLv2 or later
