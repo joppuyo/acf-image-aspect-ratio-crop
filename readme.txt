@@ -49,7 +49,7 @@ Yes, the original image id is saved as `acf_image_aspect_ratio_crop_original_ima
 == Changelog ==
 
 = 1.1.2 =
-* Fix: Bump supported Wordpress version to 5.1
+* Fix: Bump supported WordPress version to 5.1
 
 = 1.1.1 =
 * Fix: Update readme
