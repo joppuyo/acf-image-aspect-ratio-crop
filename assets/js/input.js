@@ -337,7 +337,12 @@
         $field = this.$field;
 
       // vars
-      var val = this.$input.val();
+      var val = null;
+      if (this.$input.parent().attr('data-original-image-id')) {
+        val = this.$input.parent().attr('data-original-image-id');
+      } else {
+        val = this.$input.val();
+      }
 
       // bail early if no val
       if (!val) return;
