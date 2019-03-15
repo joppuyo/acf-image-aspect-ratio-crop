@@ -8,12 +8,25 @@
     position: relative;
 }
 
-.acf-image-uploader-aspect-ratio-crop .has-image { display: none; float: left; position: relative; max-width: 100%; }
-.acf-image-uploader-aspect-ratio-crop .no-image { display: block; float: left; position: relative; max-width: 100%; }
+.acf-image-uploader-aspect-ratio-crop .has-image {
+    display: none;
+    float: left;
+    position: relative;
+    max-width: 100%;
+}
+.acf-image-uploader-aspect-ratio-crop .no-image {
+    display: block;
+    float: left;
+    position: relative;
+    max-width: 100%;
+}
 
-.acf-image-uploader-aspect-ratio-crop.active .has-image { display: block; }
-.acf-image-uploader-aspect-ratio-crop.active .no-image { display: none; }
-
+.acf-image-uploader-aspect-ratio-crop.active .has-image {
+    display: block;
+}
+.acf-image-uploader-aspect-ratio-crop.active .no-image {
+    display: none;
+}
 
 .acf-image-uploader-aspect-ratio-crop img {
     box-shadow: 0 0 2px rgba(0, 0, 0, 0.2);
@@ -35,15 +48,12 @@
     width: auto;
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
     .acf-image-uploader-aspect-ratio-crop img {
         width: auto;
         max-width: 100%;
     }
-
 }
-
 
 /*
 *  Hover
@@ -64,10 +74,10 @@
 }
 
 .acf-image-uploader-aspect-ratio-crop .has-image:hover .hover {
-    -webkit-transition-delay:0s;
-    -moz-transition-delay:0s;
-    -o-transition-delay:0s;
-    transition-delay:0s;
+    -webkit-transition-delay: 0s;
+    -moz-transition-delay: 0s;
+    -o-transition-delay: 0s;
+    transition-delay: 0s;
 
     visibility: visible;
     opacity: 1;
@@ -96,7 +106,7 @@
 }
 .acf-image-uploader-aspect-ratio-crop:after {
     clear: both;
-    content: "";
+    content: '';
     display: table;
 }
 .acf-image-uploader-aspect-ratio-crop p {
@@ -119,7 +129,7 @@
     padding: 0;
     /* svg */
 }
-.acf-image-uploader-aspect-ratio-crop .image-wrap img[src$=".svg"] {
+.acf-image-uploader-aspect-ratio-crop .image-wrap img[src$='.svg'] {
     min-height: 100px;
     min-width: 100px;
 }
@@ -129,7 +139,7 @@
 .acf-image-uploader-aspect-ratio-crop input.button {
     width: auto;
 }
-html[dir="rtl"] .acf-image-uploader-aspect-ratio-crop .image-wrap {
+html[dir='rtl'] .acf-image-uploader-aspect-ratio-crop .image-wrap {
     float: right;
 }
 
@@ -157,7 +167,7 @@ html[dir="rtl"] .acf-image-uploader-aspect-ratio-crop .image-wrap {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0,0,0,0.7);
+    background-color: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -181,14 +191,14 @@ html[dir="rtl"] .acf-image-uploader-aspect-ratio-crop .image-wrap {
 
 .acf-image-aspect-ratio-crop-modal-image {
     display: block;
-    max-height: calc(100vh - 60px - 50px - 80px );
+    max-height: calc(100vh - 60px - 50px - 80px);
     max-width: 100%;
 }
 
 .acf-image-aspect-ratio-crop-modal-heading {
     position: relative;
     height: 50px;
-    background-color: #FCFCFC;
+    background-color: #fcfcfc;
     display: flex;
     align-items: center;
 }
@@ -196,13 +206,13 @@ html[dir="rtl"] .acf-image-uploader-aspect-ratio-crop .image-wrap {
 .acf-image-aspect-ratio-crop-modal-heading-text {
     font-weight: bold;
     font-size: 20px;
-    color: #24282D;
+    color: #24282d;
     margin-left: 16px;
 }
 
 .acf-image-aspect-ratio-crop-modal-footer {
     height: 60px;
-    background-color: #FCFCFC;
+    background-color: #fcfcfc;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -211,7 +221,6 @@ html[dir="rtl"] .acf-image-uploader-aspect-ratio-crop .image-wrap {
 }
 
 .acf-image-aspect-ratio-crop-modal-footer-status {
-
 }
 
 .acf-image-aspect-ratio-crop-modal-loading {
@@ -228,7 +237,7 @@ html[dir="rtl"] .acf-image-uploader-aspect-ratio-crop .image-wrap {
 .acf-image-aspect-ratio-crop-modal-loading-icon {
     height: 16px;
     width: 16px;
-    background-color: #0085BA;
+    background-color: #0085ba;
     border-radius: 50%;
     margin-right: 11px;
     display: flex;
@@ -259,7 +268,7 @@ html[dir="rtl"] .acf-image-uploader-aspect-ratio-crop .image-wrap {
 .acf-image-aspect-ratio-crop-modal-error-text {
     font-size: 14px;
     font-weight: 700;
-    color: #F44336;
+    color: #f44336;
 }
 
 .acf-image-aspect-ratio-crop-modal-footer-buttons {
