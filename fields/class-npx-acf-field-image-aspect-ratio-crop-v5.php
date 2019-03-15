@@ -442,6 +442,16 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             ['acf-input'],
             $version
         );
+
+        $translation_array = array(
+            'cropping_in_progress' => __('Cropping image...', 'acf-image-aspect-ratio-crop'),
+            'cropping_failed' => __('Failed to crop image', 'acf-image-aspect-ratio-crop'),
+            'crop' => __('Crop', 'acf-image-aspect-ratio-crop'),
+            'cancel' => __('Cancel', 'acf-image-aspect-ratio-crop'),
+            'modal_title' => __('Crop image', 'acf-image-aspect-ratio-crop'),
+        );
+        wp_localize_script('acf-image-aspect-ratio-crop-cropper', 'aiarc_translations', $translation_array);
+
         wp_enqueue_script('acf-image-aspect-ratio-crop-cropper');
 
         wp_register_style(
