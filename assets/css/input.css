@@ -205,9 +205,65 @@ html[dir="rtl"] .acf-image-uploader-aspect-ratio-crop .image-wrap {
     background-color: #FCFCFC;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     padding-left: 16px;
     padding-right: 16px;
+}
+
+.acf-image-aspect-ratio-crop-modal-footer-status {
+
+}
+
+.acf-image-aspect-ratio-crop-modal-loading {
+    display: flex;
+    align-items: center;
+}
+
+@keyframes aiarc-spin {
+    100% {
+        transform: rotate(-360deg);
+    }
+}
+
+.acf-image-aspect-ratio-crop-modal-loading-icon {
+    height: 16px;
+    width: 16px;
+    background-color: #0085BA;
+    border-radius: 50%;
+    margin-right: 11px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 4px;
+}
+
+.acf-image-aspect-ratio-crop-modal-loading-icon svg {
+    animation: aiarc-spin 2s linear infinite;
+}
+
+.acf-image-aspect-ratio-crop-modal-loading-text {
+    font-size: 14px;
+    color: #555555;
+}
+
+.acf-image-aspect-ratio-crop-modal-error {
+    display: flex;
+    align-items: center;
+    flex-shrink: 1;
+}
+
+.acf-image-aspect-ratio-crop-modal-error-icon {
+    margin-right: 10px;
+}
+
+.acf-image-aspect-ratio-crop-modal-error-text {
+    font-size: 14px;
+    font-weight: 700;
+    color: #F44336;
+}
+
+.acf-image-aspect-ratio-crop-modal-footer-buttons {
+    white-space: nowrap;
 }
 
 .acf-image-aspect-ratio-crop-modal-footer .button {

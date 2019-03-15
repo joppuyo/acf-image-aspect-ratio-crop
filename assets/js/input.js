@@ -88,6 +88,11 @@
         .on('click', '.js-acf-image-aspect-ratio-crop-crop', function() {
           var cropData = self.cropper.getData(true);
 
+          $('.js-acf-image-aspect-ratio-crop-modal').css(
+            'max-width',
+            self.cropper.containerData.width
+          );
+
           var data = {
             action: 'acf_image_aspect_ratio_crop_crop',
             data: JSON.stringify({
@@ -102,17 +107,52 @@
           };
 
           $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', true);
+
+          // prettier-ignore
+          var loading = '<div class="acf-image-aspect-ratio-crop-modal-loading">' +
+                          '<div class="acf-image-aspect-ratio-crop-modal-loading-icon">' +
+                          '<!-- Icon from https://github.com/google/material-design-icons -->' +
+                          '<!-- Licensed under Apache License 2.0 -->' +
+                          '<!-- Copyright (c) Google Inc. -->' +
+                          '<svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M7 2.64V1L4.75 3.18 7 5.36V3.73A3.33 3.33 0 0 1 10.38 7c0 .55-.15 1.07-.4 1.53l.82.8c.44-.68.7-1.47.7-2.33A4.43 4.43 0 0 0 7 2.64zm0 7.63A3.33 3.33 0 0 1 3.62 7c0-.55.15-1.07.4-1.53l-.82-.8c-.44.68-.7 1.47-.7 2.33A4.43 4.43 0 0 0 7 11.36V13l2.25-2.18L7 8.64v1.63z" fill="#FFF" fill-rule="nonzero"/></svg>' +
+                          '</div>' +
+                          '<div class="acf-image-aspect-ratio-crop-modal-loading-text">' +
+                          'Cropping image...' +
+                          '</div>' +
+                        '</div>';
+
+          // prettier-ignore
+          var error = '<div class="acf-image-aspect-ratio-crop-modal-error">' +
+                        '<div class="acf-image-aspect-ratio-crop-modal-error-icon">' +
+                        '<!-- Icon from https://github.com/google/material-design-icons -->' +
+                        '<!-- Licensed under Apache License 2.0 -->' +
+                        '<!-- Copyright (c) Google Inc. -->' +
+                        '<svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><path d="M1 20.14h20l-10-17-10 17zm10.9-2.69h-1.8v-1.79h1.8v1.8zm0-3.58h-1.8V10.3h1.8v3.58z" fill="#F44336" fill-rule="nonzero"/></svg>' +
+                        '</div>' +
+                        '<div class="acf-image-aspect-ratio-crop-modal-error-text">' +
+                        'Failed to crop image' +
+                        '</div>' +
+                      '</div>';
+
+          $('.js-acf-image-aspect-ratio-crop-modal-footer-status').empty();
+          $('.js-acf-image-aspect-ratio-crop-modal-footer-status').html(
+            loading
+          );
           self.cropper.disable();
 
           $.post(ajaxurl, data)
             .done(function(data) {
               self.cropComplete(data);
               $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
+              $('.js-acf-image-aspect-ratio-crop-modal-footer-status').empty();
             })
             .fail(function() {
-              alert('Failed to crop image');
               self.cropper.enable();
               $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
+              $('.js-acf-image-aspect-ratio-crop-modal-footer-status').empty();
+              $('.js-acf-image-aspect-ratio-crop-modal-footer-status').html(
+                error
+              );
             });
         });
     },
@@ -422,7 +462,7 @@
       $('body').append(
         '<div class="acf-image-aspect-ratio-crop-backdrop">' +
           '<div class="acf-image-aspect-ratio-crop-modal-wrapper">' +
-            '<div class="acf-image-aspect-ratio-crop-modal">' +
+            '<div class="acf-image-aspect-ratio-crop-modal js-acf-image-aspect-ratio-crop-modal">' +
               '<div class="acf-image-aspect-ratio-crop-modal-heading">' +
                 '<div class="acf-image-aspect-ratio-crop-modal-heading-text">Crop image</div>' +
                 '<button class="acf-image-aspect-ratio-crop-modal-heading-close js-acf-image-aspect-ratio-crop-cancel" aria-label="Close">' +
@@ -433,8 +473,12 @@
                 '<img class="acf-image-aspect-ratio-crop-modal-image js-acf-image-aspect-ratio-crop-modal-image" src="' + url + '">' +
               '</div>' +
             '<div class="acf-image-aspect-ratio-crop-modal-footer">' +
+            '<div class="acf-image-aspect-ratio-crop-modal-footer-status js-acf-image-aspect-ratio-crop-modal-footer-status">' +
+            '</div>' +
+            '<div class="acf-image-aspect-ratio-crop-modal-footer-buttons">' +
               '<button class="button js-acf-image-aspect-ratio-crop-cancel">Cancel</button>' +
               '<button class="button button-primary js-acf-image-aspect-ratio-crop-crop" data-id="' + id + '" data-aspect-ratio-height="' + aspectRatioHeight + '" data-aspect-ratio-width="' + aspectRatioWidth +'">Crop</button>' +
+            '</div>' +
             '</div>' +
           '</div>' +
         '</div>');
