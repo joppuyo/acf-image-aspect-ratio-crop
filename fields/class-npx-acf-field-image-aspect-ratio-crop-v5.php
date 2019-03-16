@@ -67,11 +67,11 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         ];
 
         $this->l10n = [
-            'select' => __("Select Image", 'acf'),
-            'edit' => __("Edit Image", 'acf'),
-            'update' => __("Update Image", 'acf'),
-            'uploadedTo' => __("Uploaded to this post", 'acf'),
-            'all' => __("All images", 'acf'),
+            'select' => __('Select Image', 'acf'),
+            'edit' => __('Edit Image', 'acf'),
+            'update' => __('Update Image', 'acf'),
+            'uploadedTo' => __('Uploaded to this post', 'acf'),
+            'all' => __('All images', 'acf'),
         ];
 
         // filters
@@ -166,9 +166,9 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'name' => 'return_format',
             'layout' => 'horizontal',
             'choices' => [
-                'array' => __("Image Array", 'acf'),
-                'url' => __("Image URL", 'acf'),
-                'id' => __("Image ID", 'acf'),
+                'array' => __('Image Array', 'acf'),
+                'url' => __('Image URL', 'acf'),
+                'id' => __('Image ID', 'acf'),
             ],
         ]);
 
@@ -363,11 +363,11 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             ]); ?>
             <div class="show-if-value image-wrap"
                  <?php if ($size['width']): ?>style="<?php echo esc_attr(
-                         'max-width: ' . $size['width'] . 'px'
-                     ); ?>"<?php endif; ?>>
+    'max-width: ' . $size['width'] . 'px'
+); ?>"<?php endif; ?>>
                 <img data-name="image" src="<?php echo esc_url(
-                     $url
-                 ); ?>" alt="<?php echo esc_attr($alt); ?>"/>
+                    $url
+                ); ?>" alt="<?php echo esc_attr($alt); ?>"/>
                 <div class="acf-actions -hover">
                     <?php if (
                         $uploader != 'basic'
@@ -375,9 +375,9 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                              title="<?php _e('Crop', 'acf'); ?>"></a>
                     <a class="acf-icon -pencil dark" data-name="edit" href="#"
                        title="<?php _e(
-                          'Edit',
-                          'acf'
-                      ); ?>"></a><?php endif; ?><a class="acf-icon -cancel dark" data-name="remove" href="#"
+                           'Edit',
+                           'acf'
+                       ); ?>"></a><?php endif; ?><a class="acf-icon -cancel dark" data-name="remove" href="#"
                          title="<?php _e('Remove', 'acf'); ?>"></a>
                 </div>
             </div>
@@ -403,13 +403,13 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                 <?php else: ?>
 
                     <p><?php _e(
-                       'No image selected',
-                       'acf'
-                   ); ?> <a data-name="add" class="acf-button button"
+                        'No image selected',
+                        'acf'
+                    ); ?> <a data-name="add" class="acf-button button"
                                                                    href="#"><?php _e(
-                                                                      'Add Image',
-                                                                      'acf'
-                                                                  ); ?></a></p>
+                                                                       'Add Image',
+                                                                       'acf'
+                                                                   ); ?></a></p>
 
                 <?php endif; ?>
             </div>
@@ -443,8 +443,14 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             WP_DEBUG ? md5_file("{$url}assets/dist/input-script.js") : $version
         );
         $translation_array = [
-            'cropping_in_progress' => __('Cropping image...', 'acf-image-aspect-ratio-crop'),
-            'cropping_failed' => __('Failed to crop image', 'acf-image-aspect-ratio-crop'),
+            'cropping_in_progress' => __(
+                'Cropping image...',
+                'acf-image-aspect-ratio-crop'
+            ),
+            'cropping_failed' => __(
+                'Failed to crop image',
+                'acf-image-aspect-ratio-crop'
+            ),
             'crop' => __('Crop', 'acf-image-aspect-ratio-crop'),
             'cancel' => __('Cancel', 'acf-image-aspect-ratio-crop'),
             'modal_title' => __('Crop image', 'acf-image-aspect-ratio-crop'),
@@ -452,8 +458,16 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         $settings_array = [
             'modal_type' => $this->settings['user_settings']['modal_type'],
         ];
-        wp_localize_script('acf-image-aspect-ratio-crop', 'aiarc_settings', $settings_array);
-        wp_localize_script('acf-image-aspect-ratio-crop', 'aiarc_translations', $translation_array);
+        wp_localize_script(
+            'acf-image-aspect-ratio-crop',
+            'aiarc_settings',
+            $settings_array
+        );
+        wp_localize_script(
+            'acf-image-aspect-ratio-crop',
+            'aiarc_translations',
+            $translation_array
+        );
 
         wp_enqueue_script('acf-image-aspect-ratio-crop');
         wp_register_style(
@@ -900,7 +914,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
     function get_media_item_args($vars)
     {
         $vars['send'] = true;
-        return ($vars);
+        return $vars;
     }
 
     /*
@@ -945,9 +959,10 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                         'height' => $v['height'],
                         'width' => $v['width'],
                         'url' => $base_url . $v['file'],
-                        'orientation' => $v['height'] > $v['width']
-                            ? 'portrait'
-                            : 'landscape',
+                        'orientation' =>
+                            $v['height'] > $v['width']
+                                ? 'portrait'
+                                : 'landscape',
                     ];
                 }
             }
