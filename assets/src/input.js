@@ -84,7 +84,7 @@ import Cropper from 'cropperjs';
             self.render({});
           }
           self.closeModal();
-        }
+        },
       );
 
       $(document)
@@ -94,7 +94,7 @@ import Cropper from 'cropperjs';
 
           $('.js-acf-image-aspect-ratio-crop-modal').css(
             'max-width',
-            self.cropper.containerData.width
+            self.cropper.containerData.width,
           );
 
           var data = {
@@ -140,7 +140,7 @@ import Cropper from 'cropperjs';
 
           $('.js-acf-image-aspect-ratio-crop-modal-footer-status').empty();
           $('.js-acf-image-aspect-ratio-crop-modal-footer-status').html(
-            loading
+            loading,
           );
           self.cropper.disable();
 
@@ -155,7 +155,7 @@ import Cropper from 'cropperjs';
               $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
               $('.js-acf-image-aspect-ratio-crop-modal-footer-status').empty();
               $('.js-acf-image-aspect-ratio-crop-modal-footer-status').html(
-                error
+                error,
               );
             });
         });
@@ -203,7 +203,7 @@ import Cropper from 'cropperjs';
         data.url = acf.maybe_get(
           data,
           'sizes.' + this.o.preview_size + '.url',
-          data.url
+          data.url,
         );
       }
 
@@ -492,7 +492,7 @@ import Cropper from 'cropperjs';
 
       this.cropper = new Cropper(
         $('.js-acf-image-aspect-ratio-crop-modal-image')[0],
-        options
+        options,
       );
     },
 
