@@ -382,7 +382,10 @@ import Cropper from 'cropperjs';
 
       // vars
       var val = null;
-      if (this.$input.parent().attr('data-original-image-id')) {
+      if (
+        this.$input.parent().attr('data-original-image-id') &&
+        window.aiarc_settings.modal_type === 'original'
+      ) {
         val = this.$input.parent().attr('data-original-image-id');
       } else {
         val = this.$input.val();

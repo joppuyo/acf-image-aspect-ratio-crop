@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Blank WordPress Pot v1.0.0\n"
 "Report-Msgid-Bugs-To: Translator Name <translations@example.com>\n"
-"POT-Creation-Date: 2019-03-16 01:47+0200\n"
+"POT-Creation-Date: 2019-03-16 23:37+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: \n"
 "Language-Team: Your Team <translations@example.com>\n"
@@ -23,8 +23,36 @@ msgstr ""
 "X-Poedit-Basepath: ..\n"
 "X-Generator: Poedit 2.2.1\n"
 "X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: node_modules**\n"
 
-#: assets/js/input.js:279 assets/js/input.js:392 assets/js/input.js:393
+#: acf-image-aspect-ratio-crop.php:216 acf-image-aspect-ratio-crop.php:217
+#: acf-image-aspect-ratio-crop.php:264
+msgid "ACF Image Aspect Ratio Crop"
+msgstr "ACF Image Aspect Ratio Crop"
+
+#: acf-image-aspect-ratio-crop.php:226
+msgid "Settings"
+msgstr "Asetukset"
+
+#: acf-image-aspect-ratio-crop.php:268
+msgid "Options have been updated"
+msgstr "Asetukset päivitetty"
+
+#: acf-image-aspect-ratio-crop.php:276
+msgid "Image displayed in attachment edit modal dialog"
+msgstr "Kuva, joka näytetään liitetiedoston muokkausikkunassa"
+
+#: acf-image-aspect-ratio-crop.php:279
+msgid "Original image"
+msgstr "Alkuperäinen kuva"
+
+#: acf-image-aspect-ratio-crop.php:280
+msgid "Cropped image"
+msgstr "Rajattu kuva"
+
+#: assets/dist/input-script.js:314 assets/dist/input-script.js:410
+#: assets/dist/input-script.js:411 assets/src/input.js:283
+#: assets/src/input.js:396 assets/src/input.js:397
 msgid "image"
 msgstr ""
 
@@ -58,11 +86,11 @@ msgstr "Kuvasuhde pituussuunnassa"
 
 #: fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php:153
 msgid "Aspect Ratio Height"
-msgstr ""
+msgstr "Kuvasuhde korkeussuunnassa"
 
 #: fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php:160
 msgid "Return Value"
-msgstr "Kuvasuhde korkeussuunnassa"
+msgstr ""
 
 #: fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php:162
 msgid "Specify the returned value on front end"
@@ -141,7 +169,7 @@ msgid "Comma separated list. Leave blank for all types"
 msgstr ""
 
 #: fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php:375
-#: fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php:449
+#: fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php:448
 msgid "Crop"
 msgstr "Rajaa"
 
@@ -161,18 +189,18 @@ msgstr "Kuvaa ei ole valittu"
 msgid "Add Image"
 msgstr "Lisää kuva"
 
-#: fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php:447
+#: fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php:446
 msgid "Cropping image..."
 msgstr "Rajataan kuvaa…"
 
-#: fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php:448
+#: fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php:447
 msgid "Failed to crop image"
 msgstr "Kuvan rajaaminen epäonnistui"
 
-#: fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php:450
+#: fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php:449
 msgid "Cancel"
 msgstr "Peruuta"
 
-#: fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php:451
+#: fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php:450
 msgid "Crop image"
 msgstr "Rajaa kuva"
