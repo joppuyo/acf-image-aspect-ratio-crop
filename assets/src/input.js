@@ -7,6 +7,8 @@
 import Cropper from 'cropperjs';
 
 (function($) {
+  var field = null;
+
   acf.fields.image_aspect_ratio_crop = acf.field.extend({
     type: 'image_aspect_ratio_crop',
     $el: null,
@@ -444,7 +446,7 @@ import Cropper from 'cropperjs';
     openModal: function(data) {
       var url = data.attachment.attributes.url;
       var id = data.attachment.attributes.id;
-      var field = data.field;
+      field = data.field;
 
       var aspectRatioWidth = $(field)
         .find('.acf-image-uploader-aspect-ratio-crop')
