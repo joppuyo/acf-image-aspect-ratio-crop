@@ -49,6 +49,17 @@ such as alt text, description and title this way.
 
 == Changelog ==
 
+= 1.2.0 =
+* Feature: It's now possible to edit original image data instead of cropped image data when pressing the pencil button
+  in the image field. This is handy if you have meta data such as alt text that you want to share between the original
+  image and its cropped variants. Toggle this by selecting `Settings` in the plugin list.
+* Feature: There is now a progress indicator (spinner) displayed while the image is being cropped
+* Feature: If an error occurs while cropping an image, the error message is displayed inline in the modal instead of
+  a browser alert window
+* Feature: Improved styles for the cropped
+* Feature: Modern and improved build process with webpack
+* Feature: Make it possible to localize UI texts
+
 = 1.1.2 =
 * Fix: Bump supported WordPress version to 5.1
 
