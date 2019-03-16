@@ -2,7 +2,7 @@ language: node_js
 node_js:
   - '8'
 script:
-  - ls -al
+  - npx webpack -p
 before_deploy:
   - mkdir -p acf-image-aspect-ratio-crop
   - cp -r *.php *.md readme.txt assets fields lang acf-image-aspect-ratio-crop

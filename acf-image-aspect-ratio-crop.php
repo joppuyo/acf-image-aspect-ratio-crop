@@ -40,8 +40,13 @@ if (!class_exists('npx_acf_plugin_image_aspect_ratio_crop')):
         {
             // settings
             // - these will be passed into the field class.
+
+            if (!function_exists('get_plugin_data')) {
+                require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+            }
+
             $this->settings = [
-                'version' => '1.1.2',
+                'version' => get_plugin_data(__FILE__)['Version'],
                 'url' => plugin_dir_url(__FILE__),
                 'path' => plugin_dir_path(__FILE__),
             ];

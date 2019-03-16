@@ -4,7 +4,12 @@
  * under GPLv2 or later
  */
 
+import Cropper from 'cropperjs';
+
 (function($) {
+
+  var field = null;
+
   acf.fields.image_aspect_ratio_crop = acf.field.extend({
     type: 'image_aspect_ratio_crop',
     $el: null,
@@ -442,7 +447,7 @@
     openModal: function(data) {
       var url = data.attachment.attributes.url;
       var id = data.attachment.attributes.id;
-      field = data.field;
+      var field = data.field;
 
       var aspectRatioWidth = $(field)
         .find('.acf-image-uploader-aspect-ratio-crop')
@@ -483,10 +488,14 @@
           '</div>' +
         '</div>');
 
-      this.cropper = new Cropper(
-        $('.js-acf-image-aspect-ratio-crop-modal-image')[0],
-        options
-      );
+
+        this.cropper = new Cropper(
+          $('.js-acf-image-aspect-ratio-crop-modal-image')[0],
+          options
+        );
+
+
+
     },
 
     cropComplete: function(data) {
