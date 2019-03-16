@@ -8,7 +8,7 @@
   "private": false,
   "devDependencies": {
     "@prettier/plugin-php": "github:prettier/plugin-php",
-    "prettier": "^1.14.2"
+    "prettier": "^1.16.4"
   },
   "dependencies": {
     "@babel/core": "^7.3.4",

@@ -6,7 +6,7 @@ module.exports = {
       files: ['*.php'],
       options: {
         trailingComma: 'all',
-      }
-    }
-  ]
+      },
+    },
+  ],
 };

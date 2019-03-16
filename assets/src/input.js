@@ -7,9 +7,6 @@
 import Cropper from 'cropperjs';
 
 (function($) {
-
-  var field = null;
-
   acf.fields.image_aspect_ratio_crop = acf.field.extend({
     type: 'image_aspect_ratio_crop',
     $el: null,
@@ -30,17 +27,17 @@ import Cropper from 'cropperjs';
     },
 
     /*
-        *  focus
-        *
-        *  This function will setup variables when focused on a field
-        *
-        *  @type	function
-        *  @date	12/04/2016
-        *  @since	5.3.8
-        *
-        *  @param	n/a
-        *  @return	n/a
-        */
+     *  focus
+     *
+     *  This function will setup variables when focused on a field
+     *
+     *  @type	function
+     *  @date	12/04/2016
+     *  @since	5.3.8
+     *
+     *  @param	n/a
+     *  @return	n/a
+     */
 
     focus: function() {
       // vars
@@ -53,17 +50,17 @@ import Cropper from 'cropperjs';
     },
 
     /*
-        *  initialize
-        *
-        *  This function is used to setup basic upload form attributes
-        *
-        *  @type	function
-        *  @date	12/04/2016
-        *  @since	5.3.8
-        *
-        *  @param	n/a
-        *  @return	n/a
-        */
+     *  initialize
+     *
+     *  This function is used to setup basic upload form attributes
+     *
+     *  @type	function
+     *  @date	12/04/2016
+     *  @since	5.3.8
+     *
+     *  @param	n/a
+     *  @return	n/a
+     */
 
     initialize: function() {
       this.isFirstCrop = null;
@@ -163,19 +160,19 @@ import Cropper from 'cropperjs';
     },
 
     /*
-        *  prepare
-        *
-        *  This function will prepare an object of attachment data
-        *  selecting a library image vs embed an image via url return different data
-        *  this function will keep the 2 consistent
-        *
-        *  @type	function
-        *  @date	12/04/2016
-        *  @since	5.3.8
-        *
-        *  @param	attachment (object)
-        *  @return	data (object)
-        */
+     *  prepare
+     *
+     *  This function will prepare an object of attachment data
+     *  selecting a library image vs embed an image via url return different data
+     *  this function will keep the 2 consistent
+     *
+     *  @type	function
+     *  @date	12/04/2016
+     *  @since	5.3.8
+     *
+     *  @param	attachment (object)
+     *  @return	data (object)
+     */
 
     prepare: function(attachment) {
       // defaults
@@ -216,17 +213,17 @@ import Cropper from 'cropperjs';
     },
 
     /*
-        *  render
-        *
-        *  This function will render the UI
-        *
-        *  @type	function
-        *  @date	12/04/2016
-        *  @since	5.3.8
-        *
-        *  @param	attachment (obj)
-        *  @return	n/a
-        */
+     *  render
+     *
+     *  This function will render the UI
+     *
+     *  @type	function
+     *  @date	12/04/2016
+     *  @since	5.3.8
+     *
+     *  @param	attachment (obj)
+     *  @return	n/a
+     */
 
     render: function(data) {
       // prepare
@@ -259,17 +256,17 @@ import Cropper from 'cropperjs';
     },
 
     /*
-        *  add
-        *
-        *  event listener
-        *
-        *  @type	function
-        *  @date	12/04/2016
-        *  @since	5.3.8
-        *
-        *  @param	e (event)
-        *  @return	n/a
-        */
+     *  add
+     *
+     *  event listener
+     *
+     *  @type	function
+     *  @date	12/04/2016
+     *  @since	5.3.8
+     *
+     *  @param	e (event)
+     *  @return	n/a
+     */
 
     add: function() {
       // reference
@@ -364,17 +361,17 @@ import Cropper from 'cropperjs';
     },
 
     /*
-        *  edit
-        *
-        *  event listener
-        *
-        *  @type	function
-        *  @date	12/04/2016
-        *  @since	5.3.8
-        *
-        *  @param	e (event)
-        *  @return	n/a
-        */
+     *  edit
+     *
+     *  event listener
+     *
+     *  @type	function
+     *  @date	12/04/2016
+     *  @since	5.3.8
+     *
+     *  @param	e (event)
+     *  @return	n/a
+     */
 
     edit: function() {
       // reference
@@ -407,17 +404,17 @@ import Cropper from 'cropperjs';
     },
 
     /*
-        *  remove
-        *
-        *  event listener
-        *
-        *  @type	function
-        *  @date	12/04/2016
-        *  @since	5.3.8
-        *
-        *  @param	e (event)
-        *  @return	n/a
-        */
+     *  remove
+     *
+     *  event listener
+     *
+     *  @type	function
+     *  @date	12/04/2016
+     *  @since	5.3.8
+     *
+     *  @param	e (event)
+     *  @return	n/a
+     */
 
     remove: function() {
       // vars
@@ -428,17 +425,17 @@ import Cropper from 'cropperjs';
     },
 
     /*
-        *  change
-        *
-        *  This function will update the hidden input when selecting a basic file to add basic validation
-        *
-        *  @type	function
-        *  @date	12/04/2016
-        *  @since	5.3.8
-        *
-        *  @param	e (event)
-        *  @return	n/a
-        */
+     *  change
+     *
+     *  This function will update the hidden input when selecting a basic file to add basic validation
+     *
+     *  @type	function
+     *  @date	12/04/2016
+     *  @since	5.3.8
+     *
+     *  @param	e (event)
+     *  @return	n/a
+     */
 
     change: function(e) {
       acf.fields.file.get_file_info(e.$el, this.$input);
@@ -488,14 +485,10 @@ import Cropper from 'cropperjs';
           '</div>' +
         '</div>');
 
-
-        this.cropper = new Cropper(
-          $('.js-acf-image-aspect-ratio-crop-modal-image')[0],
-          options
-        );
-
-
-
+      this.cropper = new Cropper(
+        $('.js-acf-image-aspect-ratio-crop-modal-image')[0],
+        options
+      );
     },
 
     cropComplete: function(data) {
@@ -541,15 +534,15 @@ import Cropper from 'cropperjs';
   }
 
   /*
-		*  ready & append (ACF5)
-		*
-		*  These two events are called when a field element is ready for initizliation.
-		*  - ready: on page load similar to $(document).ready()
-		*  - append: on new DOM elements appended via repeater field or other AJAX calls
-		*
-		*  @param	n/a
-		*  @return	n/a
-		*/
+   *  ready & append (ACF5)
+   *
+   *  These two events are called when a field element is ready for initizliation.
+   *  - ready: on page load similar to $(document).ready()
+   *  - append: on new DOM elements appended via repeater field or other AJAX calls
+   *
+   *  @param	n/a
+   *  @return	n/a
+   */
 
   acf.add_action('ready_field/type=image_aspect_ratio_crop', initialize_field);
   acf.add_action('append_field/type=image_aspect_ratio_crop', initialize_field);
