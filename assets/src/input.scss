@@ -294,3 +294,33 @@ html[dir='rtl'] .acf-image-uploader-aspect-ratio-crop .image-wrap {
 .acf-image-aspect-ratio-crop-modal-heading-close:active svg path {
     fill: #00a0d2;
 }
+
+.cropper-view-box {
+    outline: 2px solid white;
+}
+
+.cropper-line {
+    outline-color: white;
+}
+
+.cropper-point {
+    background-color: white;
+    border-radius: 50%;
+    opacity: 1;
+    transform: scale(2);
+}
+
+.cropper-dashed {
+    border-style: solid;
+}
+
+.cropper-line {
+    outline: transparent;
+    background-color: transparent;
+}
+
+@media (min-width: 1200px) {
+    .cropper-point.point-se {
+        opacity: 1;
+    }
+}
