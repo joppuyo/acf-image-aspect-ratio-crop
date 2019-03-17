@@ -1,6 +1,6 @@
 {
   "name": "acf-image-aspect-ratio-crop",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "ACF field that allows user to crop image to a specific aspect ratio",
   "repository": "git@github.com:joppuyo/acf-image-aspect-ratio-crop.git",
   "author": "Johannes Siipola <johannes@siipo.la>",
