@@ -29,6 +29,14 @@ The cropped image variants are hidden by default in the media browser and on the
 
 Yes, the original image data such as is saved under `original_image` key in the returned ACF array. You can access data such as alt text, description and title this way.
 
+### How is this different from the other plugin?
+
+[Advanced Custom Fields: Image Crop Add-on](https://wordpress.org/plugins/acf-image-crop-add-on/) is based on exact image dimensions (like 640x480). This plugin uses an aspect ratio such as 4:3 instead. Using an aspect ratio is is more convenient when working with responsive images since you care about the aspect ratio more than pixel dimensions.
+
+Of course, nothing will stop you from using an aspect ratio like 1200:630 which is similar to a pixel amount with this plugin, if you want.
+
+Also, this the other plugin is not maintained anymore and does not work well with latest ACF versions. I try to maintain this plugin as best as I can when new versions of ACF and WordPress come out.
+
 ## Thanks
 
 Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/andersthorborg/ACF-Image-Crop) which served as a inspiration for this plugin. Also, thanks to Fengyuan Chen for the [cropper.js](https://fengyuanchen.github.io/cropperjs/) library!
