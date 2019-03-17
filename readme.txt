@@ -50,6 +50,9 @@ such as alt text, description and title this way.
 
 == Changelog ==
 
+= 1.2.2 =
+* Update screenshots
+
 = 1.2.0 =
 * Feature: It's now possible to edit original image data instead of cropped image data when pressing the pencil button
   in the image field. This is handy if you have meta data such as alt text that you want to share between the original
