@@ -45,7 +45,8 @@ such as alt text, description and title this way.
 == Screenshots ==
 
 1. Cropping an image to 16:9 aspect ratio
-2. Option to re-crop the image after upload
+2. Cropping in progress
+3. Option to re-crop the image after upload
 
 == Changelog ==
 

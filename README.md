@@ -14,9 +14,14 @@ The cropped image variants are hidden by default in the media browser and on the
 
 ![Screenshot of cropping an image](assets/images/screenshot-1.jpg)
 
+## Cropping in progress
+
+![Screenshot of cropping in progress](assets/images/screenshot-2.jpg)
+
+
 ## Option to re-crop the image after upload
 
-![Screenshot of the image field](assets/images/screenshot-2.png)
+![Screenshot of the image field](assets/images/screenshot-3.png)
 
 ## Frequently Asked Questions
 
