@@ -9,6 +9,8 @@ Author: Johannes Siipola
 Author URI: https://siipo.la
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: acf-image-aspect-ratio-crop
+Stable Tag: trunk
 */
 
 // exit if accessed directly
@@ -52,11 +54,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
         // set text domain
         // https://codex.wordpress.org/Function_Reference/load_plugin_textdomain
-        load_plugin_textdomain(
-            'acf-image-aspect-ratio-crop',
-            false,
-            plugin_basename(dirname(__FILE__)) . '/lang'
-        );
+        load_plugin_textdomain('acf-image-aspect-ratio-crop');
 
         add_action('plugins_loaded', [$this, 'initialize_settings']);
 
