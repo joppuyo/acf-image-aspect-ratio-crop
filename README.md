@@ -35,7 +35,7 @@ Yes, the original image data such as is saved under `original_image` key in the 
 
 Of course, nothing will stop you from using an aspect ratio like 1200:630 which is similar to a pixel amount with this plugin, if you want.
 
-Also, this the other plugin is not maintained anymore and does not work well with latest ACF versions. I try to maintain this plugin as best as I can when new versions of ACF and WordPress come out.
+Also, as of 2019, the other plugin is not actively maintained anymore and does not work well with latest ACF versions. I try to maintain this plugin as best as I can when new versions of ACF and WordPress come out.
 
 ## Thanks
 
