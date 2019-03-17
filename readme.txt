@@ -61,6 +61,9 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 
 == Changelog ==
 
+= 1.3.1 =
+* Fix: Fix deployment script
+
 = 1.3.0 =
 * Feature: Handle translation through w.org
 
