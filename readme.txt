@@ -68,8 +68,11 @@ I try to maintain this plugin as best as I can when new versions of ACF and Word
 
 == Changelog ==
 
+= 1.2.3 =
+* Fix: Update readme
+
 = 1.2.2 =
-* Update screenshots
+* Fix: Update screenshots
 
 = 1.2.0 =
 * Feature: It's now possible to edit original image data instead of cropped image data when pressing the pencil button
