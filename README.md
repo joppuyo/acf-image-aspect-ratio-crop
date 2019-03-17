@@ -12,16 +12,16 @@ The cropped image variants are hidden by default in the media browser and on the
 
 ## Cropping an image to 16:9 aspect ratio
 
-![Screenshot of cropping an image](assets/images/screenshot-1.jpg)
+![Screenshot of cropping an image](assets/images/screenshot-1.jpg?v=1552838494)
 
 ## Cropping in progress
 
-![Screenshot of cropping in progress](assets/images/screenshot-2.jpg)
+![Screenshot of cropping in progress](assets/images/screenshot-2.jpg?v=1552838494)
 
 
 ## Option to re-crop the image after upload
 
-![Screenshot of the image field](assets/images/screenshot-3.png)
+![Screenshot of the image field](assets/images/screenshot-3.png?v=1552838494)
 
 ## Frequently Asked Questions
 
