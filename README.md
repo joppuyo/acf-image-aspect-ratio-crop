@@ -27,7 +27,7 @@ The cropped image variants are hidden by default in the media browser and on the
 
 ### Can I access metadata in the original image from a cropped image? 
 
-Yes, the original image data such as is saved under `original_image` key in the returned ACF array. You can access data such as alt text, description and title this way.
+Yes, the original image data is saved under `original_image` key in the returned ACF array. You can access data such as alt text, description and title this way.
 
 ### How is this different from the other plugin?
 
