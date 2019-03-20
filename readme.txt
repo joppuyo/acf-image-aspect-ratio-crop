@@ -39,7 +39,7 @@ Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/anders
 
 = Can I access metadata in the original image from a cropped image? =
 
-Yes, the original image data such as is saved under `original_image` key in the returned ACF array. You can access data such as alt text, description and title this way.
+Yes, the original image data is saved under `original_image` key in the returned ACF array. You can access data such as alt text, description and title this way.
 
 = I have an issue or I want to contribute code =
 
