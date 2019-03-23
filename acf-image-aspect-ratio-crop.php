@@ -13,9 +13,17 @@ Text Domain: acf-image-aspect-ratio-crop
 Stable Tag: trunk
 */
 
+
+use Ramsey\Uuid\Uuid;
+
 // exit if accessed directly
 if (!defined('ABSPATH')) {
     exit();
+}
+
+// Check if we are using local Composer
+if (file_exists(__DIR__ . '/vendor')) {
+    require 'vendor/autoload.php';
 }
 
 class npx_acf_plugin_image_aspect_ratio_crop
@@ -23,6 +31,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
     // vars
     public $settings;
     public $user_settings;
+    public $temp_path;
 
     /*
      *  __construct
@@ -51,6 +60,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
             'url' => plugin_dir_url(__FILE__),
             'path' => plugin_dir_path(__FILE__),
         ];
+        $this->temp_path = null;
 
         // set text domain
         // https://codex.wordpress.org/Function_Reference/load_plugin_textdomain
@@ -93,13 +103,34 @@ class npx_acf_plugin_image_aspect_ratio_crop
             $extension = array_pop($parts);
             $backup_file = implode('.', $parts) . '.bak.' . $extension;
 
+            $image = null;
+
             if (file_exists($backup_file)) {
                 $image = wp_get_image_editor($backup_file);
-            } else {
+            } else if (file_exists($file)) {
                 $image = wp_get_image_editor($file);
+            } else {
+                // Let's attempt to get the file by URL
+                $temp_name = Uuid::uuid4()->toString();
+                $temp_directory = get_temp_dir();
+                $this->temp_path = $temp_directory . $temp_name;
+                try {
+                    $guzzle = new \GuzzleHttp\Client();
+                    $fetched_image = $guzzle->get(wp_get_attachment_url($data['id']));
+                    $result = @file_put_contents($this->temp_path, $fetched_image->getBody());
+                    if ($result === false) {
+                        throw new Exception('Failed to save image');
+                    }
+                    $image = wp_get_image_editor($this->temp_path);
+                } catch (Exception $exception) {
+                    $this->cleanup();
+                    wp_send_json('Failed fetch remote image', 500);
+                    wp_die();
+                }
             }
 
             if (is_wp_error($image)) {
+                $this->cleanup();
                 wp_send_json('Failed to open image', 500);
                 wp_die();
             }
@@ -146,6 +177,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
             //$save = $image->save('test.jpg');
             $save = $image->save($target_file_path);
             if (is_wp_error($save)) {
+                $this->cleanup();
                 wp_send_json('Failed to crop', 500);
                 wp_die();
             }
@@ -169,6 +201,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
             );
 
             if (is_wp_error($attachment_id)) {
+                $this->cleanup();
                 wp_send_json('Failed to save attachment', 500);
                 wp_die();
             }
@@ -192,6 +225,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 true
             );
 
+            $this->cleanup();
             wp_send_json(['id' => $attachment_id]);
             wp_die();
         });
@@ -317,6 +351,15 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
         $this->user_settings = array_merge($default_user_settings, $settings);
         $this->settings['user_settings'] = $this->user_settings;
+    }
+
+    /**
+     * Clean up any temporary files
+     */
+    private function cleanup() {
+        if ($this->temp_path) {
+            @unlink($this->temp_path);
+        }
     }
 }
 
