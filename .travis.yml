@@ -1,11 +1,12 @@
-language: node_js
-node_js:
-  - '8'
+language: php
+php:
+  - '5.4'
 script:
   - npx webpack -p
+  - composer install
 before_deploy:
   - mkdir -p acf-image-aspect-ratio-crop
-  - cp -r *.php *.md readme.txt assets fields acf-image-aspect-ratio-crop
+  - cp -r *.php *.md readme.txt assets fields vendor acf-image-aspect-ratio-crop
   - zip -r acf-image-aspect-ratio-crop.zip acf-image-aspect-ratio-crop
 deploy:
   - provider: releases
