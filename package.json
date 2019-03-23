@@ -8,7 +8,8 @@
   "private": false,
   "devDependencies": {
     "@prettier/plugin-php": "github:prettier/plugin-php",
-    "prettier": "^1.16.4"
+    "prettier": "^1.16.4",
+    "webpack-cli": "^3.3.0"
   },
   "dependencies": {
     "@babel/core": "^7.3.4",
@@ -26,7 +27,6 @@
     "raw-loader": "^1.0.0",
     "sass-loader": "^7.1.0",
     "webpack": "^4.29.6",
-    "webpack-cli": "^3.3.0",
     "webpack-watch-time-plugin": "^0.3.0"
   }
 }
