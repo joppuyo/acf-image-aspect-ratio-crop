@@ -2,7 +2,7 @@ language: php
 php:
   - '5.4'
 script:
-  - npm install webpack-cli -g
+  - npm install
   - npx webpack -p
   - composer install
 before_deploy:
