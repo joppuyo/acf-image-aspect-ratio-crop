@@ -61,6 +61,9 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 
 == Changelog ==
 
+= 2.0.1 =
+* Fix typo
+
 = 2.0.0 =
 * Feature: Compatibility with [WP Offload Media](https://deliciousbrains.com/wp-offload-media/) and similar plugins that move WordPress images to a remote location. Plugin will now attempt to fetch images from remote URLs if they are not found in the file system.
 * Breaking change: Due to new dependencies, PHP 5.5 is now the minimum required version
