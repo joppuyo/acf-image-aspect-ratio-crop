@@ -3,7 +3,7 @@ Contributors: joppuyo
 Tags: acf, field, image, crop
 Requires at least: 4.9
 Tested up to: 5.1
-Requires PHP: 5.3
+Requires PHP: 5.4
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -60,6 +60,10 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 3. Option to re-crop the image after upload
 
 == Changelog ==
+
+= 2.0.0 =
+* Feature: Compatibility with [WP Offload Media](https://deliciousbrains.com/wp-offload-media/) and similar plugins that move WordPress images to a remote location. Plugin will not attempt to fetch images from remote URLs if they are not found in the file system.
+* Breaking change: Due to new dependencies, PHP 5.4 is now the minimum required version
 
 = 1.3.1 =
 * Fix: Fix deployment script
