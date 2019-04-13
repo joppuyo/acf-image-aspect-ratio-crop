@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/joppuyo/acf-image-aspect-ratio-crop.svg?branch=master)](https://travis-ci.org/joppuyo/acf-image-aspect-ratio-crop)
 [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/acf-image-aspect-ratio-crop.svg)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/)
-![Active installs](https://img.shields.io/wordpress/plugin/installs/acf-image-aspect-ratio-crop.svg?style=flat)
+[![Active installs](https://img.shields.io/wordpress/plugin/installs/acf-image-aspect-ratio-crop.svg?style=flat)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/advanced/)
 
 A field for Advanced Custom Fields that forces the user to crop their image to specific aspect ratio after uploading. This is especially useful in responsive image use cases.
 
