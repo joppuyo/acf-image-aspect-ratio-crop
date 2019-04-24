@@ -343,7 +343,10 @@ class npx_acf_plugin_image_aspect_ratio_crop
             update_option('acf-image-aspect-ratio-crop-version', $plugin_version);
         }
 
-        // Database migrations here
+        if (version_compare(get_option('acf-image-aspect-ratio-crop-version'), $plugin_version, 'lt')) {
+            // Database migrations here
+            update_option('acf-image-aspect-ratio-crop-version', $plugin_version);
+        };
 
         $default_user_settings = [
             'modal_type' => 'cropped',
