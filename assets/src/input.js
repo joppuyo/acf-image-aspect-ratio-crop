@@ -400,11 +400,6 @@ import Cropper from 'cropperjs';
         button: acf._e('image', 'update'),
         mode: 'edit',
         attachment: val,
-
-        select: function(attachment, i) {
-          // render
-          self.set('$field', $field).render(attachment);
-        },
       });
     },
 
