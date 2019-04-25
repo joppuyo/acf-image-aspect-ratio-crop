@@ -61,8 +61,13 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 
 == Changelog ==
 
+= 2.0.2 =
+* Fix: Fix issue where saving in image modal replaced cropped image with original when "Original image" was selected in "Image displayed in attachment edit modal dialog"
+* Fix: Actually save plugin version in the database for migration support
+* Fix: Get file hash in debug mode from file path instead of URL
+
 = 2.0.1 =
-* Fix typo
+* Fix: Fix typo
 
 = 2.0.0 =
 * Feature: Compatibility with [WP Offload Media](https://deliciousbrains.com/wp-offload-media/) and similar plugins that move WordPress images to a remote location. Plugin will now attempt to fetch images from remote URLs if they are not found in the file system.
