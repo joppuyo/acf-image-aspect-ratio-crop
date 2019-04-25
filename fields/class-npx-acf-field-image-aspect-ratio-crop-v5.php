@@ -440,7 +440,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'acf-image-aspect-ratio-crop',
             "{$url}assets/dist/input-script.js",
             ['acf-input'],
-            WP_DEBUG ? md5_file("{$url}assets/dist/input-script.js") : $version
+            WP_DEBUG ? md5_file($this->settings['path'] . '/assets/dist/input-script.js') : $version
         );
         $translation_array = [
             'cropping_in_progress' => __(
@@ -474,7 +474,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'acf-image-aspect-ratio-crop',
             "{$url}assets/dist/input-style.css",
             ['acf-input'],
-            WP_DEBUG ? md5_file("{$url}assets/dist/input-style.css") : $version
+            WP_DEBUG ? md5_file($this->settings['path'] . '/assets/dist/input-style.css') : $version
         );
         wp_enqueue_style('acf-image-aspect-ratio-crop');
     }
