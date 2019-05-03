@@ -458,6 +458,7 @@ import Cropper from 'cropperjs';
         viewMode: 1,
         autoCropArea: 1,
         zoomable: false,
+        checkCrossOrigin: false,
       };
 
       // prettier-ignore
