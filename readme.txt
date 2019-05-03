@@ -61,6 +61,9 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 
 == Changelog ==
 
+= 2.0.3 =
+* Fix: Allow cropping in cases when image is hosted remotely and is missing CORS headers
+
 = 2.0.2 =
 * Fix: Fix issue where saving in image modal replaced cropped image with original when "Original image" was selected in "Image displayed in attachment edit modal dialog"
 * Fix: Actually save plugin version in the database for migration support
