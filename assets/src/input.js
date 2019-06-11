@@ -96,7 +96,7 @@ import Cropper from 'cropperjs';
             'max-width',
             self.cropper.containerData.width,
           );
-
+          let fieldId = $(this).data('fieldId');
           var data = {
             action: 'acf_image_aspect_ratio_crop_crop',
             data: JSON.stringify({
@@ -107,6 +107,7 @@ import Cropper from 'cropperjs';
               y: cropData.y,
               width: cropData.width,
               height: cropData.height,
+              fieldId: fieldId
             }),
           };
 
@@ -114,29 +115,29 @@ import Cropper from 'cropperjs';
 
           // prettier-ignore
           var loading = '<div class="acf-image-aspect-ratio-crop-modal-loading">' +
-                          '<div class="acf-image-aspect-ratio-crop-modal-loading-icon">' +
-                          '<!-- Icon from https://github.com/google/material-design-icons -->' +
-                          '<!-- Licensed under Apache License 2.0 -->' +
-                          '<!-- Copyright (c) Google Inc. -->' +
-                          '<svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M7 2.64V1L4.75 3.18 7 5.36V3.73A3.33 3.33 0 0 1 10.38 7c0 .55-.15 1.07-.4 1.53l.82.8c.44-.68.7-1.47.7-2.33A4.43 4.43 0 0 0 7 2.64zm0 7.63A3.33 3.33 0 0 1 3.62 7c0-.55.15-1.07.4-1.53l-.82-.8c-.44.68-.7 1.47-.7 2.33A4.43 4.43 0 0 0 7 11.36V13l2.25-2.18L7 8.64v1.63z" fill="#FFF" fill-rule="nonzero"/></svg>' +
-                          '</div>' +
-                          '<div class="acf-image-aspect-ratio-crop-modal-loading-text">' +
-                          aiarc_translations.cropping_in_progress +
-                          '</div>' +
-                        '</div>';
+            '<div class="acf-image-aspect-ratio-crop-modal-loading-icon">' +
+            '<!-- Icon from https://github.com/google/material-design-icons -->' +
+            '<!-- Licensed under Apache License 2.0 -->' +
+            '<!-- Copyright (c) Google Inc. -->' +
+            '<svg width="14" height="14" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg"><path d="M7 2.64V1L4.75 3.18 7 5.36V3.73A3.33 3.33 0 0 1 10.38 7c0 .55-.15 1.07-.4 1.53l.82.8c.44-.68.7-1.47.7-2.33A4.43 4.43 0 0 0 7 2.64zm0 7.63A3.33 3.33 0 0 1 3.62 7c0-.55.15-1.07.4-1.53l-.82-.8c-.44.68-.7 1.47-.7 2.33A4.43 4.43 0 0 0 7 11.36V13l2.25-2.18L7 8.64v1.63z" fill="#FFF" fill-rule="nonzero"/></svg>' +
+            '</div>' +
+            '<div class="acf-image-aspect-ratio-crop-modal-loading-text">' +
+            aiarc_translations.cropping_in_progress +
+            '</div>' +
+            '</div>';
 
           // prettier-ignore
           var error = '<div class="acf-image-aspect-ratio-crop-modal-error">' +
-                        '<div class="acf-image-aspect-ratio-crop-modal-error-icon">' +
-                        '<!-- Icon from https://github.com/google/material-design-icons -->' +
-                        '<!-- Licensed under Apache License 2.0 -->' +
-                        '<!-- Copyright (c) Google Inc. -->' +
-                        '<svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><path d="M1 20.14h20l-10-17-10 17zm10.9-2.69h-1.8v-1.79h1.8v1.8zm0-3.58h-1.8V10.3h1.8v3.58z" fill="#F44336" fill-rule="nonzero"/></svg>' +
-                        '</div>' +
-                        '<div class="acf-image-aspect-ratio-crop-modal-error-text">' +
-                        aiarc_translations.cropping_failed +
-                        '</div>' +
-                      '</div>';
+            '<div class="acf-image-aspect-ratio-crop-modal-error-icon">' +
+            '<!-- Icon from https://github.com/google/material-design-icons -->' +
+            '<!-- Licensed under Apache License 2.0 -->' +
+            '<!-- Copyright (c) Google Inc. -->' +
+            '<svg width="22" height="22" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg"><path d="M1 20.14h20l-10-17-10 17zm10.9-2.69h-1.8v-1.79h1.8v1.8zm0-3.58h-1.8V10.3h1.8v3.58z" fill="#F44336" fill-rule="nonzero"/></svg>' +
+            '</div>' +
+            '<div class="acf-image-aspect-ratio-crop-modal-error-text">' +
+            aiarc_translations.cropping_failed +
+            '</div>' +
+            '</div>';
 
           $('.js-acf-image-aspect-ratio-crop-modal-footer-status').empty();
           $('.js-acf-image-aspect-ratio-crop-modal-footer-status').html(
@@ -400,6 +401,11 @@ import Cropper from 'cropperjs';
         button: acf._e('image', 'update'),
         mode: 'edit',
         attachment: val,
+
+        select: function(attachment, i) {
+          // render
+          self.set('$field', $field).render(attachment);
+        },
       });
     },
 
@@ -417,11 +423,24 @@ import Cropper from 'cropperjs';
      */
 
     remove: function() {
+      var vm = this;
       // vars
       var attachment = {};
-
-      // add file to field
-      this.render(attachment);
+      var fieldId = $(this.$field).data('key');
+      var imageId = $(this.$field)
+        .find('.acf-image-uploader-aspect-ratio-crop input')
+        .val();
+      wp.ajax.post('acf_image_aspect_ratio_delete', {
+        nonce: 123456,
+        id: imageId,
+        fieldId: fieldId
+      }).done(function (response) {
+        // console.log(response);
+        vm.render(attachment);
+      }).fail(function () {
+        console.log('Failed to delete image'); // Soft error, clear form even if it were unable to remove them.
+        vm.render(attachment);
+      })
     },
 
     /*
@@ -452,7 +471,7 @@ import Cropper from 'cropperjs';
       var aspectRatioHeight = $(field)
         .find('.acf-image-uploader-aspect-ratio-crop')
         .data('aspect_ratio_height');
-
+      var fieldId = $(field).data('key');
       var options = {
         aspectRatio: aspectRatioWidth / aspectRatioHeight,
         viewMode: 1,
@@ -464,26 +483,26 @@ import Cropper from 'cropperjs';
       // prettier-ignore
       $('body').append(
         '<div class="acf-image-aspect-ratio-crop-backdrop">' +
-          '<div class="acf-image-aspect-ratio-crop-modal-wrapper">' +
-            '<div class="acf-image-aspect-ratio-crop-modal js-acf-image-aspect-ratio-crop-modal">' +
-              '<div class="acf-image-aspect-ratio-crop-modal-heading">' +
-                '<div class="acf-image-aspect-ratio-crop-modal-heading-text">' + aiarc_translations.modal_title + '</div>' +
-                '<button class="acf-image-aspect-ratio-crop-modal-heading-close js-acf-image-aspect-ratio-crop-cancel" aria-label="Close">' +
-                '<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="#666" fill-rule="nonzero" d="M12.12 10l3.53 3.53-2.12 2.12L10 12.12l-3.54 3.54-2.12-2.12L7.88 10 4.34 6.46l2.12-2.12L10 7.88l3.54-3.53 2.12 2.12z"/></g></svg>' +
-              '</button>' +
-              '</div>' +
-              '<div class="acf-image-aspect-ratio-crop-modal-image-container">' +
-                '<img class="acf-image-aspect-ratio-crop-modal-image js-acf-image-aspect-ratio-crop-modal-image" src="' + url + '">' +
-              '</div>' +
-            '<div class="acf-image-aspect-ratio-crop-modal-footer">' +
-            '<div class="acf-image-aspect-ratio-crop-modal-footer-status js-acf-image-aspect-ratio-crop-modal-footer-status">' +
-            '</div>' +
-            '<div class="acf-image-aspect-ratio-crop-modal-footer-buttons">' +
-              '<button class="button js-acf-image-aspect-ratio-crop-cancel">' + aiarc_translations.cancel + '</button>' +
-              '<button class="button button-primary js-acf-image-aspect-ratio-crop-crop" data-id="' + id + '" data-aspect-ratio-height="' + aspectRatioHeight + '" data-aspect-ratio-width="' + aspectRatioWidth +'">' + aiarc_translations.crop + '</button>' +
-            '</div>' +
-            '</div>' +
-          '</div>' +
+        '<div class="acf-image-aspect-ratio-crop-modal-wrapper">' +
+        '<div class="acf-image-aspect-ratio-crop-modal js-acf-image-aspect-ratio-crop-modal">' +
+        '<div class="acf-image-aspect-ratio-crop-modal-heading">' +
+        '<div class="acf-image-aspect-ratio-crop-modal-heading-text">' + aiarc_translations.modal_title + '</div>' +
+        '<button class="acf-image-aspect-ratio-crop-modal-heading-close js-acf-image-aspect-ratio-crop-cancel" aria-label="Close">' +
+        '<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="#666" fill-rule="nonzero" d="M12.12 10l3.53 3.53-2.12 2.12L10 12.12l-3.54 3.54-2.12-2.12L7.88 10 4.34 6.46l2.12-2.12L10 7.88l3.54-3.53 2.12 2.12z"/></g></svg>' +
+        '</button>' +
+        '</div>' +
+        '<div class="acf-image-aspect-ratio-crop-modal-image-container">' +
+        '<img class="acf-image-aspect-ratio-crop-modal-image js-acf-image-aspect-ratio-crop-modal-image" src="' + url + '">' +
+        '</div>' +
+        '<div class="acf-image-aspect-ratio-crop-modal-footer">' +
+        '<div class="acf-image-aspect-ratio-crop-modal-footer-status js-acf-image-aspect-ratio-crop-modal-footer-status">' +
+        '</div>' +
+        '<div class="acf-image-aspect-ratio-crop-modal-footer-buttons">' +
+        '<button class="button js-acf-image-aspect-ratio-crop-cancel">' + aiarc_translations.cancel + '</button>' +
+        '<button class="button button-primary js-acf-image-aspect-ratio-crop-crop" data-field-id="' + fieldId + '" data-id="' + id + '" data-aspect-ratio-height="' + aspectRatioHeight + '" data-aspect-ratio-width="' + aspectRatioWidth +'">' + aiarc_translations.crop + '</button>' +
+        '</div>' +
+        '</div>' +
+        '</div>' +
         '</div>');
 
       this.cropper = new Cropper(

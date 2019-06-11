@@ -369,8 +369,8 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             ]); ?>
             <div class="show-if-value image-wrap"
                  <?php if ($size['width']): ?>style="<?php echo esc_attr(
-    'max-width: ' . $size['width'] . 'px'
-); ?>"<?php endif; ?>>
+                     'max-width: ' . $size['width'] . 'px'
+                 ); ?>"<?php endif; ?>>
                 <img data-name="image" src="<?php echo esc_url(
                     $url
                 ); ?>" alt="<?php echo esc_attr($alt); ?>"/>
@@ -378,13 +378,13 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                     <?php if (
                         $uploader != 'basic'
                     ): ?><a class="acf-icon -crop dark" data-name="crop" href="#"
-                             title="<?php _e('Crop', 'acf'); ?>"></a>
+                            title="<?php _e('Crop', 'acf'); ?>"></a>
                     <a class="acf-icon -pencil dark" data-name="edit" href="#"
                        title="<?php _e(
                            'Edit',
                            'acf'
                        ); ?>"></a><?php endif; ?><a class="acf-icon -cancel dark" data-name="remove" href="#"
-                         title="<?php _e('Remove', 'acf'); ?>"></a>
+                                                    title="<?php _e('Remove', 'acf'); ?>"></a>
                 </div>
             </div>
             <div class="hide-if-value">
@@ -395,8 +395,8 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                         !is_numeric($field['value'])
                     ): ?>
                         <div class="acf-error-message"><p><?php echo acf_esc_html(
-                            $field['value']
-                        ); ?></p></div>
+                                    $field['value']
+                                ); ?></p></div>
                     <?php endif; ?>
 
                     <label class="acf-basic-uploader">
@@ -409,13 +409,13 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                 <?php else: ?>
 
                     <p><?php _e(
-                        'No image selected',
-                        'acf'
-                    ); ?> <a data-name="add" class="acf-button button"
-                                                                   href="#"><?php _e(
-                                                                       'Add Image',
-                                                                       'acf'
-                                                                   ); ?></a></p>
+                            'No image selected',
+                            'acf'
+                        ); ?> <a data-name="add" class="acf-button button"
+                                 href="#"><?php _e(
+                                'Add Image',
+                                'acf'
+                            ); ?></a></p>
 
                 <?php endif; ?>
             </div>
