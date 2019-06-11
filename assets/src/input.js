@@ -96,7 +96,8 @@ import Cropper from 'cropperjs';
             'max-width',
             self.cropper.containerData.width,
           );
-          let fieldId = $(this).data('fieldId');
+          var fieldId = $(this).data('fieldId');
+          var metaId = $(this).data('metaId');
           var data = {
             action: 'acf_image_aspect_ratio_crop_crop',
             data: JSON.stringify({
@@ -107,7 +108,8 @@ import Cropper from 'cropperjs';
               y: cropData.y,
               width: cropData.width,
               height: cropData.height,
-              fieldId: fieldId
+              fieldId: fieldId,
+              metaId: metaId
             }),
           };
 
@@ -334,7 +336,6 @@ import Cropper from 'cropperjs';
           }
 
           self.isFirstCrop = true;
-
           // Add original id attribe to the image so we can recrop it right away without saving the post
           $field
             .find('.acf-image-uploader-aspect-ratio-crop')
@@ -472,6 +473,7 @@ import Cropper from 'cropperjs';
         .find('.acf-image-uploader-aspect-ratio-crop')
         .data('aspect_ratio_height');
       var fieldId = $(field).data('key');
+      var metaId = $(field).find('input[type="hidden"]').val();
       var options = {
         aspectRatio: aspectRatioWidth / aspectRatioHeight,
         viewMode: 1,
@@ -499,7 +501,7 @@ import Cropper from 'cropperjs';
         '</div>' +
         '<div class="acf-image-aspect-ratio-crop-modal-footer-buttons">' +
         '<button class="button js-acf-image-aspect-ratio-crop-cancel">' + aiarc_translations.cancel + '</button>' +
-        '<button class="button button-primary js-acf-image-aspect-ratio-crop-crop" data-field-id="' + fieldId + '" data-id="' + id + '" data-aspect-ratio-height="' + aspectRatioHeight + '" data-aspect-ratio-width="' + aspectRatioWidth +'">' + aiarc_translations.crop + '</button>' +
+        '<button class="button button-primary js-acf-image-aspect-ratio-crop-crop" data-meta-id="' + metaId + '" data-field-id="' + fieldId + '" data-id="' + id + '" data-aspect-ratio-height="' + aspectRatioHeight + '" data-aspect-ratio-width="' + aspectRatioWidth +'">' + aiarc_translations.crop + '</button>' +
         '</div>' +
         '</div>' +
         '</div>' +

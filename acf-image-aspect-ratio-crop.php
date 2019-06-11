@@ -82,6 +82,10 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
             $image_data = wp_get_attachment_metadata($data['id']);
 
+            $existing_crops = $this->crop_files_exists($data['metaId'], $data['fieldId']);
+            if (!empty($existing_crops)) {
+                $this->delete_crop_files($existing_crops, $data['fieldId']);
+            }
             // If the difference between the images is less than half a percentage, use the original image
             // prettier-ignore
             if ($image_data['height'] - $data['height'] < $image_data['height'] * 0.005 &&
@@ -256,16 +260,9 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
         add_action( 'wp_ajax_acf_image_aspect_ratio_delete', function () {
             $post       = array_map( 'stripslashes_deep', $_POST );
-            $media_dir  = wp_upload_dir();
             $post_id    = (int) $post['id'];
             $crop_files_meta = get_post_meta( $post_id, 'acf_image_aspect_ratio_crop_files', true );
-            if ( ! empty( $crop_files_meta ) && $crop_files_meta['fieldId'] === $post['fieldId'] ) {
-                foreach ( $crop_files_meta['files'] as $file_path ) {
-                    if ( !empty($file_path) ) {
-                        @unlink( $media_dir['basedir'] . $file_path );
-                    }
-                }
-            }
+            $this->delete_crop_files($crop_files_meta, $post['fieldId']);
         } );
 
         // Hide cropped images in media library grid view
@@ -300,19 +297,22 @@ class npx_acf_plugin_image_aspect_ratio_crop
             array_unshift($links, $settings_link);
             return $links;
         });
+    }
 
-        /**
-         * Not yet in use
-         * @param $post_id
-         */
-        function cleanup_deleted_crops( $post_id ) {
-            $new_values = $_POST['acf'];
-            // get old value
-            $value = get_field('acf-image-aspect-ratio-crop ');
-            // do something
+    function crop_files_exists( $post_id, $fieldId ) {
+        $crop_files_meta = get_post_meta( (int) $post_id, 'acf_image_aspect_ratio_crop_files', true );
+        return $crop_files_meta;
+    }
+
+    function delete_crop_files ($meta, $fieldId) {
+        $media_dir  = wp_upload_dir();
+        if ( ! empty( $meta ) && $meta['fieldId'] === $fieldId ) {
+            foreach ( $meta['files'] as $file_path ) {
+                if ( !empty($file_path) ) {
+                    @unlink( $media_dir['basedir'] . $file_path );
+                }
+            }
         }
-
-//        add_action('acf/save_post', 'cleanup_deleted_crops', 1);
     }
 
     /*
