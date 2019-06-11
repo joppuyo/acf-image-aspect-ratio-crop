@@ -321,9 +321,9 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         if ($field['value']) {
             // For migration compatibility with old acf-image-crop-renditions plugin.
             // Retrieves the image from that plugin which it has saved inside JSON encoded value.
-            $backwards_compatible_json = json_decode($field['value']);
-            if($backwards_compatible_json !== null && isset($backwards_compatible_json->original_image)) {
-                $field['value'] = $backwards_compatible_json->original_image;
+            $bw_compatible_json = json_decode($field['value']);
+            if($bw_compatible_json !== null && isset($bw_compatible_json->original_image)) {
+                $field['value'] = $bw_compatible_json->original_image;
             }
             // update vars
             $url = wp_get_attachment_image_src(
