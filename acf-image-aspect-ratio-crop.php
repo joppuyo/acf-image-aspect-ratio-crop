@@ -301,18 +301,18 @@ class npx_acf_plugin_image_aspect_ratio_crop
             return $links;
         });
 
+        /**
+         * Not yet in use
+         * @param $post_id
+         */
         function cleanup_deleted_crops( $post_id ) {
             $new_values = $_POST['acf'];
-
             // get old value
             $value = get_field('acf-image-aspect-ratio-crop ');
-
-
             // do something
-
         }
 
-        add_action('acf/save_post', 'cleanup_deleted_crops', 1);
+//        add_action('acf/save_post', 'cleanup_deleted_crops', 1);
     }
 
     /*
