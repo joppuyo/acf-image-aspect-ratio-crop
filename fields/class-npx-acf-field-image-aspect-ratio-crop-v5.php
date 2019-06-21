@@ -335,6 +335,14 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                 true
             );
 
+            $coordinates = get_post_meta(
+                $field['value'],
+                'acf_image_aspect_ratio_crop_coordinates',
+                true
+            );
+
+            $div['data-coordinates'] = $coordinates;
+
             // url exists
             if ($url) {
                 $url = $url[0];

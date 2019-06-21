@@ -461,6 +461,14 @@ import Cropper from 'cropperjs';
         checkCrossOrigin: false,
       };
 
+      let coordinates = $(field)
+        .find('.acf-image-uploader-aspect-ratio-crop')
+        .data('coordinates');
+
+      if (coordinates) {
+        options.data = coordinates;
+      }
+
       // prettier-ignore
       $('body').append(
         '<div class="acf-image-aspect-ratio-crop-backdrop">' +

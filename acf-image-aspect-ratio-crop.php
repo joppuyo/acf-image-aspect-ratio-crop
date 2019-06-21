@@ -224,6 +224,17 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 $data['id'],
                 true
             );
+            add_post_meta(
+                $attachment_id,
+                'acf_image_aspect_ratio_crop_coordinates',
+                [
+                    'x' => $data['x'],
+                    'y' => $data['y'],
+                    'width' => $data['width'],
+                    'height' => $data['height']
+                ],
+                true
+            );
 
             $this->cleanup();
             wp_send_json(['id' => $attachment_id]);
