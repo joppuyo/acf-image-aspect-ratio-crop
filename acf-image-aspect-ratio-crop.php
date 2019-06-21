@@ -241,6 +241,34 @@ class npx_acf_plugin_image_aspect_ratio_crop
             wp_die();
         });
 
+        // Enable Media Replace compat: if file is replaced using Enable Media Replace, wipe the coordinate data
+        add_filter('wp_handle_upload', function ($data) {
+            $id = attachment_url_to_postid($data['url']);
+            if ($id !== 0) {
+                $posts = get_posts([
+                    'post_type' => 'attachment',
+                    'posts_per_page' => -1,
+                    'meta_query' => [
+                        [
+                            'key'     => 'acf_image_aspect_ratio_crop_original_image_id',
+                            'value'   => $id,
+                            'compare' => '=',
+                        ],
+                        [
+                            'key'     => 'acf_image_aspect_ratio_crop_coordinates',
+                            'compare' => 'EXISTS',
+                        ],
+                    ],
+                ]);
+                if (!empty($posts)) {
+                    foreach ($posts as $post) {
+                        delete_post_meta($post->ID, 'acf_image_aspect_ratio_crop_coordinates');
+                    }
+                }
+            }
+            return $data;
+        });
+
         // Hide cropped images in media library grid view
         add_filter('ajax_query_attachments_args', function ($args) {
             // post__in is only defined when clicking edit button in attachment
