@@ -508,6 +508,12 @@ import Cropper from 'cropperjs';
     },
 
     cropComplete: function(data) {
+      // Save coordinates so they are remembered even without saving the post first
+      $(field)
+        .find('.acf-image-uploader-aspect-ratio-crop')
+        .data('coordinates', this.cropper.getData())
+        .attr('data-coordinates', this.cropper.getData());
+
       // Cropping successful, change image to cropped version
       this.cropper.destroy();
 
