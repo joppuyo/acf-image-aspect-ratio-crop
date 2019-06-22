@@ -324,3 +324,24 @@ html[dir='rtl'] .acf-image-uploader-aspect-ratio-crop .image-wrap {
         opacity: 1;
     }
 }
+
+.acf-image-aspect-ratio-crop-modal-footer-buttons .button-link {
+    text-decoration: none;
+}
+
+.wp-core-ui .button.acf-image-aspect-ratio-crop-reset {
+    display: inline-flex;
+    align-items: center;
+    &:disabled {
+        background: transparent !important;
+    }
+    &:disabled svg {
+        fill: #a0a5aa;
+    }
+}
+
+.acf-image-aspect-ratio-crop-reset svg {
+    width: 16px;
+    margin-right: 8px;
+    fill: #0073aa;
+}
