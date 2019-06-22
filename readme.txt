@@ -61,6 +61,11 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 
 == Changelog ==
 
+= 2.1.0 =
+* Feature: Cropper now remembers last crop position when re-cropping image
+* Feature: Add button to reset crop position to default (centered)
+* Fix: Bump supported WordPress version to 5.2
+
 = 2.0.3 =
 * Fix: Allow cropping in cases when image is hosted remotely and is missing CORS headers
 
