@@ -88,6 +88,12 @@ import Cropper from 'cropperjs';
       );
 
       $(document)
+        .off('click', '.js-acf-image-aspect-ratio-crop-reset')
+        .on('click', '.js-acf-image-aspect-ratio-crop-reset', () => {
+          this.cropper.reset();
+        });
+
+      $(document)
         .off('click', '.js-acf-image-aspect-ratio-crop-crop')
         .on('click', '.js-acf-image-aspect-ratio-crop-crop', function() {
           var cropData = self.cropper.getData(true);
@@ -487,6 +493,7 @@ import Cropper from 'cropperjs';
             '<div class="acf-image-aspect-ratio-crop-modal-footer-status js-acf-image-aspect-ratio-crop-modal-footer-status">' +
             '</div>' +
             '<div class="acf-image-aspect-ratio-crop-modal-footer-buttons">' +
+              '<button class="button button-link js-acf-image-aspect-ratio-crop-reset">' + aiarc_translations.reset + '</button>' +
               '<button class="button js-acf-image-aspect-ratio-crop-cancel">' + aiarc_translations.cancel + '</button>' +
               '<button class="button button-primary js-acf-image-aspect-ratio-crop-crop" data-id="' + id + '" data-aspect-ratio-height="' + aspectRatioHeight + '" data-aspect-ratio-width="' + aspectRatioWidth +'">' + aiarc_translations.crop + '</button>' +
             '</div>' +

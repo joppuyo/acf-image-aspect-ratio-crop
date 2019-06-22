@@ -462,6 +462,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'crop' => __('Crop', 'acf-image-aspect-ratio-crop'),
             'cancel' => __('Cancel', 'acf-image-aspect-ratio-crop'),
             'modal_title' => __('Crop image', 'acf-image-aspect-ratio-crop'),
+            'reset' => __('Reset crop', 'acf-image-aspect-ratio-crop'),
         ];
         $settings_array = [
             'modal_type' => $this->settings['user_settings']['modal_type'],
