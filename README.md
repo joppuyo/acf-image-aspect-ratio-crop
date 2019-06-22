@@ -23,6 +23,10 @@ The cropped image variants are hidden by default in the media browser and on the
 
 ![Screenshot of the image field](assets/images/screenshot-3.png?v=1552838494)
 
+## Download
+
+You can download the plugin from the [WordPress plugin directory](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/), or download the latest release as a zip file from [GitHub releases](https://github.com/joppuyo/acf-image-aspect-ratio-crop/releases).
+
 ## Frequently Asked Questions
 
 ### Can I access metadata in the original image from a cropped image? 
