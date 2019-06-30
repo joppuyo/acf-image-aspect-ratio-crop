@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/joppuyo/acf-image-aspect-ratio-crop.svg?branch=master)](https://travis-ci.org/joppuyo/acf-image-aspect-ratio-crop)
 [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/acf-image-aspect-ratio-crop.svg)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/)
 [![Active installs](https://img.shields.io/wordpress/plugin/installs/acf-image-aspect-ratio-crop.svg?style=flat)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/advanced/)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjoppuyo%2Facf-image-aspect-ratio-crop.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjoppuyo%2Facf-image-aspect-ratio-crop?ref=badge_shield)
 
 A field for Advanced Custom Fields that forces the user to crop their image to specific aspect ratio after uploading. This is especially useful in responsive image use cases.
 
@@ -48,3 +49,6 @@ Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/anders
 ## License
 
 GPL v2 or later
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fjoppuyo%2Facf-image-aspect-ratio-crop.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fjoppuyo%2Facf-image-aspect-ratio-crop?ref=badge_large)
