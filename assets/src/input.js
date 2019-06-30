@@ -113,6 +113,7 @@ import Cropper from 'cropperjs';
               y: cropData.y,
               width: cropData.width,
               height: cropData.height,
+              temp_post_id: aiarc.temp_post_id,
             }),
           };
 

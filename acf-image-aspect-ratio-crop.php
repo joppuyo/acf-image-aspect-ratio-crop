@@ -74,6 +74,59 @@ class npx_acf_plugin_image_aspect_ratio_crop
             'include_field_types',
         ]); // v5
 
+        add_action('acf/save_post', function ($post_id) {
+
+            error_log(print_r('post_id', true));
+            error_log(print_r($post_id, true));
+
+            $temp_post_id = $_POST['aiarc_temp_post_id'];
+
+            // Bail early if we don't have data to process
+            if (empty($temp_post_id)) {
+                return;
+            }
+            
+            // Let's find all posts with temp post id
+            $temp_attachments = get_posts([
+                'post_type' => 'attachment',
+                'posts_per_page' => -1,
+                'meta_query' => [
+                    [
+                        'key' => 'acf_image_aspect_ratio_crop_temp_post_id',
+                        'value' => $temp_post_id,
+                        'compare' => '=',
+                    ],
+                ],
+            ]);
+
+            foreach ($temp_attachments as $attachment) {
+                // Attach parent post id to temporary attachments
+                update_post_meta($attachment->ID, 'acf_image_aspect_ratio_crop_parent_post_id', $post_id);
+                // Remove temporary data
+                delete_post_meta($attachment->ID, 'acf_image_aspect_ratio_crop_temp_post_id');
+                delete_post_meta($attachment->ID, 'acf_image_aspect_ratio_crop_timestamp');
+            }
+
+            $post_attachments = get_posts([
+                'post_type' => 'attachment',
+                'posts_per_page' => -1,
+                'meta_query' => [
+                    [
+                        'key' => 'acf_image_aspect_ratio_crop_post_id',
+                        'value' => $post_id,
+                        'compare' => '=',
+                    ],
+                ],
+            ]);
+
+            // Find crop field names
+            // Compare crop field names to post input
+            // Delete unused posts
+
+            error_log(print_r('found following temp attachments', true));
+            error_log(print_r($temp_attachments, true));
+        }, 15);
+
         add_action('wp_ajax_acf_image_aspect_ratio_crop_crop', function () {
             // WTF WordPress
             $post = array_map('stripslashes_deep', $_POST);
@@ -233,6 +286,21 @@ class npx_acf_plugin_image_aspect_ratio_crop
                     'width' => $data['width'],
                     'height' => $data['height']
                 ],
+                true
+            );
+
+            /* Timestamp so we can purge unattached crop attachments periodically after specific time
+               (like a week or so) */
+            add_post_meta(
+                $attachment_id,
+                'acf_image_aspect_ratio_crop_timestamp',
+                (new DateTime())->format('U'),
+                true
+            );
+            add_post_meta(
+                $attachment_id,
+                'acf_image_aspect_ratio_crop_temp_post_id',
+                $data['temp_post_id'],
                 true
             );
 
