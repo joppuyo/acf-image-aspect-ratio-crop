@@ -85,7 +85,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
             if (empty($temp_post_id)) {
                 return;
             }
-            
+
             // Let's find all posts with temp post id
             $temp_attachments = get_posts([
                 'post_type' => 'attachment',
@@ -112,7 +112,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 'posts_per_page' => -1,
                 'meta_query' => [
                     [
-                        'key' => 'acf_image_aspect_ratio_crop_post_id',
+                        'key' => 'acf_image_aspect_ratio_crop_parent_post_id',
                         'value' => $post_id,
                         'compare' => '=',
                     ],
@@ -123,8 +123,34 @@ class npx_acf_plugin_image_aspect_ratio_crop
             // Compare crop field names to post input
             // Delete unused posts
 
-            error_log(print_r('found following temp attachments', true));
-            error_log(print_r($temp_attachments, true));
+            error_log(print_r('found following post attachments', true));
+            error_log(print_r($post_attachments, true));
+
+            error_log(print_r('found following fields', true));
+            $fields = $_POST['acf'];
+            error_log(print_r($fields, true));
+
+            $preserve_ids = [];
+
+            foreach ($fields as $key => $field) {
+                $definition = get_field_object($key);
+                if (!empty($field) && $definition['type'] === 'image_aspect_ratio_crop') {
+                    array_push($preserve_ids, $field);
+                }
+            }
+
+            $post_attachment_ids = array_map(function ($attachment){
+                return $attachment->ID;
+            }, $post_attachments);
+
+            $delete_ids = array_diff($post_attachment_ids, $preserve_ids);
+
+            error_log(print_r($delete_ids, true));
+
+
+            foreach ($delete_ids as $delete_id) {
+                wp_delete_attachment($delete_id, true);
+            }
         }, 15);
 
         add_action('wp_ajax_acf_image_aspect_ratio_crop_crop', function () {
