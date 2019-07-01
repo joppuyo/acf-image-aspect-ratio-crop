@@ -426,6 +426,14 @@ import Cropper from 'cropperjs';
      */
 
     remove: function() {
+      // Remove all data attributes from the previous image
+      this.$field
+        .find('.acf-image-uploader-aspect-ratio-crop')
+        .data('original-image-id', null)
+        .attr('data-original-image-id', null)
+        .data('coordinates', null)
+        .attr('data-coordinates', null);
+
       // vars
       var attachment = {};
 
