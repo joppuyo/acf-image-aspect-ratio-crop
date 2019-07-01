@@ -520,7 +520,7 @@ import Cropper from 'cropperjs';
       $(field)
         .find('.acf-image-uploader-aspect-ratio-crop')
         .data('coordinates', this.cropper.getData())
-        .attr('data-coordinates', this.cropper.getData());
+        .attr('data-coordinates', JSON.stringify(this.cropper.getData()));
 
       // Cropping successful, change image to cropped version
       this.cropper.destroy();
