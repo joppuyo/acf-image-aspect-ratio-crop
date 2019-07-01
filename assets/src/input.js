@@ -343,7 +343,7 @@ import Cropper from 'cropperjs';
 
           self.isFirstCrop = true;
 
-          // Add original id attribe to the image so we can recrop it right away without saving the post
+          // Add original id attribute to the image so we can recrop it right away without saving the post
           $field
             .find('.acf-image-uploader-aspect-ratio-crop')
             .data('original-image-id', attachment.id)
