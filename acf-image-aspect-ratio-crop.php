@@ -402,6 +402,12 @@ class npx_acf_plugin_image_aspect_ratio_crop
             array_unshift($links, $settings_link);
             return $links;
         });
+
+        if (!wp_next_scheduled('aiarc_delete_unused_attachments')) {
+            wp_schedule_event(time(), 'daily', 'aiarc_delete_unused_attachments');
+        }
+
+        add_action('aiarc_delete_unused_attachments', [$this, 'delete_unused_attachments']);
     }
 
     /*
@@ -503,6 +509,30 @@ class npx_acf_plugin_image_aspect_ratio_crop
         if ($this->temp_path) {
             @unlink($this->temp_path);
         }
+    }
+
+    public function delete_unused_attachments () {
+
+        $timestamp = (new DateTime())
+            ->modify('-7 days')
+            ->format('U');
+
+        $posts = get_posts([
+            'post_type' => 'attachment',
+            'meta_query' => [
+                [
+                    'key' => 'acf_image_aspect_ratio_crop_timestamp',
+                    'compare' => '<',
+                    'value' => $timestamp,
+                    'type' => 'numeric',
+                ],
+            ],
+        ]);
+
+        foreach ($posts as $post) {
+            wp_delete_attachment($post->ID);
+        }
+        
     }
 }
 
