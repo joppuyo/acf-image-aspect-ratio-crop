@@ -78,6 +78,13 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
             error_log(print_r('post_id', true));
             error_log(print_r($post_id, true));
+            error_log(print_r('POST', true));
+            error_log(print_r($_POST, true));
+
+            if ($post_id === 'options' && !empty($_GET['page'])) {
+                // Options page needs an unique id
+                $post_id = $_GET['page'];
+            }
 
             $temp_post_id = $_POST['aiarc_temp_post_id'];
 
