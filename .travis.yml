@@ -8,7 +8,7 @@ script:
   - composer install
 before_deploy:
   - mkdir -p acf-image-aspect-ratio-crop
-  - cp -r *.php *.md readme.txt assets fields vendor acf-image-aspect-ratio-crop
+  - cp -r *.php *.md readme.txt assets fields vendor composer.json composer.lock acf-image-aspect-ratio-crop
   - zip -r acf-image-aspect-ratio-crop.zip acf-image-aspect-ratio-crop
 deploy:
   - provider: releases
