@@ -61,6 +61,9 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 
 == Changelog ==
 
+= 2.1.1 =
+* Fix: Fix issue where crop coordinates persisted after deleting image
+
 = 2.1.0 =
 * Feature: Cropper now remembers last crop position when re-cropping image
 * Feature: Add button to reset crop position to default (centered)
