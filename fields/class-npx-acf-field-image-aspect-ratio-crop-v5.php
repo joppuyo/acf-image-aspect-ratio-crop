@@ -55,7 +55,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 
         $this->defaults = [
             'return_format' => 'array',
-            'preview_size' => 'thumbnail',
+            'preview_size' => 'medium',
             'library' => 'all',
             'min_width' => 0,
             'min_height' => 0,
