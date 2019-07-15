@@ -9,6 +9,7 @@ class WPFirstCest
     // tests
     public function activateAcf(AcceptanceTester $I)
     {
+        $I->cleanUploadsDir();
         $I->loginAsAdmin();
         $I->amOnPluginsPage();
         $I->activatePlugin('advanced-custom-fields-pro');

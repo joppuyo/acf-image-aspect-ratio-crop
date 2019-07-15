@@ -11,6 +11,7 @@ modules:
         - WPDb
         - WPWebDriver
         - \Helper\Acceptance
+        - WPFilesystem
     config:
         WPDb:
             dsn: 'mysql:host=%TEST_SITE_DB_HOST%;dbname=%TEST_SITE_DB_NAME%'
@@ -38,3 +39,5 @@ modules:
             host: '10.0.2.2'
             port: 9515
             browser: chrome
+        WPFilesystem:
+            wpRootFolder: "%WP_ROOT_FOLDER%"
