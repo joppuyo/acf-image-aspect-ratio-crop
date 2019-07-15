@@ -15,5 +15,9 @@
     },
     "require-dev": {
         "lucatume/wp-browser": "^2.2"
+    },
+    "scripts": {
+        "test-host": "chromedriver --whitelisted-ips='' --url-base=/wd/hub",
+        "test": "vendor/bin/codecept run acceptance"
     }
 }
