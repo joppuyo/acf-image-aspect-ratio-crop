@@ -522,6 +522,9 @@ import Cropper from 'cropperjs';
         $('.js-acf-image-aspect-ratio-crop-modal-image')[0],
         options,
       );
+
+      // Test helper
+      window._acf_image_aspect_ratio_cropper = this.cropper;
     },
 
     cropComplete: function(data) {
