@@ -61,6 +61,11 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 
 == Changelog ==
 
+= 2.2.0 =
+* Feature: Add compatibility with ACF Image Crop plugin
+* Fix: Change default preview size to medium, as in ACF 5.8.1
+* Fix: Remove image CSS shadow to match latest ACF image field styles
+
 = 2.1.1 =
 * Fix: Fix issue where crop coordinates persisted after deleting image
 
