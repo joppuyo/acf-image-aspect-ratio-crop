@@ -54,7 +54,7 @@ class WPFirstCest
         $I->click('Add Image');
         $I->executeInSelenium(function(\Facebook\WebDriver\Remote\RemoteWebDriver $webDriver)
         {
-            $webDriver->findElement(WebDriverBy::cssSelector('.moxie-shim input'))->sendKeys('/Users/joppuyo/Downloads/zoltan-kovacs-285132-unsplash.jpg');
+            $webDriver->findElement(WebDriverBy::cssSelector('.moxie-shim input'))->sendKeys(env('TEST_FILE_PATH'));
         });
         $I->waitForElementClickable('div.media-toolbar-primary.search-form > button', 10); // secs
         $I->click('div.media-toolbar-primary.search-form > button');
