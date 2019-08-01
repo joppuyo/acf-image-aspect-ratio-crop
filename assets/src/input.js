@@ -343,7 +343,7 @@ import Cropper from 'cropperjs';
 
           self.isFirstCrop = true;
 
-          // Add original id attribe to the image so we can recrop it right away without saving the post
+          // Add original id attribute to the image so we can recrop it right away without saving the post
           $field
             .find('.acf-image-uploader-aspect-ratio-crop')
             .data('original-image-id', attachment.id)
@@ -426,6 +426,14 @@ import Cropper from 'cropperjs';
      */
 
     remove: function() {
+      // Remove all data attributes from the previous image
+      this.$field
+        .find('.acf-image-uploader-aspect-ratio-crop')
+        .data('original-image-id', null)
+        .attr('data-original-image-id', null)
+        .data('coordinates', null)
+        .attr('data-coordinates', null);
+
       // vars
       var attachment = {};
 
@@ -520,7 +528,7 @@ import Cropper from 'cropperjs';
       $(field)
         .find('.acf-image-uploader-aspect-ratio-crop')
         .data('coordinates', this.cropper.getData())
-        .attr('data-coordinates', this.cropper.getData());
+        .attr('data-coordinates', JSON.stringify(this.cropper.getData()));
 
       // Cropping successful, change image to cropped version
       this.cropper.destroy();
