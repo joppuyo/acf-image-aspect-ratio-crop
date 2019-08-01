@@ -236,10 +236,29 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 true
             );
 
+            // WPML compat
+            do_action('wpml_sync_all_custom_fields', $attachment_id);
+
             $this->cleanup();
             wp_send_json(['id' => $attachment_id]);
             wp_die();
         });
+
+        // WPML compat
+        add_action('wpml_media_create_duplicate_attachment', function($attachment_id, $duplicate_attachment_id) {
+            $keys = [
+                'acf_image_aspect_ratio_crop',
+                'acf_image_aspect_ratio_crop_original_image_id',
+                'acf_image_aspect_ratio_crop_coordinates'
+            ];
+            foreach ($keys as $key) {
+                $value = get_post_meta($attachment_id, $key, true);
+                if ($value) {
+                    update_post_meta($duplicate_attachment_id, $key, $value);
+                }
+            }
+        }, 25, 2);
+
 
         // Enable Media Replace compat: if file is replaced using Enable Media Replace, wipe the coordinate data
         add_filter('wp_handle_upload', function ($data) {
