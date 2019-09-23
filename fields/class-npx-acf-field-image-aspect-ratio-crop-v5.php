@@ -796,16 +796,16 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             return wp_get_attachment_url($image_id);
         } elseif ($field['return_format'] == 'array') {
             $output = acf_get_attachment($image_id);
-            $output['original_image'] = null;
-
-            // TODO: use singular
-            $original = get_post_meta(
-                $image_id,
-                'acf_image_aspect_ratio_crop_original_image_id'
-            );
-
-            if (count($original)) {
-                $output['original_image'] = acf_get_attachment($original[0]);
+            if ($output) {
+                $output['original_image'] = null;
+                // TODO: use singular
+                $original = get_post_meta(
+                    $image_id,
+                    'acf_image_aspect_ratio_crop_original_image_id'
+                );
+                if (count($original)) {
+                    $output['original_image'] = acf_get_attachment($original[0]);
+                }
             }
 
             return $output;
