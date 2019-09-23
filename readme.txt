@@ -61,6 +61,9 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 
 == Changelog ==
 
+= 3.0.0 =
+* Fix / Breaking change: If image was deleted, object with empty original_image field was returned. In 3.0.0 false is returned instead to keep compatibility with normal image field.
+
 = 2.2.1 =
 * Fix: Improve WPML compatibility
 
