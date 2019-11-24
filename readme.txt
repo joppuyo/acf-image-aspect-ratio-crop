@@ -2,7 +2,7 @@
 Contributors: joppuyo
 Tags: acf, field, image, crop
 Requires at least: 4.9
-Tested up to: 5.2
+Tested up to: 5.3
 Requires PHP: 5.5
 Stable tag: trunk
 License: GPLv2 or later
@@ -60,6 +60,12 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 3. Option to re-crop the image after upload
 
 == Changelog ==
+
+= 3.1.0 =
+* Feature: Add new beta feature: delete unused crop images. You can enable this by going to
+  Plugins -> ACF Image Aspect Ratio Crop -> Settings
+* Fix: Update compatible version to WordPress 5.3
+* Fix: Add automated tests
 
 = 3.0.1 =
 * Fix: bump plugin version
