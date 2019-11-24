@@ -1,3 +1,4 @@
 /node_modules
 /assets/dist
 /vendor
+/.env.testing

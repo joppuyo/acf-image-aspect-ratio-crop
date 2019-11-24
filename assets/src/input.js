@@ -113,6 +113,7 @@ import Cropper from 'cropperjs';
               y: cropData.y,
               width: cropData.width,
               height: cropData.height,
+              temp_post_id: aiarc.temp_post_id,
             }),
           };
 
@@ -521,6 +522,9 @@ import Cropper from 'cropperjs';
         $('.js-acf-image-aspect-ratio-crop-modal-image')[0],
         options,
       );
+
+      // Test helper
+      window._acf_image_aspect_ratio_cropper = this.cropper;
     },
 
     cropComplete: function(data) {

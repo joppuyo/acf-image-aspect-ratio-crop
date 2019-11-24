@@ -13,6 +13,9 @@ if (!defined('ABSPATH')) {
 
 class npx_acf_field_image_aspect_ratio_crop extends acf_field
 {
+    /** @var string */
+    public $temp_post_id;
+
     /*
      *  __construct
      *
@@ -73,6 +76,15 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'uploadedTo' => __('Uploaded to this post', 'acf'),
             'all' => __('All images', 'acf'),
         ];
+
+        // We need to generate temporary id for the post because we don't have id when creating new post
+        // Also options pages, taxonomies etc have ACF generated special post id that we don't know before save hook
+        $this->temp_post_id = Ramsey\Uuid\Uuid::uuid4()->toString();
+
+        // Store temporary post id in a hidden field
+        add_action('acf/input/form_data', function () {
+            echo "<input type='hidden' name='aiarc_temp_post_id' value='$this->temp_post_id'>";
+        }, 10, 1);
 
         // filters
         add_filter('get_media_item_args', [$this, 'get_media_item_args']);
@@ -379,7 +391,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 
             // url exists
             if ($url) {
-                $url = $url[0];
+                $url = $url[0] . md5(get_the_date($image_id));
             }
 
             if ($original) {
@@ -475,6 +487,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 
     function input_admin_enqueue_scripts()
     {
+        global $post;
         $url = $this->settings['url'];
         $version = $this->settings['version'];
 
@@ -501,6 +514,10 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         $settings_array = [
             'modal_type' => $this->settings['user_settings']['modal_type'],
         ];
+
+        $data_array = [
+            'temp_post_id' => $this->temp_post_id,
+        ];
         wp_localize_script(
             'acf-image-aspect-ratio-crop',
             'aiarc_settings',
@@ -510,6 +527,11 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'acf-image-aspect-ratio-crop',
             'aiarc_translations',
             $translation_array
+        );
+        wp_localize_script(
+            'acf-image-aspect-ratio-crop',
+            'aiarc',
+            $data_array
         );
 
         wp_enqueue_script('acf-image-aspect-ratio-crop');

@@ -12,5 +12,15 @@
     "require": {
         "guzzlehttp/guzzle": "^6.3",
         "ramsey/uuid": "v3.5.2"
+    },
+    "require-dev": {
+        "lucatume/wp-browser": "^2.2"
+    },
+    "scripts": {
+        "test-host": "chromedriver --whitelisted-ips='' --url-base=/wd/hub",
+        "test": "vendor/bin/codecept run acceptance"
+    },
+    "config": {
+        "process-timeout": 0
     }
 }

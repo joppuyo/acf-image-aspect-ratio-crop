@@ -74,6 +74,101 @@ class npx_acf_plugin_image_aspect_ratio_crop
             'include_field_types',
         ]); // v5
 
+        add_action('acf/save_post', function ($post_id) {
+
+            $this->debug('post_id');
+            $this->debug($post_id);
+            $this->debug('POST');
+            $this->debug($_POST);
+
+            if ($post_id === 'options' && !empty($_GET['page'])) {
+                // Options page needs an unique id
+                $post_id = $_GET['page'];
+            }
+
+            $temp_post_id = $_POST['aiarc_temp_post_id'];
+
+            // Bail early if we don't have data to process
+            if (empty($temp_post_id)) {
+                return;
+            }
+
+            // Let's find all posts with temp post id
+            $temp_attachments = get_posts([
+                'post_type' => 'attachment',
+                'posts_per_page' => -1,
+                'meta_query' => [
+                    [
+                        'key' => 'acf_image_aspect_ratio_crop_temp_post_id',
+                        'value' => $temp_post_id,
+                        'compare' => '=',
+                    ],
+                ],
+            ]);
+
+            foreach ($temp_attachments as $attachment) {
+                // Attach parent post id to temporary attachments
+                update_post_meta($attachment->ID, 'acf_image_aspect_ratio_crop_parent_post_id', $post_id);
+                // Remove temporary data
+                delete_post_meta($attachment->ID, 'acf_image_aspect_ratio_crop_temp_post_id');
+                delete_post_meta($attachment->ID, 'acf_image_aspect_ratio_crop_timestamp');
+            }
+
+            // Bail early if unused attachment deletion is disabled
+            if (!$this->user_settings['delete_unused']) {
+                return;
+            }
+
+            $post_attachments = get_posts([
+                'post_type' => 'attachment',
+                'posts_per_page' => -1,
+                'meta_query' => [
+                    [
+                        'key' => 'acf_image_aspect_ratio_crop_parent_post_id',
+                        'value' => $post_id,
+                        'compare' => '=',
+                    ],
+                ],
+            ]);
+
+            // Find crop field names
+            // Compare crop field names to post input
+            // Delete unused posts
+
+            $this->debug('found following post attachments');
+            $this->debug($post_attachments);
+
+            $this->debug('found following fields');
+            $fields = $_POST['acf'];
+            $this->debug($fields);
+
+            $preserve_ids = [];
+
+            foreach ($fields as $key => $field) {
+                $definition = get_field_object($key);
+                if (!empty($field) && $definition['type'] === 'image_aspect_ratio_crop') {
+                    array_push($preserve_ids, $field);
+                }
+            }
+
+            $post_attachment_ids = array_map(function ($attachment){
+                return $attachment->ID;
+            }, $post_attachments);
+
+            $delete_ids = array_diff($post_attachment_ids, $preserve_ids);
+
+            $this->debug('preserve ids');
+            $this->debug($preserve_ids);
+            $this->debug('all ids');
+            $this->debug($post_attachment_ids);
+            $this->debug('delete ids');
+            $this->debug($delete_ids);
+
+            foreach ($delete_ids as $delete_id) {
+                wp_delete_attachment($delete_id, true);
+            }
+        }, 15);
+
         add_action('wp_ajax_acf_image_aspect_ratio_crop_crop', function () {
             // WTF WordPress
             $post = array_map('stripslashes_deep', $_POST);
@@ -236,6 +331,28 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 true
             );
 
+            /* Timestamp so we can purge unattached crop attachments periodically after specific time
+               (like a week or so) */
+            add_post_meta(
+                $attachment_id,
+                'acf_image_aspect_ratio_crop_timestamp',
+                (new DateTime())->format('U'),
+                true
+            );
+
+            $this->debug('data');
+            $this->debug($data);
+
+            $this->debug('temp post id');
+            $this->debug($data['temp_post_id']);
+
+            add_post_meta(
+                $attachment_id,
+                'acf_image_aspect_ratio_crop_temp_post_id',
+                $data['temp_post_id'],
+                true
+            );
+
             // WPML compat
             do_action('wpml_sync_all_custom_fields', $attachment_id);
 
@@ -320,6 +437,12 @@ class npx_acf_plugin_image_aspect_ratio_crop
             array_unshift($links, $settings_link);
             return $links;
         });
+
+        if (!wp_next_scheduled('aiarc_delete_unused_attachments')) {
+            wp_schedule_event(time(), 'daily', 'aiarc_delete_unused_attachments');
+        }
+
+        add_action('aiarc_delete_unused_attachments', [$this, 'delete_unused_attachments']);
     }
 
     /*
@@ -355,10 +478,15 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 $settings['modal_type'] = $_POST['modal_type'];
             }
 
+            if (!empty($_POST['delete_unused'])) {
+                $settings['delete_unused'] = filter_var($_POST['delete_unused'], FILTER_VALIDATE_BOOLEAN);
+            }
+
             update_option("acf-image-aspect-ratio-crop-settings", $settings);
             $updated = true;
         }
         $modal_type = $settings['modal_type'];
+        $delete_unused = $settings['delete_unused'];
         echo '<div class="wrap">';
         echo '    <h1>' . __('ACF Image Aspect Ratio Crop', 'acf-image-aspect-ratio-crop') . '</h1>';
         echo '    <div class="js-finnish-base-forms-admin-notices"></div>';
@@ -379,8 +507,18 @@ class npx_acf_plugin_image_aspect_ratio_crop
         echo '                <p><input type="radio" id="original" name="modal_type" value="original" ' . checked($modal_type, 'original', false) . '><label for="original"> ' .  __('Original image', "acf-image-aspect-ratio-crop") . '</label></p>';
         echo '                </td>';
         echo '            </tr>';
+        echo '            <tr>';
+        echo '                <th scope="row">';
+        echo '                    <label for="modal_type">' . __('Delete unused cropped images', "acf-image-aspect-ratio-crop") . ' ' . __('(Beta feature)', "acf-image-aspect-ratio-crop") . '</label>';
+        echo '                </th>';
+        echo '                <td>';
+        echo '                <p><input type="radio" id="delete_unused_true" name="delete_unused" value="true" ' . checked($delete_unused, true, false) . '><label for="delete_unused_true"> ' . __('Enabled', "acf-image-aspect-ratio-crop") . '</label></p>';
+        echo '                <p><input type="radio" id="delete_unused_false" name="delete_unused" value="false" ' . checked($delete_unused, false, false) . '><label for="delete_unused_false"> ' .  __('Disabled', "acf-image-aspect-ratio-crop") . '</label></p>';
+        echo '                </td>';
+        echo '            </tr>';
         echo '        </tbody>';
         echo '    </table>';
+        echo '    <p>'. __('Please note that "Delete unused cropped images" feature is a beta feature because it requires more testing. Please do not enable the option without first backing up your database and uploads in order to prevent potential data loss.', 'acf-image-aspect-ratio-crop') . '</p>';
         echo '    <p class="submit">';
         echo '        <input class="button-primary js-finnish-base-forms-submit-button" type="submit" name="submit-button" value="Save">';
         echo '    </p>';
@@ -408,6 +546,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
         $default_user_settings = [
             'modal_type' => 'cropped',
+            'delete_unused' => false,
         ];
 
         $this->user_settings = array_merge($default_user_settings, $settings);
@@ -420,6 +559,46 @@ class npx_acf_plugin_image_aspect_ratio_crop
     private function cleanup() {
         if ($this->temp_path) {
             @unlink($this->temp_path);
+        }
+    }
+
+    public function delete_unused_attachments () {
+
+        $this->debug('delete unused attachments cron');
+
+        // Bail early if unused attachment deletion is disabled
+        if (!$this->user_settings['delete_unused']) {
+            $this->debug('user has disabled unused attachment deletion');
+            return;
+        }
+
+        $timestamp = (new DateTime())
+            ->modify('-7 days')
+            ->format('U');
+
+        $posts = get_posts([
+            'post_type' => 'attachment',
+            'meta_query' => [
+                [
+                    'key' => 'acf_image_aspect_ratio_crop_timestamp',
+                    'compare' => '<',
+                    'value' => $timestamp,
+                    'type' => 'numeric',
+                ],
+            ],
+        ]);
+
+        foreach ($posts as $post) {
+            $this->debug('deleting unused attachment ' . $post->ID);
+            wp_delete_attachment($post->ID, true);
+        }
+
+    }
+
+    function debug($message)
+    {
+        if (defined('WP_DEBUG') && WP_DEBUG === true) {
+            error_log(print_r($message, true));
         }
     }
 }
