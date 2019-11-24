@@ -1,6 +1,6 @@
 # ACF Image Aspect Ratio Crop Field
 
-[![Build Status](https://travis-ci.org/joppuyo/acf-image-aspect-ratio-crop.svg?branch=master)](https://travis-ci.org/joppuyo/acf-image-aspect-ratio-crop)
+[![Build Status](https://img.shields.io/endpoint.svg?url=https%3A%2F%2Factions-badge.atrox.dev%2Fjoppuyo%2Facf-image-aspect-ratio-crop%2Fbadge&style=flat)](https://actions-badge.atrox.dev/joppuyo/acf-image-aspect-ratio-crop/goto)
 [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/acf-image-aspect-ratio-crop.svg)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/)
 [![Active installs](https://img.shields.io/wordpress/plugin/installs/acf-image-aspect-ratio-crop.svg?style=flat)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/advanced/)
 
