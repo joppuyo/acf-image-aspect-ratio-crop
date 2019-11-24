@@ -32,7 +32,7 @@ jobs:
 
     - name: Release
       run: |
-        rm -fr .github node_modules .travis.yml .editorconfig .gitignore .prettierrc.js deploy.sh deploy-github.sh tests
+        rm -fr .github node_modules .travis.yml .editorconfig .gitignore .prettierrc.js deploy.sh deploy-github.sh tests codeception.dist.yml
         zip -r acf-image-aspect-ratio-crop.zip . -x *.git*
       
     - uses: actions/upload-artifact@master
