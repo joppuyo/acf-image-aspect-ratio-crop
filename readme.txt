@@ -61,6 +61,9 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 
 == Changelog ==
 
+= 3.1.1 =
+* Deployment fix
+
 = 3.1.0 =
 * Feature: Add new beta feature: delete unused crop images. You can enable this by going to
   Plugins -> ACF Image Aspect Ratio Crop -> Settings

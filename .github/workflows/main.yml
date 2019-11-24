@@ -72,6 +72,8 @@ jobs:
       uses: 10up/action-wordpress-plugin-deploy@1.4.0
       env:
         SLUG: acf-image-aspect-ratio-crop
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
         
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
