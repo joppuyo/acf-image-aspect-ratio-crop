@@ -61,7 +61,7 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 
 == Changelog ==
 
-= 3.1.5 =
+= 3.1.6 =
 * Deployment fix
 
 = 3.1.0 =
