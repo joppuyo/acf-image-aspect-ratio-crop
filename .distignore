@@ -1,1 +1,1 @@
-.github node_modules .travis.yml .editorconfig .gitignore .prettierrc.js deploy.sh deploy-github.sh tests .git .distignore .wordpress-org
+.github node_modules .travis.yml .editorconfig .gitignore .prettierrc.js deploy.sh deploy-github.sh tests .git .distignore .wordpress-org codeception.dist.yml
