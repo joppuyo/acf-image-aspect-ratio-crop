@@ -24,8 +24,8 @@ jobs:
             
     - name: Release
       run: |
-        rm -fr .github .git node_modules .travis.yml .editorconfig .gitignore .prettierrc.js deploy.sh deploy-github.sh tests
-        zip -r acf-image-aspect-ratio-crop.zip .
+        rm -fr .github node_modules .travis.yml .editorconfig .gitignore .prettierrc.js deploy.sh deploy-github.sh tests
+        zip -r acf-image-aspect-ratio-crop.zip . -x *.git*
       
     - uses: actions/upload-artifact@master
       with:
@@ -57,7 +57,7 @@ jobs:
         git rm -rf .
         git clean -fxd
         cd ..
-        rsync -av --progress acf-image-aspect-ratio-crop/ acf-image-aspect-ratio-crop-packagist-release/ --exclude vendor/
+        rsync -av --progress acf-image-aspect-ratio-crop/ acf-image-aspect-ratio-crop-packagist-release/ --exclude vendor/ --exclude .git/
         git config --global user.email "johannes@siipo.la"
         git config --global user.name "Johannes Siipola"
         cd acf-image-aspect-ratio-crop-packagist-release
