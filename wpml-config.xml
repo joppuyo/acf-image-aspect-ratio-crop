@@ -1,0 +1,7 @@
+<wpml-config>
+    <custom-fields>
+        <custom-field action="copy">acf_image_aspect_ratio_crop</custom-field>
+        <custom-field action="copy">acf_image_aspect_ratio_crop_original_image_id</custom-field>
+        <custom-field action="copy">acf_image_aspect_ratio_crop_coordinates</custom-field>
+    </custom-fields>
+</wpml-config>
