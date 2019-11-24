@@ -48,13 +48,13 @@ jobs:
       if: startsWith(github.ref, 'refs/tags/')
       run: rm acf-image-aspect-ratio-crop.zip
 
-    - name: WordPress Plugin Deploy
-      if: startsWith(github.ref, 'refs/tags/')
-      uses: 10up/action-wordpress-plugin-deploy@1.4.0
-      env:
-        SLUG: acf-image-aspect-ratio-crop
-        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
-        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+#    - name: WordPress Plugin Deploy
+#      if: startsWith(github.ref, 'refs/tags/')
+#      uses: 10up/action-wordpress-plugin-deploy@1.4.0
+#      env:
+#        SLUG: acf-image-aspect-ratio-crop
+#        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+#        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
 
     - name: Commit files
       if: startsWith(github.ref, 'refs/tags/')
