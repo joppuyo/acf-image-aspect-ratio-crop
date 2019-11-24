@@ -1,0 +1,80 @@
+name: PHP Composer
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-16.04
+
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate
+
+    - name: Install dependencies
+      run: composer install --prefer-dist --no-progress --no-suggest --no-dev
+      
+    - name: Install dependencies
+      run: npm install
+
+    - name: Build
+      run: npx webpack -p
+            
+    - name: Release
+      run: |
+        rm -fr .github .git node_modules .travis.yml .editorconfig .gitignore .prettierrc.js deploy.sh deploy-github.sh tests
+        zip -r acf-image-aspect-ratio-crop.zip .
+      
+    - uses: actions/upload-artifact@master
+      with:
+        name: acf-image-aspect-ratio-crop.zip
+        path: acf-image-aspect-ratio-crop.zip
+      
+    - name: Get the version
+      id: get_version
+      run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      
+    - name: Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: acf-image-aspect-ratio-crop.zip
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - name: Remove zip
+      if: startsWith(github.ref, 'refs/tags/')
+      run: rm acf-image-aspect-ratio-crop.zip
+        
+    - name: Commit files
+      if: startsWith(github.ref, 'refs/tags/')
+      run: |
+        cd ..        
+        git clone https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/joppuyo/acf-image-aspect-ratio-crop-packagist-release
+        cd acf-image-aspect-ratio-crop-packagist-release
+        git rm -rf .
+        git clean -fxd
+        cd ..
+        rsync -av --progress acf-image-aspect-ratio-crop/ acf-image-aspect-ratio-crop-packagist-release/ --exclude vendor/
+        git config --global user.email "johannes@siipo.la"
+        git config --global user.name "Johannes Siipola"
+        cd acf-image-aspect-ratio-crop-packagist-release
+        git add -A -f
+        git commit -m "Release ${{ steps.get_version.outputs.VERSION }}"
+        git tag "${{ steps.get_version.outputs.VERSION }}"
+        git push
+        git push --tags
+        
+    - name: WordPress Plugin Deploy
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: 10up/action-wordpress-plugin-deploy@1.4.0
+      env:
+        SLUG: acf-image-aspect-ratio-crop
+        
+    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
+    # Docs: https://getcomposer.org/doc/articles/scripts.md
+
+    # - name: Run test suite
+    #   run: composer run-script test
