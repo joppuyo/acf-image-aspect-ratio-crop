@@ -82,8 +82,14 @@ class WPFirstCest
         $I->moveMouseOver('.acf-field.acf-field-image-aspect-ratio-crop div img');
         $I->click('.acf-icon.-pencil.dark');
         $I->waitForJqueryAjax();
-        $I->waitForElementVisible('label[data-setting="url"] input');
-        $filename = $I->grabValueFrom('label[data-setting="url"] input');
+        // This changed in WP 5.3
+        try {
+            $I->waitForElementVisible('#attachment-details-copy-link');
+            $filename = $I->grabValueFrom('#attachment-details-copy-link');
+        } catch (Exception $exception) {
+            $I->waitForElementVisible('label[data-setting="url"] input');
+            $filename = $I->grabValueFrom('label[data-setting="url"] input');
+        }
         // Image path is sometimes thumbnail???
         $filename = str_replace('-300x169', '', $filename);
 
