@@ -61,6 +61,9 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 
 == Changelog ==
 
+= 3.1.9 =
+* Fix issue where image was not visible in backed due to malformed URL
+
 = 3.1.8 =
 * Deployment fix
 
