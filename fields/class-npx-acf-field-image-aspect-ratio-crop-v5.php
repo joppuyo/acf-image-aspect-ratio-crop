@@ -391,7 +391,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 
             // url exists
             if ($url) {
-                $url = $url[0] . md5(get_the_date($image_id));
+                $url = $url[0] . '?v=' . md5(get_the_date($image_id));
             }
 
             if ($original) {
