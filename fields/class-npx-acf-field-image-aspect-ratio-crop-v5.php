@@ -79,7 +79,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 
         // We need to generate temporary id for the post because we don't have id when creating new post
         // Also options pages, taxonomies etc have ACF generated special post id that we don't know before save hook
-        $this->temp_post_id = Ramsey\Uuid\Uuid::uuid4()->toString();
+        $this->temp_post_id = wp_generate_uuid4();
 
         // Store temporary post id in a hidden field
         add_action('acf/input/form_data', function () {

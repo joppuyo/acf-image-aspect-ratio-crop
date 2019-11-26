@@ -13,9 +13,6 @@ Text Domain: acf-image-aspect-ratio-crop
 Stable Tag: 3.1.10
 */
 
-
-use Ramsey\Uuid\Uuid;
-
 // exit if accessed directly
 if (!defined('ABSPATH')) {
     exit();
@@ -206,7 +203,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 $image = wp_get_image_editor($file);
             } else {
                 // Let's attempt to get the file by URL
-                $temp_name = Uuid::uuid4()->toString();
+                $temp_name = wp_generate_uuid4();
                 $temp_directory = get_temp_dir();
                 $this->temp_path = $temp_directory . $temp_name;
                 try {
