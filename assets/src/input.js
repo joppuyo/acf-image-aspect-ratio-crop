@@ -73,18 +73,12 @@ import Cropper from 'cropperjs';
         this.$el.closest('form').attr('enctype', 'multipart/form-data');
       }
 
+      this.escapeHandlerBound = this.escapeHandler.bind(this);
+
       $(document).on(
         'click',
         '.js-acf-image-aspect-ratio-crop-cancel',
-        function() {
-          if (self.isFirstCrop) {
-            // If it's the first time cropping an image, we don't want to
-            // leave the incorrect aspect ratio image in the field
-            acf.val(self.$input, '');
-            self.render({});
-          }
-          self.closeModal();
-        },
+        () => this.closeModal(),
       );
 
       $(document)
@@ -459,10 +453,18 @@ import Cropper from 'cropperjs';
       acf.fields.file.get_file_info(e.$el, this.$input);
     },
 
+    escapeHandler: function(event) {
+      if (event.key === 'Escape') {
+        this.closeModal();
+      }
+    },
+
     openModal: function(data) {
       var url = data.attachment.attributes.url;
       var id = data.attachment.attributes.id;
       field = data.field;
+
+      document.addEventListener('keydown', this.escapeHandlerBound);
 
       var aspectRatioWidth = $(field)
         .find('.acf-image-uploader-aspect-ratio-crop')
@@ -554,7 +556,15 @@ import Cropper from 'cropperjs';
     },
 
     closeModal: function() {
+      if (this.isFirstCrop) {
+        // If it's the first time cropping an image, we don't want to
+        // leave the incorrect aspect ratio image in the field
+        acf.val(this.$input, '');
+        this.render({});
+      }
       $('.acf-image-aspect-ratio-crop-backdrop').remove();
+      document.removeEventListener('keydown', this.escapeHandlerBound);
+      this.cropper.destroy();
     },
   });
 
