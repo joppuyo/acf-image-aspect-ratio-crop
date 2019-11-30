@@ -44,7 +44,7 @@ jobs:
         TEST_SITE_DB_USER: exampleuser
         TEST_SITE_DB_PASSWORD: examplepass
         TEST_SITE_TABLE_PREFIX: wp_
-        TEST_SITE_WP_URL: http://localhost:80
+        TEST_SITE_WP_URL: http://localhost
         TEST_SITE_WP_DOMAIN: localhost
         TEST_SITE_ADMIN_EMAIL: example@example.com
         TEST_SITE_ADMIN_USERNAME: admin
