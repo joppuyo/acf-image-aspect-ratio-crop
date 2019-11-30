@@ -28,6 +28,11 @@ jobs:
     - name: Check running containers
       run: docker ps -a
 
+    - name: Sleep
+      uses: jakejarvis/wait-action@master
+      with:
+        time: '10s'
+
     - name: Run test suite
       run: docker exec -w /var/www/html/wp-content/plugins/acf-image-aspect-ratio-crop -e WP_ROOT_FOLDER -e TEST_SITE_WP_ADMIN_PATH -e TEST_SITE_DB_NAME -e TEST_SITE_DB_HOST -e TEST_SITE_DB_USER -e TEST_SITE_DB_PASSWORD -e TEST_SITE_DB_PASSWORD -e TEST_SITE_TABLE_PREFIX -e TEST_SITE_WP_URL -e TEST_SITE_WP_DOMAIN -e TEST_SITE_ADMIN_EMAIL -e TEST_SITE_ADMIN_USERNAME -e TEST_SITE_ADMIN_PASSWORD -e ACF_ZIP_URL -e CHROMEDRIVER_HOST -e CHROMEDRIVER_PORT acf-image-aspect-ratio-crop_wordpress_1 ./vendor/bin/codecept run acceptance --fail-fast --debug
       env:
