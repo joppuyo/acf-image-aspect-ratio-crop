@@ -55,7 +55,7 @@ jobs:
         TEST_SITE_ADMIN_USERNAME: admin
         TEST_SITE_ADMIN_PASSWORD: admin
         ACF_ZIP_URL: ${{ secrets.ACF_ZIP_URL }}
-        CHROMEDRIVER_HOST: host.docker.internal
+        CHROMEDRIVER_HOST: localhost
         CHROMEDRIVER_PORT: 9515
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
