@@ -11,6 +11,7 @@ class WPFirstCest
     {
         $I->cleanUploadsDir();
         $I->cli(['core', 'update-db']);
+        $I->cli(['plugin', 'install', getenv('ACF_ZIP_URL'), '--force']);
         $I->loginAsAdmin();
         $I->amOnPluginsPage();
         $I->activatePlugin('advanced-custom-fields-pro');
@@ -40,7 +41,7 @@ class WPFirstCest
         $I->click('#acf-field-group-fields > div > div > ul.acf-hl.acf-tfoot > li > a');
         $I->fillField("Field Label", "Crop Image");
         $I->selectOption('Field Type', 'Image Aspect Ratio Crop');
-        $I->wait(1);
+        $I->waitForText("Aspect Ratio Width");
         $I->fillField("Aspect Ratio Width", "16");
         $I->fillField("Aspect Ratio Height", "9");
         $I->scrollTo('#submitdiv');
@@ -55,7 +56,7 @@ class WPFirstCest
         $I->fillField("#post-title-0", "Test Post");
         $I->click('Add Image');
         $I->attachFile('.moxie-shim input', 'zoltan-kovacs-285132-unsplash.jpg');
-        $I->waitForElementClickable('div.media-toolbar-primary.search-form > button', 10); // secs
+        $I->waitForElementClickable('div.media-toolbar-primary.search-form > button', 20); // secs
         $I->click('div.media-toolbar-primary.search-form > button');
         $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 10);
         $I->waitForElementVisible('.cropper-crop-box', 10);
@@ -118,6 +119,7 @@ class WPFirstCest
             'sylwia-pietruszka-nPCiBaK8WPk-unsplash.jpg',
             version_compare($wp_version, '5.3', 'ge') ? 'cropped-2-scaled.jpg' : 'cropped-2.jpg'
         );
+        $I->wait(10);
         $I->amOnAdminPage('upload.php?mode=list');
 
         $extra = version_compare($wp_version, '5.3', 'ge') ? '-scaled' : '';
@@ -144,6 +146,7 @@ class WPFirstCest
             'jonas-morgner-sNoWQv4ts3I-unsplash.jpg',
             version_compare($wp_version, '5.3', 'ge') ? 'cropped-3-scaled.jpg' : 'cropped-3.jpg'
         );
+        $I->wait(10);
         $I->amOnAdminPage('upload.php?mode=list');
 
         $extra = version_compare($wp_version, '5.3', 'ge') ? '-scaled' : '';
