@@ -10,6 +10,7 @@ class WPFirstCest
     public function activateAcf(AcceptanceTester $I)
     {
         $I->cleanUploadsDir();
+        $I->cli(['core', 'update-db']);
         $I->loginAsAdmin();
         $I->amOnPluginsPage();
         $I->activatePlugin('advanced-custom-fields-pro');
@@ -71,10 +72,11 @@ class WPFirstCest
 
     public function checkImage(AcceptanceTester $I)
     {
+        global $wp_version;
         $I->loadSessionSnapshot('login');
         $I->amOnAdminPage('edit.php');
         $I->click('Test Post');
-        $this->verifyImage($I, 'cropped-scaled.jpg');
+        $this->verifyImage($I, version_compare($wp_version, '5.3', 'ge') ? 'cropped-scaled.jpg' : 'cropped.jpg');
     }
 
     private function verifyImage(AcceptanceTester $I, $comparison_image)

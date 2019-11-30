@@ -12,6 +12,8 @@ modules:
         - WPWebDriver
         - \Helper\Acceptance
         - WPFilesystem
+        - WPCLI
+        - WPLoader
     config:
         WPDb:
             dsn: 'mysql:host=%TEST_SITE_DB_HOST%;dbname=%TEST_SITE_DB_NAME%'
@@ -41,3 +43,16 @@ modules:
             browser: chrome
         WPFilesystem:
             wpRootFolder: "%WP_ROOT_FOLDER%"
+        WPCLI:
+            path: "%WP_ROOT_FOLDER%"
+            allow-root: true
+        WPLoader:
+            wpRootFolder: "%WP_ROOT_FOLDER%"
+            dbName: "%TEST_SITE_DB_NAME%"
+            dbHost: "%TEST_SITE_DB_HOST%"
+            dbUser: "%TEST_SITE_DB_USER%"
+            dbPassword: "%TEST_SITE_DB_PASSWORD%"
+            tablePrefix: "%TEST_SITE_TABLE_PREFIX%"
+            domain: "%TEST_SITE_WP_DOMAIN%"
+            adminEmail: "%TEST_SITE_ADMIN_EMAIL%"
+            title: "Test site"
