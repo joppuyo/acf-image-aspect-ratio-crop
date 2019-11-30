@@ -25,6 +25,9 @@ jobs:
     - name: Setup docker
       run: docker-compose up -d
 
+    - name: Create config file
+      run: touch .env.testing
+
     - name: Check running containers
       run: docker ps -a
 
