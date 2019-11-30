@@ -8,11 +8,24 @@ services:
     ports:
       - 80:80
     environment:
-      APACHE_RUN_USER: "#33"
-      WORDPRESS_DB_HOST: db
-      WORDPRESS_DB_USER: exampleuser
-      WORDPRESS_DB_PASSWORD: examplepass
-      WORDPRESS_DB_NAME: exampledb
+      - APACHE_RUN_USER="#33"
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_USER=exampleuser
+      - WORDPRESS_DB_PASSWORD=examplepass
+      - WORDPRESS_DB_NAME=exampledb
+      - WP_ROOT_FOLDER
+      - TEST_SITE_WP_ADMIN_PATH
+      - TEST_SITE_DB_NAME
+      - TEST_SITE_DB_HOST
+      - TEST_SITE_DB_USER
+      - TEST_SITE_DB_PASSWORD
+      - TEST_SITE_TABLE_PREFIX
+      - TEST_SITE_WP_URL
+      - TEST_SITE_WP_DOMAIN
+      - TEST_SITE_ADMIN_EMAIL
+      - TEST_SITE_ADMIN_USERNAME
+      - TEST_SITE_ADMIN_PASSWORD
+      - ACF_ZIP_URL
     volumes:
       - wordpress:/var/www/html
       - ./wp-content:/var/www/html/wp-content
