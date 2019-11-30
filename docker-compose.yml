@@ -6,7 +6,9 @@ services:
     build: .
     restart: always
     ports:
+    network_mode: "host"
       - 80:80
+      - 9515:9515
     environment:
       - APACHE_RUN_USER="#33"
       - WORDPRESS_DB_HOST=db
