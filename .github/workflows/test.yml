@@ -31,16 +31,11 @@ jobs:
     - name: Create config file
       run: touch .env.testing
 
-    - name: Sleep
-      uses: jakejarvis/wait-action@master
-      with:
-        time: '30s'
-
     - name: Check running containers
       run: docker ps -a
 
     - name: Run test suite
-      run: npx chromedriver --whitelisted-ips='' --url-base=/wd/hub & docker exec -w /var/www/html/wp-content/plugins/acf-image-aspect-ratio-crop -e WP_ROOT_FOLDER -e TEST_SITE_WP_ADMIN_PATH -e TEST_SITE_DB_NAME -e TEST_SITE_DB_HOST -e TEST_SITE_DB_USER -e TEST_SITE_DB_PASSWORD -e TEST_SITE_DB_PASSWORD -e TEST_SITE_TABLE_PREFIX -e TEST_SITE_WP_URL -e TEST_SITE_WP_DOMAIN -e TEST_SITE_ADMIN_EMAIL -e TEST_SITE_ADMIN_USERNAME -e TEST_SITE_ADMIN_PASSWORD -e ACF_ZIP_URL -e CHROMEDRIVER_HOST=$(/sbin/ip route|awk '/default/ { print $3 }') -e CHROMEDRIVER_PORT acf-image-aspect-ratio-crop_wordpress_1 ./vendor/bin/codecept run acceptance --fail-fast --debug
+      run: npx wait-on http://wordpress/wp-login.php --verbose && docker exec -w /var/www/html/wp-content/plugins/acf-image-aspect-ratio-crop -e WP_ROOT_FOLDER -e TEST_SITE_WP_ADMIN_PATH -e TEST_SITE_DB_NAME -e TEST_SITE_DB_HOST -e TEST_SITE_DB_USER -e TEST_SITE_DB_PASSWORD -e TEST_SITE_DB_PASSWORD -e TEST_SITE_TABLE_PREFIX -e TEST_SITE_WP_URL -e TEST_SITE_WP_DOMAIN -e TEST_SITE_ADMIN_EMAIL -e TEST_SITE_ADMIN_USERNAME -e TEST_SITE_ADMIN_PASSWORD -e ACF_ZIP_URL -e CHROMEDRIVER_HOST -e CHROMEDRIVER_PORT acf-image-aspect-ratio-crop_wordpress_1 ./vendor/bin/codecept run acceptance --fail-fast --debug
       env:
         WP_ROOT_FOLDER: /var/www/html
         TEST_SITE_WP_ADMIN_PATH: /wp-admin
@@ -55,6 +50,7 @@ jobs:
         TEST_SITE_ADMIN_USERNAME: admin
         TEST_SITE_ADMIN_PASSWORD: admin
         ACF_ZIP_URL: ${{ secrets.ACF_ZIP_URL }}
+        CHROMEDRIVER_HOST: chromedriver
         CHROMEDRIVER_PORT: 9515
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
