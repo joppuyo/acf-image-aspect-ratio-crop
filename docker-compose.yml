@@ -50,6 +50,7 @@ services:
     expose:
       - "9515"
     privileged: true
+    shm_size: 1G
 
 volumes:
   wordpress:
