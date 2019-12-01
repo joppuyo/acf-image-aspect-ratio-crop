@@ -56,7 +56,7 @@ class WPFirstCest
         $I->fillField("#post-title-0", "Test Post");
         $I->click('Add Image');
         $I->attachFile('.moxie-shim input', 'zoltan-kovacs-285132-unsplash.jpg');
-        $I->waitForElementClickable('div.media-toolbar-primary.search-form > button', 20); // secs
+        $I->waitForElementClickable('div.media-toolbar-primary.search-form > button', 30); // secs
         $I->click('div.media-toolbar-primary.search-form > button');
         $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 10);
         $I->waitForElementVisible('.cropper-crop-box', 10);
