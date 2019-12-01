@@ -54,6 +54,7 @@ jobs:
         CHROMEDRIVER_PORT: 9515
 
     - name: Upload artifact
+      if: failure()
       uses: actions/upload-artifact@v1.0.0
       with:
         # Artifact name
