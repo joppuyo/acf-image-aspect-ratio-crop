@@ -53,6 +53,14 @@ jobs:
         CHROMEDRIVER_HOST: chromedriver
         CHROMEDRIVER_PORT: 9515
 
+    - name: Upload artifact
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        # Artifact name
+        name: Test output
+        # Directory containing files to upload
+        path: tests/_output/
+
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
 
