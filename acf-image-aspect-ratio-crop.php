@@ -65,6 +65,16 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
         add_action('plugins_loaded', [$this, 'initialize_settings']);
 
+        // Disable Crop thumbnails for the new image that created after the cropping with the plugin
+        add_filter('intermediate_image_sizes_advanced', function ($sizes, $metadata, $id){
+        
+            if( isset($_POST['action']) && !empty($_POST['action']) && $_POST['action'] == 'acf_image_aspect_ratio_crop_crop' ) {
+                return false;
+            }
+        
+            return $sizes;
+        }, 99, 3);
+
         // include field
         add_action('acf/include_field_types', [
             $this,
