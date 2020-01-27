@@ -623,6 +623,8 @@ class npx_acf_plugin_image_aspect_ratio_crop
             $data['width'],
             $data['height']
         );
+    }
+
     public function check_field($fields, &$preserve_ids) {
 
         $this->debug($preserve_ids);
