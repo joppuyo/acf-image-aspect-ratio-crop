@@ -141,7 +141,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
             $preserve_ids = [];
 
-            $this->check_field($fields, $preserve_ids);
+            $this->check_fields($fields, $preserve_ids);
 
             $post_attachment_ids = array_map(function ($attachment){
                 return $attachment->ID;
@@ -625,14 +625,14 @@ class npx_acf_plugin_image_aspect_ratio_crop
         );
     }
 
-    public function check_field($fields, &$preserve_ids) {
+    public function check_fields($fields, &$preserve_ids) {
 
         $this->debug($preserve_ids);
 
         foreach ($fields as $key => $field) {
 
             if(is_array($field)) {
-                $this->check_field($field, $preserve_ids);
+                $this->check_fields($field, $preserve_ids);
             }
 
             preg_match_all('/field_[a-z0-9]+/', $key, $matches);
