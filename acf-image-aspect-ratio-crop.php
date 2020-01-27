@@ -635,6 +635,9 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 $this->check_fields($field, $preserve_ids);
             }
 
+            // This is kinda of a hack but nested fields are named like field_59416ac78945f_field_59217cf6eb710 in the
+            // POST request and we are only interested in the last parts so we just use a regex here to chop off the
+            // last part
             preg_match_all('/field_[a-z0-9]+/', $key, $matches);
 
             if (!empty($matches[0])) {
