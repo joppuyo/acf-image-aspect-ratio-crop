@@ -1,0 +1,57 @@
+version: '3.1'
+
+services:
+
+  wordpress:
+    build: .
+    restart: always
+    ports:
+      - 80:80
+    environment:
+      - APACHE_RUN_USER="#33"
+      - WORDPRESS_DB_HOST=db
+      - WORDPRESS_DB_USER=exampleuser
+      - WORDPRESS_DB_PASSWORD=examplepass
+      - WORDPRESS_DB_NAME=exampledb
+      - WP_ROOT_FOLDER
+      - TEST_SITE_WP_ADMIN_PATH
+      - TEST_SITE_DB_NAME
+      - TEST_SITE_DB_HOST
+      - TEST_SITE_DB_USER
+      - TEST_SITE_DB_PASSWORD
+      - TEST_SITE_TABLE_PREFIX
+      - TEST_SITE_WP_URL
+      - TEST_SITE_WP_DOMAIN
+      - TEST_SITE_ADMIN_EMAIL
+      - TEST_SITE_ADMIN_USERNAME
+      - TEST_SITE_ADMIN_PASSWORD
+      - ACF_ZIP_URL
+    volumes:
+      - wordpress:/var/www/html
+      - ./wp-content:/var/www/html/wp-content
+      - ./:/var/www/html/wp-content/plugins/acf-image-aspect-ratio-crop
+
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: exampledb
+      MYSQL_USER: exampleuser
+      MYSQL_PASSWORD: examplepass
+      MYSQL_RANDOM_ROOT_PASSWORD: '1'
+    volumes:
+      - db:/var/lib/mysql
+  chromedriver:
+    image: robcherry/docker-chromedriver
+    environment:
+      CHROMEDRIVER_PORT: 9515
+      CHROMEDRIVER_WHITELISTED_IPS: ""
+      CHROMEDRIVER_URL_BASE: /wd/hub
+    expose:
+      - "9515"
+    privileged: true
+    shm_size: 1G
+
+volumes:
+  wordpress:
+  db:

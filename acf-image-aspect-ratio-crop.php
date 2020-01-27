@@ -191,8 +191,33 @@ class npx_acf_plugin_image_aspect_ratio_crop
             $backup_file = implode('.', $parts) . '.bak.' . $extension;
 
             $image = null;
+            $scaled_data = null;
+            if (
+                file_exists($file) &&
+                function_exists('wp_get_original_image_path') &&
+                wp_get_original_image_path($data['id']) &&
+                wp_get_original_image_path($data['id']) !== $file
+            ) {
+                // Handle the new asinine feature in WP 5.3 which resizes images without asking the user. We want the
+                // original image so we do original_image -> crop instead or original_image -> resized_image -> crop
+                $resized_image = wp_get_image_editor($file);
+                $image = wp_get_image_editor(wp_get_original_image_path($data['id']));
+                $resized_width = $resized_image->get_size()['width'];
+                $original_width = $image->get_size()['width'];
 
-            if (file_exists($backup_file)) {
+                // Get the scale
+                $scale = $original_width / $resized_width;
+
+                // Clone data array
+                $scaled_data = $data;
+
+                // Scale crop coordinates to fit larger image
+                $scaled_data['x'] = floor($data['x'] * $scale);
+                $scaled_data['y'] = floor($data['y'] * $scale);
+                $scaled_data['width'] = floor($data['width'] * $scale);
+                $scaled_data['height'] =  floor($data['height'] * $scale);
+
+            } else if (file_exists($backup_file)) {
                 $image = wp_get_image_editor($backup_file);
             } else if (file_exists($file)) {
                 $image = wp_get_image_editor($file);
@@ -222,12 +247,8 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 wp_die();
             }
 
-            $image->crop(
-                $data['x'],
-                $data['y'],
-                $data['width'],
-                $data['height']
-            );
+            // Use scaled coordinates if we have those
+            $this->crop($image, $scaled_data ? $scaled_data : $data);
 
             // Retrieve original filename and seperate it from its file extension
             $original_file_name = explode(
@@ -594,6 +615,14 @@ class npx_acf_plugin_image_aspect_ratio_crop
         }
     }
 
+    private function crop(WP_Image_Editor $image, $data)
+    {
+        $image->crop(
+            $data['x'],
+            $data['y'],
+            $data['width'],
+            $data['height']
+        );
     public function check_field($fields, &$preserve_ids) {
 
         $this->debug($preserve_ids);
