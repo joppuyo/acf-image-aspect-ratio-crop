@@ -104,7 +104,7 @@ class WPFirstCest
         $url = implode('/', $url);
 
         codecept_debug($filename);
-        PHPUnit_Framework_Assert::assertContains('-aspect-ratio-16x9', $url);
+        PHPUnit_Framework_Assert::assertContains('-aspect-ratio-16-9', $url);
         PHPUnit_Framework_Assert::assertEquals(
             json_encode(getimagesize(__DIR__ . "../../_data/$comparison_image")),
             json_encode(getimagesize($url))
@@ -125,9 +125,9 @@ class WPFirstCest
         $extra = version_compare($wp_version, '5.3', 'ge') ? '-scaled' : '';
 
         $I->see("zoltan-kovacs-285132-unsplash$extra.jpg");
-        $I->see("zoltan-kovacs-285132-unsplash$extra-aspect-ratio-16x9$extra.jpg");
+        $I->see("zoltan-kovacs-285132-unsplash$extra-aspect-ratio-16-9$extra.jpg");
         $I->see("sylwia-pietruszka-nPCiBaK8WPk-unsplash$extra.jpg");
-        $I->see("sylwia-pietruszka-nPCiBaK8WPk-unsplash$extra-aspect-ratio-16x9$extra.jpg");
+        $I->see("sylwia-pietruszka-nPCiBaK8WPk-unsplash$extra-aspect-ratio-16-9$extra.jpg");
     }
 
     public function enableUnusedImageDeletion(AcceptanceTester $I) {
@@ -152,11 +152,11 @@ class WPFirstCest
         $extra = version_compare($wp_version, '5.3', 'ge') ? '-scaled' : '';
 
         $I->see("jonas-morgner-sNoWQv4ts3I-unsplash$extra.jpg");
-        $I->see("jonas-morgner-sNoWQv4ts3I-unsplash$extra-aspect-ratio-16x9$extra.jpg");
+        $I->see("jonas-morgner-sNoWQv4ts3I-unsplash$extra-aspect-ratio-16-9$extra.jpg");
         $I->see("zoltan-kovacs-285132-unsplash$extra.jpg");
-        $I->dontSee("zoltan-kovacs-285132-unsplash$extra-aspect-ratio-16x9$extra.jpg");
+        $I->dontSee("zoltan-kovacs-285132-unsplash$extra-aspect-ratio-16-9$extra.jpg");
         $I->see("sylwia-pietruszka-nPCiBaK8WPk-unsplash$extra.jpg");
-        $I->dontSee("sylwia-pietruszka-nPCiBaK8WPk-unsplash$extra-aspect-ratio-16x9$extra.jpg");
+        $I->dontSee("sylwia-pietruszka-nPCiBaK8WPk-unsplash$extra-aspect-ratio-16-9$extra.jpg");
     }
 
     private function updateImage(AcceptanceTester $I, $image_path, $verify_path) {

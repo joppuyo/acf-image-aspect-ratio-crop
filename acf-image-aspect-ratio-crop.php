@@ -269,7 +269,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 implode('.', $original_file_name) .
                 '-aspect-ratio-' .
                 $data['aspectRatioWidth'] .
-                'x' .
+                '-' .
                 $data['aspectRatioHeight'] .
                 '.' .
                 $original_file_extension;
