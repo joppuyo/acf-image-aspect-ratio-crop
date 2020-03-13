@@ -17,7 +17,7 @@
     },
     "scripts": {
         "test-host": "chromedriver --whitelisted-ips='' --url-base=/wd/hub",
-        "test": "vendor/bin/codecept run acceptance"
+        "test": "vendor/bin/codecept run acceptance --fail-fast"
     },
     "config": {
         "process-timeout": 0

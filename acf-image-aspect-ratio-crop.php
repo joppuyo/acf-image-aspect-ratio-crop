@@ -141,12 +141,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
             $preserve_ids = [];
 
-            foreach ($fields as $key => $field) {
-                $definition = get_field_object($key);
-                if (!empty($field) && $definition['type'] === 'image_aspect_ratio_crop') {
-                    array_push($preserve_ids, $field);
-                }
-            }
+            $this->check_fields($fields, $preserve_ids);
 
             $post_attachment_ids = array_map(function ($attachment){
                 return $attachment->ID;
@@ -628,6 +623,32 @@ class npx_acf_plugin_image_aspect_ratio_crop
             $data['width'],
             $data['height']
         );
+    }
+
+    public function check_fields($fields, &$preserve_ids) {
+
+        $this->debug($preserve_ids);
+
+        foreach ($fields as $key => $field) {
+
+            if(is_array($field)) {
+                $this->check_fields($field, $preserve_ids);
+            }
+
+            // This is kinda of a hack but nested fields are named like field_59416ac78945f_field_59217cf6eb710 in the
+            // POST request and we are only interested in the last part so we just use a regex here to chop off the
+            // last part
+            preg_match_all('/field_[a-z0-9]+/', $key, $matches);
+
+            if (!empty($matches[0])) {
+                $last = array_values(array_slice($matches[0], -1))[0];
+                $definition = get_field_object($last);
+                if (!empty($field) && $definition['type'] === 'image_aspect_ratio_crop') {
+                    array_push($preserve_ids, $field);
+                }
+            }
+
+        }
     }
 }
 
