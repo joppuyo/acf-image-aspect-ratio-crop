@@ -1,6 +1,6 @@
 <?php 
 
-class WPFirstCest
+class PostCest
 {
     public function _before(AcceptanceTester $I)
     {
@@ -10,6 +10,7 @@ class WPFirstCest
     public function activateAcf(AcceptanceTester $I)
     {
         $I->cleanUploadsDir();
+
         $I->cli(['core', 'update-db']);
         $I->cli(['plugin', 'install', getenv('ACF_ZIP_URL'), '--force']);
         $I->loginAsAdmin();
