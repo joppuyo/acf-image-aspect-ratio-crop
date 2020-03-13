@@ -66,14 +66,14 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 == Changelog ==
 
 = 3.1.11 =
-* Remove ramsey/uuid dependency in favor of using native wp function since the dependency caused issues in some server
-  configurations
+* Fix: Remove ramsey/uuid dependency in favor of using native wp function since the dependency caused issues in some
+  server configurations
 
 = 3.1.10 =
-* Fix issue where image was not visible in backed due to malformed URL
+* Fix: Fix issue where image was not visible in backed due to malformed URL
 
 = 3.1.8 =
-* Deployment fix
+* Fix: Deployment fix
 
 = 3.1.0 =
 * Feature: Add new beta feature: delete unused crop images. You can enable this by going to
