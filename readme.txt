@@ -65,6 +65,13 @@ Also, as of 2019, the other plugin is not actively maintained anymore and does n
 
 == Changelog ==
 
+= 3.1.12 =
+* Fix: Improved compatibility with WordPress 5.3 large image handing
+* Fix: Allow closing crop modal with escape key
+* Change: change file name suffix aspect ratio from x to dash because this caused some issues with WP 5.3.
+  Now file my-image-aspect-ratio-16x9.jpeg will be called my-image-aspect-ratio-16-9.jpeg instead
+* Fix: Fix problem where "delete unused cropped images" did not work properly with nested fields
+
 = 3.1.11 =
 * Fix: Remove ramsey/uuid dependency in favor of using native wp function since the dependency caused issues in some
   server configurations
