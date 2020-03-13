@@ -30,7 +30,7 @@ You can download the plugin from the [WordPress plugin directory](https://wordpr
 
 ## Frequently Asked Questions
 
-##  Can I use this plugin with a front-end acf_form?
+###  Can I use this plugin with a front-end acf_form?
 
 Unfortunately this is not supported right now since the plugin requires `upload_files` capability to access the media library. If user does not have this permission, a basic upload dialog will be displayed without a cropper. You can enable cropping by assigning  `upload_files`  capability to the user role but this means that users are able to access the media library like admin users. I will look into implementing front-end form cropping without needing this capability in a future release of this plugin.
 
