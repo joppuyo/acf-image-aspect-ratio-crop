@@ -42,9 +42,9 @@ class PostCest
         $I->click('#acf-field-group-fields > div > div > ul.acf-hl.acf-tfoot > li > a');
         $I->fillField("Field Label", "Crop Image");
         $I->selectOption('Field Type', 'Image Aspect Ratio Crop');
-        $I->waitForText("Aspect Ratio Width");
-        $I->fillField("Aspect Ratio Width", "16");
-        $I->fillField("Aspect Ratio Height", "9");
+        $I->waitForText("Width");
+        $I->fillField("Width", "16");
+        $I->fillField("Height", "9");
         $I->scrollTo('#submitdiv');
         $I->click('Publish');
     }
@@ -54,7 +54,7 @@ class PostCest
         global $wp_version;
         $I->loadSessionSnapshot('login');
         $I->amOnAdminPage('post-new.php');
-        $I->fillField("#post-title-0", "Test Post");
+        $I->fillField("Add title", "Test Post");
         $I->click('Add Image');
         $I->attachFile('.moxie-shim input', 'zoltan-kovacs-285132-unsplash.jpg');
         $I->waitForElementClickable('div.media-toolbar-primary.search-form > button', 30); // secs

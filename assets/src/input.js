@@ -97,12 +97,18 @@ import Cropper from 'cropperjs';
             self.cropper.containerData.width,
           );
 
+          var cropType = $(field)
+            .find('.acf-image-uploader-aspect-ratio-crop')
+            .data('crop_type');
+
+
           var data = {
             action: 'acf_image_aspect_ratio_crop_crop',
             data: JSON.stringify({
               id: $(this).data('id'),
               aspectRatioHeight: $(this).data('aspect-ratio-height'),
               aspectRatioWidth: $(this).data('aspect-ratio-width'),
+              cropType: $(this).data('crop-type'),
               x: cropData.x,
               y: cropData.y,
               width: cropData.width,
@@ -472,6 +478,9 @@ import Cropper from 'cropperjs';
       var aspectRatioHeight = $(field)
         .find('.acf-image-uploader-aspect-ratio-crop')
         .data('aspect_ratio_height');
+      var cropType = $(field)
+        .find('.acf-image-uploader-aspect-ratio-crop')
+        .data('crop_type');
 
       var options = {
         aspectRatio: aspectRatioWidth / aspectRatioHeight,
@@ -482,6 +491,22 @@ import Cropper from 'cropperjs';
         checkOrientation: false,
       };
 
+      if (cropType === 'pixel_size') {
+
+        options.crop  = function (event) {
+          let width = event.detail.width;
+          let height = event.detail.height;
+          if (
+            width < aspectRatioWidth || height < aspectRatioHeight
+          ) {
+            this.cropper.setData({
+              width: aspectRatioWidth,
+              height: aspectRatioHeight,
+            });
+          }
+        }
+      }
+
       let coordinates = $(field)
         .find('.acf-image-uploader-aspect-ratio-crop')
         .data('coordinates');
@@ -491,35 +516,59 @@ import Cropper from 'cropperjs';
       }
 
       // prettier-ignore
-      $('body').append(
-        '<div class="acf-image-aspect-ratio-crop-backdrop">' +
-          '<div class="acf-image-aspect-ratio-crop-modal-wrapper">' +
-            '<div class="acf-image-aspect-ratio-crop-modal js-acf-image-aspect-ratio-crop-modal">' +
-              '<div class="acf-image-aspect-ratio-crop-modal-heading">' +
-                '<div class="acf-image-aspect-ratio-crop-modal-heading-text">' + aiarc_translations.modal_title + '</div>' +
-                '<button class="acf-image-aspect-ratio-crop-modal-heading-close js-acf-image-aspect-ratio-crop-cancel" aria-label="Close">' +
-                  '<!-- Icon from https://github.com/google/material-design-icons -->' +
-                  '<!-- Licensed under Apache License 2.0 -->' +
-                  '<!-- Copyright (c) Google Inc. -->' +
-                  '<svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path fill="#666" fill-rule="nonzero" d="M12.12 10l3.53 3.53-2.12 2.12L10 12.12l-3.54 3.54-2.12-2.12L7.88 10 4.34 6.46l2.12-2.12L10 7.88l3.54-3.53 2.12 2.12z"/></g></svg>' +
-              '</button>' +
-              '</div>' +
-              '<div class="acf-image-aspect-ratio-crop-modal-image-container">' +
-                '<img class="acf-image-aspect-ratio-crop-modal-image js-acf-image-aspect-ratio-crop-modal-image" src="' + url + '">' +
-              '</div>' +
-            '<div class="acf-image-aspect-ratio-crop-modal-footer">' +
-            '<div class="acf-image-aspect-ratio-crop-modal-footer-status js-acf-image-aspect-ratio-crop-modal-footer-status">' +
-            '</div>' +
-            '<div class="acf-image-aspect-ratio-crop-modal-footer-buttons">' +
-              '<button class="button button-link acf-image-aspect-ratio-crop-reset js-acf-image-aspect-ratio-crop-reset">' +
-              '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M0 0h24v24H0z" fill="none"/><path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/></svg>' +
-                aiarc_translations.reset + '</button>' +
-              '<button class="button js-acf-image-aspect-ratio-crop-cancel">' + aiarc_translations.cancel + '</button>' +
-              '<button class="button button-primary js-acf-image-aspect-ratio-crop-crop" data-id="' + id + '" data-aspect-ratio-height="' + aspectRatioHeight + '" data-aspect-ratio-width="' + aspectRatioWidth +'">' + aiarc_translations.crop + '</button>' +
-            '</div>' +
-            '</div>' +
-          '</div>' +
-        '</div>');
+      $('body').append(`
+<div class="acf-image-aspect-ratio-crop-backdrop">
+  <div class="acf-image-aspect-ratio-crop-modal-wrapper">
+    <div
+      class="acf-image-aspect-ratio-crop-modal js-acf-image-aspect-ratio-crop-modal"
+    >
+      <div class="acf-image-aspect-ratio-crop-modal-heading">
+        <div class="acf-image-aspect-ratio-crop-modal-heading-text">
+          ${aiarc_translations.modal_title}
+        </div>
+        <button
+          class="acf-image-aspect-ratio-crop-modal-heading-close js-acf-image-aspect-ratio-crop-cancel"
+          aria-label="Close"
+        >
+          ${require('!raw-loader!./close.svg')}
+        </button>
+      </div>
+      <div class="acf-image-aspect-ratio-crop-modal-image-container">
+        <img
+          class="acf-image-aspect-ratio-crop-modal-image js-acf-image-aspect-ratio-crop-modal-image"
+          src="${url}"
+        />
+      </div>
+
+      <div class="acf-image-aspect-ratio-crop-modal-footer">
+        <div
+          class="acf-image-aspect-ratio-crop-modal-footer-status js-acf-image-aspect-ratio-crop-modal-footer-status"
+        ></div>
+        <div class="acf-image-aspect-ratio-crop-modal-footer-buttons">
+          <button
+            class="button button-link acf-image-aspect-ratio-crop-reset js-acf-image-aspect-ratio-crop-reset"
+          >
+            ${require('!raw-loader!./reset.svg')}
+            ${aiarc_translations.reset}
+          </button>
+          <button class="button js-acf-image-aspect-ratio-crop-cancel">
+            ${aiarc_translations.cancel}
+          </button>
+          <button
+            class="button button-primary js-acf-image-aspect-ratio-crop-crop"
+            data-id="${id}"
+            data-aspect-ratio-height="${aspectRatioHeight}"
+            data-aspect-ratio-width="${aspectRatioWidth}"
+            data-crop-type="${cropType}"
+          >
+            ${aiarc_translations.crop}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`);
 
       this.cropper = new Cropper(
         $('.js-acf-image-aspect-ratio-crop-modal-image')[0],
@@ -599,4 +648,75 @@ import Cropper from 'cropperjs';
 
   acf.add_action('ready_field/type=image_aspect_ratio_crop', initialize_field);
   acf.add_action('append_field/type=image_aspect_ratio_crop', initialize_field);
+
+  // This is for the field group admin. I would have preferred to do this in PHP but I could't find an ACF hook
+
+  // On page ready
+  $(document).ready(() => {
+    $('.acf-field-object-image-aspect-ratio-crop .crop-type-select').each(function() {
+      toggleCropType(this);
+    });
+  });
+
+  // When field is added / changed
+  acf.add_action('append', function(){
+    $('.acf-field-object-image-aspect-ratio-crop .crop-type-select').each(function() {
+      toggleCropType(this);
+    });
+  });
+
+  // When crop type is changed
+  $(document).on('change', '.acf-field-object-image-aspect-ratio-crop .crop-type-select', function(event) {
+    toggleCropType(this)
+  });
+
+  // When height is changed
+  $(document).on('input change', '.acf-field-object-image-aspect-ratio-crop .js-aspect-ratio-height', function(event) {
+    toggleCropType($(this).parents('.acf-field-object-image-aspect-ratio-crop').first().find('.crop-type-select'))
+  });
+
+  // When width is changed
+  $(document).on('input change', '.acf-field-object-image-aspect-ratio-crop .js-aspect-ratio-width', function(event) {
+    toggleCropType($(this).parents('.acf-field-object-image-aspect-ratio-crop').first().find('.crop-type-select'))
+  });
+
+
+  function toggleCropType(element) {
+    let $element = $(element);
+    let type = $element.val();
+    if (type === 'pixel_size') {
+      let minWidthElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-width');
+      minWidthElement.val('');
+
+
+      let widthElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-aspect-ratio-width');
+      if (widthElement.val()) {
+        minWidthElement.attr('value', widthElement.val());
+      }
+
+      minWidthElement.prop( "disabled", true );
+
+      let minHeightElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-height');
+      minHeightElement.val('');
+
+      let heightElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-aspect-ratio-height');
+      if (heightElement.val()) {
+        minHeightElement.attr('value', heightElement.val());
+      }
+
+      minHeightElement.prop( "disabled", true );
+
+
+    }
+    if (type === 'aspect_ratio') {
+      let minWidthElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-width');
+      minWidthElement.val('');
+      minWidthElement.prop( "disabled", false );
+
+      let minHeightElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-height');
+      minHeightElement.val('');
+      minHeightElement.prop( "disabled", false );
+    }
+  }
+
 })(jQuery);
