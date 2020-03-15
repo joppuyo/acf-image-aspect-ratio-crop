@@ -479,6 +479,7 @@ import Cropper from 'cropperjs';
         autoCropArea: 1,
         zoomable: false,
         checkCrossOrigin: false,
+        checkOrientation: false,
       };
 
       let coordinates = $(field)
