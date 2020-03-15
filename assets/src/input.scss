@@ -176,11 +176,17 @@ html[dir='rtl'] .acf-image-uploader-aspect-ratio-crop .image-wrap {
 
 .acf-image-aspect-ratio-crop-modal-wrapper {
     max-width: 800px;
+
+    @media screen and (min-width: 600px) {
+        min-width: 600px;
+    }
 }
 
 .acf-image-aspect-ratio-crop-modal-image-container {
     height: 100%;
     width: 100%;
+    display: flex;
+    justify-content: center;
 }
 
 .acf-image-aspect-ratio-crop-modal-image {
