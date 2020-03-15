@@ -97,12 +97,18 @@ import Cropper from 'cropperjs';
             self.cropper.containerData.width,
           );
 
+          var cropType = $(field)
+            .find('.acf-image-uploader-aspect-ratio-crop')
+            .data('crop_type');
+
+
           var data = {
             action: 'acf_image_aspect_ratio_crop_crop',
             data: JSON.stringify({
               id: $(this).data('id'),
               aspectRatioHeight: $(this).data('aspect-ratio-height'),
               aspectRatioWidth: $(this).data('aspect-ratio-width'),
+              cropType: $(this).data('crop-type'),
               x: cropData.x,
               y: cropData.y,
               width: cropData.width,
@@ -472,6 +478,9 @@ import Cropper from 'cropperjs';
       var aspectRatioHeight = $(field)
         .find('.acf-image-uploader-aspect-ratio-crop')
         .data('aspect_ratio_height');
+      var cropType = $(field)
+        .find('.acf-image-uploader-aspect-ratio-crop')
+        .data('crop_type');
 
       var options = {
         aspectRatio: aspectRatioWidth / aspectRatioHeight,
@@ -481,6 +490,22 @@ import Cropper from 'cropperjs';
         checkCrossOrigin: false,
         checkOrientation: false,
       };
+
+      if (cropType === 'pixel_size') {
+
+        options.crop  = function (event) {
+          let width = event.detail.width;
+          let height = event.detail.height;
+          if (
+            width < aspectRatioWidth || height < aspectRatioHeight
+          ) {
+            this.cropper.setData({
+              width: aspectRatioWidth,
+              height: aspectRatioHeight,
+            });
+          }
+        }
+      }
 
       let coordinates = $(field)
         .find('.acf-image-uploader-aspect-ratio-crop')
@@ -534,6 +559,7 @@ import Cropper from 'cropperjs';
             data-id="${id}"
             data-aspect-ratio-height="${aspectRatioHeight}"
             data-aspect-ratio-width="${aspectRatioWidth}"
+            data-crop-type="${cropType}"
           >
             ${aiarc_translations.crop}
           </button>
@@ -622,4 +648,75 @@ import Cropper from 'cropperjs';
 
   acf.add_action('ready_field/type=image_aspect_ratio_crop', initialize_field);
   acf.add_action('append_field/type=image_aspect_ratio_crop', initialize_field);
+
+  // This is for the field group admin. I would have preferred to do this in PHP but I could't find an ACF hook
+
+  // On page ready
+  $(document).ready(() => {
+    $('.acf-field-object-image-aspect-ratio-crop .crop-type-select').each(function() {
+      toggleCropType(this);
+    });
+  });
+
+  // When field is added / changed
+  acf.add_action('append', function(){
+    $('.acf-field-object-image-aspect-ratio-crop .crop-type-select').each(function() {
+      toggleCropType(this);
+    });
+  });
+
+  // When crop type is changed
+  $(document).on('change', '.acf-field-object-image-aspect-ratio-crop .crop-type-select', function(event) {
+    toggleCropType(this)
+  });
+
+  // When height is changed
+  $(document).on('input change', '.acf-field-object-image-aspect-ratio-crop .js-aspect-ratio-height', function(event) {
+    toggleCropType($(this).parents('.acf-field-object-image-aspect-ratio-crop').first().find('.crop-type-select'))
+  });
+
+  // When width is changed
+  $(document).on('input change', '.acf-field-object-image-aspect-ratio-crop .js-aspect-ratio-width', function(event) {
+    toggleCropType($(this).parents('.acf-field-object-image-aspect-ratio-crop').first().find('.crop-type-select'))
+  });
+
+
+  function toggleCropType(element) {
+    let $element = $(element);
+    let type = $element.val();
+    if (type === 'pixel_size') {
+      let minWidthElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-width');
+      minWidthElement.val('');
+
+
+      let widthElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-aspect-ratio-width');
+      if (widthElement.val()) {
+        minWidthElement.attr('value', widthElement.val());
+      }
+
+      minWidthElement.prop( "disabled", true );
+
+      let minHeightElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-height');
+      minHeightElement.val('');
+
+      let heightElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-aspect-ratio-height');
+      if (heightElement.val()) {
+        minHeightElement.attr('value', heightElement.val());
+      }
+
+      minHeightElement.prop( "disabled", true );
+
+
+    }
+    if (type === 'aspect_ratio') {
+      let minWidthElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-width');
+      minWidthElement.val('');
+      minWidthElement.prop( "disabled", false );
+
+      let minHeightElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-height');
+      minHeightElement.val('');
+      minHeightElement.prop( "disabled", false );
+    }
+  }
+
 })(jQuery);

@@ -67,6 +67,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'max_height' => 0,
             'max_size' => 0,
             'mime_types' => '',
+            'crop_type' => 'aspect_ratio',
         ];
 
         $this->l10n = [
@@ -155,15 +156,35 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             }
         }
 
+        // return_format
         acf_render_field_setting($field, [
-            'label' => __('Aspect Ratio Width', 'acf-image-aspect-ratio-crop'),
+            'label' => __('Crop type', 'acf-image-aspect-ratio-crop'),
+            'instructions' => __(
+                'Specify the returned value on front end',
+                'acf'
+            ),
+            'type' => 'select',
+            'name' => 'crop_type',
+            'class' => 'crop-type-select',
+            'choices' => [
+                'aspect_ratio' => __('Aspect ratio', 'acf-image-aspect-ratio-crop'),
+                'pixel_size' => __('Pixel size', 'acf-image-aspect-ratio-crop'),
+            ],
+        ]);
+
+        acf_render_field_setting($field, [
+            'label' => __('Width', 'acf-image-aspect-ratio-crop'),
             'type' => 'number',
+            'required' => true,
+            'class' => 'js-aspect-ratio-width',
             'name' => 'aspect_ratio_width',
         ]);
 
         acf_render_field_setting($field, [
-            'label' => __('Aspect Ratio Height', 'acf-image-aspect-ratio-crop'),
+            'label' => __('Height', 'acf-image-aspect-ratio-crop'),
             'type' => 'number',
+            'required' => true,
+            'class' => 'js-aspect-ratio-height',
             'name' => 'aspect_ratio_height',
         ]);
 
@@ -215,6 +236,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             ),
             'type' => 'text',
             'name' => 'min_width',
+            'class' => 'js-min-width',
             'prepend' => __('Width', 'acf'),
             'append' => 'px',
         ]);
@@ -223,6 +245,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'label' => '',
             'type' => 'text',
             'name' => 'min_height',
+            'class' => 'js-min-height',
             'prepend' => __('Height', 'acf'),
             'append' => 'px',
             '_append' => 'min_width',
@@ -327,6 +350,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'data-uploader' => $uploader,
             'data-aspect_ratio_width' => $field['aspect_ratio_width'],
             'data-aspect_ratio_height' => $field['aspect_ratio_height'],
+            'data-crop_type' => $field['crop_type'],
         ];
 
         $image_id = null;

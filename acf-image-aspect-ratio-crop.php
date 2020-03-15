@@ -250,6 +250,10 @@ class npx_acf_plugin_image_aspect_ratio_crop
             // Use scaled coordinates if we have those
             $this->crop($image, $scaled_data ? $scaled_data : $data);
 
+            if ($data['cropType'] === 'pixel_size') {
+                $image->resize($data['aspectRatioWidth'], $data['aspectRatioHeight'], true);
+            }
+
             // Retrieve original filename and seperate it from its file extension
             $original_file_name = explode(
                 '.',
