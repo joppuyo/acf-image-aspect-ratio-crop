@@ -493,43 +493,80 @@ import Cropper from 'cropperjs';
       // prettier-ignore
       $('body').append(`
 <div class="acf-image-aspect-ratio-crop-backdrop">
-    <div class="acf-image-aspect-ratio-crop-modal-wrapper">
-        <div class="acf-image-aspect-ratio-crop-modal js-acf-image-aspect-ratio-crop-modal">
-            <div class="acf-image-aspect-ratio-crop-modal-heading">
-                <div class="acf-image-aspect-ratio-crop-modal-heading-text">${aiarc_translations.modal_title}</div>
-                <button class="acf-image-aspect-ratio-crop-modal-heading-close js-acf-image-aspect-ratio-crop-cancel"
-                        aria-label="Close"><!-- Icon from https://github.com/google/material-design-icons -->
-                    <!-- Licensed under Apache License 2.0 --><!-- Copyright (c) Google Inc. -->
-                    <svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-                        <g fill="none" fill-rule="evenodd">
-                            <path fill="#666" fill-rule="nonzero"
-                                  d="M12.12 10l3.53 3.53-2.12 2.12L10 12.12l-3.54 3.54-2.12-2.12L7.88 10 4.34 6.46l2.12-2.12L10 7.88l3.54-3.53 2.12 2.12z"/>
-                        </g>
-                    </svg>
-                </button>
-            </div>
-            <div class="acf-image-aspect-ratio-crop-modal-image-container"><img
-                    class="acf-image-aspect-ratio-crop-modal-image js-acf-image-aspect-ratio-crop-modal-image"
-                    src="${url}"></div>
-            <div class="acf-image-aspect-ratio-crop-modal-footer">
-                <div class="acf-image-aspect-ratio-crop-modal-footer-status js-acf-image-aspect-ratio-crop-modal-footer-status"></div>
-                <div class="acf-image-aspect-ratio-crop-modal-footer-buttons">
-                    <button class="button button-link acf-image-aspect-ratio-crop-reset js-acf-image-aspect-ratio-crop-reset">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
-                            <path d="M0 0h24v24H0z" fill="none"/>
-                            <path d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"/>
-                        </svg>
-                        ${aiarc_translations.reset}
-                    </button>
-                    <button class="button js-acf-image-aspect-ratio-crop-cancel">${aiarc_translations.cancel}</button>
-                    <button class="button button-primary js-acf-image-aspect-ratio-crop-crop" data-id="${id}"
-                            data-aspect-ratio-height="${aspectRatioHeight}"
-                            data-aspect-ratio-width="${aspectRatioWidth}">${aiarc_translations.crop}
-                    </button>
-                </div>
-            </div>
+  <div class="acf-image-aspect-ratio-crop-modal-wrapper">
+    <div
+      class="acf-image-aspect-ratio-crop-modal js-acf-image-aspect-ratio-crop-modal"
+    >
+      <div class="acf-image-aspect-ratio-crop-modal-heading">
+        <div class="acf-image-aspect-ratio-crop-modal-heading-text">
+          ${aiarc_translations.modal_title}
         </div>
+        <button
+          class="acf-image-aspect-ratio-crop-modal-heading-close js-acf-image-aspect-ratio-crop-cancel"
+          aria-label="Close"
+        >
+          <!-- Icon from https://github.com/google/material-design-icons -->
+          <!-- Licensed under Apache License 2.0 -->
+          <!-- Copyright (c) Google Inc. -->
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g fill="none" fill-rule="evenodd">
+              <path
+                fill="#666"
+                fill-rule="nonzero"
+                d="M12.12 10l3.53 3.53-2.12 2.12L10 12.12l-3.54 3.54-2.12-2.12L7.88 10 4.34 6.46l2.12-2.12L10 7.88l3.54-3.53 2.12 2.12z"
+              />
+            </g>
+          </svg>
+        </button>
+      </div>
+      <div class="acf-image-aspect-ratio-crop-modal-image-container">
+        <img
+          class="acf-image-aspect-ratio-crop-modal-image js-acf-image-aspect-ratio-crop-modal-image"
+          src="${url}"
+        />
+      </div>
+
+      <div class="acf-image-aspect-ratio-crop-modal-footer">
+        <div
+          class="acf-image-aspect-ratio-crop-modal-footer-status js-acf-image-aspect-ratio-crop-modal-footer-status"
+        ></div>
+        <div class="acf-image-aspect-ratio-crop-modal-footer-buttons">
+          <button
+            class="button button-link acf-image-aspect-ratio-crop-reset js-acf-image-aspect-ratio-crop-reset"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+            >
+              <path d="M0 0h24v24H0z" fill="none" />
+              <path
+                d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z"
+              />
+            </svg>
+            ${aiarc_translations.reset}
+          </button>
+          <button class="button js-acf-image-aspect-ratio-crop-cancel">
+            ${aiarc_translations.cancel}
+          </button>
+          <button
+            class="button button-primary js-acf-image-aspect-ratio-crop-crop"
+            data-id="${id}"
+            data-aspect-ratio-height="${aspectRatioHeight}"
+            data-aspect-ratio-width="${aspectRatioWidth}"
+          >
+            ${aiarc_translations.crop}
+          </button>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
 `);
 
