@@ -2,7 +2,7 @@
 Contributors: joppuyo
 Tags: acf, field, image, crop
 Requires at least: 4.9
-Tested up to: 5.3
+Tested up to: 5.4
 Requires PHP: 5.5
 Stable tag: trunk
 License: GPLv2 or later
@@ -20,7 +20,7 @@ The cropped image variants are hidden by default in the media browser and on the
 
 There are two modes of operation: aspect ratio and pixel size. You can select this option when creating the field in ACF field options.
 
-== Aspect ratio ==
+= Aspect ratio =
 
 Use this option if you want the image to be of specific aspect ratio like 16:9 but the pixel size is not important.
 
@@ -28,7 +28,7 @@ After selecting an image, user can select an area from the image that matches th
 
 If you need a smaller image size, you make use of WordPress's thumbnail functionality to access a smaller version of the image.
 
-== Pixel size ==
+= Pixel size =
 
 Use this option if you need a specific pixel size image like 640x480. User will not be able to select an image smaller than the defined pixel size.
 
@@ -84,6 +84,12 @@ The other plugin is not actively maintained and does not work well with latest A
 3. Option to re-crop the image after upload
 
 == Changelog ==
+
+= 3.2.0 =
+* Feature: Added an option to use a pixel size instead of aspect ratio. Check the [readme](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/) for more information about how it works.
+* Fix: Fixed images displaying in wrong rotation in WP < 5.3
+* Fix: Visual bug fixes to cropper and field edit buttons to prevent overflowing of elements
+* Change: updated tested WP version to 5.4
 
 = 3.1.12 =
 * Fix: Improved compatibility with WordPress 5.3 large image handing
