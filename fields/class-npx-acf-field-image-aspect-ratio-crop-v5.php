@@ -169,6 +169,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'choices' => [
                 'aspect_ratio' => __('Aspect ratio', 'acf-image-aspect-ratio-crop'),
                 'pixel_size' => __('Pixel size', 'acf-image-aspect-ratio-crop'),
+                'simple_crop' => __('Simple cropping (no ratio)', 'acf-image-aspect-ratio-crop'),
             ],
         ]);
 
@@ -178,6 +179,11 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'required' => true,
             'class' => 'js-aspect-ratio-width',
             'name' => 'aspect_ratio_width',
+            'conditional_logic' => [
+                'field' => 'crop_type',
+                'operator' => '!=',
+                'value' => 'simple_crop',
+            ]
         ]);
 
         acf_render_field_setting($field, [
@@ -186,6 +192,11 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'required' => true,
             'class' => 'js-aspect-ratio-height',
             'name' => 'aspect_ratio_height',
+            'conditional_logic' => [
+                'field' => 'crop_type',
+                'operator' => '!=',
+                'value' => 'simple_crop',
+            ]
         ]);
 
         // return_format
@@ -348,10 +359,16 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'data-library' => $field['library'],
             'data-mime_types' => $field['mime_types'],
             'data-uploader' => $uploader,
-            'data-aspect_ratio_width' => $field['aspect_ratio_width'],
-            'data-aspect_ratio_height' => $field['aspect_ratio_height'],
             'data-crop_type' => $field['crop_type'],
         ];
+
+        // for simple cropping no width and height is needed, otherwise add it
+        if ($field['crop_type'] !== 'simple_crop') {
+            $div = array_merge($div, [
+                'data-aspect_ratio_width' => $field['aspect_ratio_width'],
+                'data-aspect_ratio_height' => $field['aspect_ratio_height'],
+            ]);
+        }
 
         $image_id = null;
         $original = null;
