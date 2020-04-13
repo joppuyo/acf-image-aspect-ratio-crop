@@ -353,6 +353,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         // vars
         $url = '';
         $alt = '';
+        // set aspect width and height to zero for simple cropping
         $div = [
             'class' => 'acf-image-uploader-aspect-ratio-crop',
             'data-preview_size' => $field['preview_size'],
@@ -360,15 +361,9 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'data-mime_types' => $field['mime_types'],
             'data-uploader' => $uploader,
             'data-crop_type' => $field['crop_type'],
+            'data-aspect_ratio_width' => array_key_exists('aspect_ratio_width', $field) ? $field['aspect_ratio_width'] : 0,
+            'data-aspect_ratio_height' => array_key_exists('aspect_ratio_height', $field) ? $field['aspect_ratio_height'] : 0,
         ];
-
-        // for simple cropping no width and height is needed, otherwise add it
-        if ($field['crop_type'] !== 'simple_crop') {
-            $div = array_merge($div, [
-                'data-aspect_ratio_width' => $field['aspect_ratio_width'],
-                'data-aspect_ratio_height' => $field['aspect_ratio_height'],
-            ]);
-        }
 
         $image_id = null;
         $original = null;
