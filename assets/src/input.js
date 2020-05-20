@@ -654,20 +654,20 @@ import Cropper from 'cropperjs';
   // On page ready
   $(document).ready(() => {
     $('.acf-field-object-image-aspect-ratio-crop .crop-type-select').each(function() {
-      toggleCropType(this);
+      toggleCropType(this, 'ready');
     });
   });
 
   // When field is added / changed
   acf.add_action('append', function(){
     $('.acf-field-object-image-aspect-ratio-crop .crop-type-select').each(function() {
-      toggleCropType(this);
+      toggleCropType(this, 'append');
     });
   });
 
   // When crop type is changed
   $(document).on('change', '.acf-field-object-image-aspect-ratio-crop .crop-type-select', function(event) {
-    toggleCropType(this)
+    toggleCropType(this, 'change')
   });
 
   // When height is changed
@@ -681,7 +681,7 @@ import Cropper from 'cropperjs';
   });
 
 
-  function toggleCropType(element) {
+  function toggleCropType(element, actionType) {
     let $element = $(element);
     let type = $element.val();
     if (type === 'pixel_size') {
@@ -694,7 +694,7 @@ import Cropper from 'cropperjs';
         minWidthElement.attr('value', widthElement.val());
       }
 
-      minWidthElement.prop( "disabled", true );
+      minWidthElement.prop( "readonly", true );
 
       let minHeightElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-height');
       minHeightElement.val('');
@@ -704,18 +704,22 @@ import Cropper from 'cropperjs';
         minHeightElement.attr('value', heightElement.val());
       }
 
-      minHeightElement.prop( "disabled", true );
+      minHeightElement.prop( "readonly", true );
 
 
     }
     if (type === 'aspect_ratio') {
       let minWidthElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-width');
-      minWidthElement.val('');
-      minWidthElement.prop( "disabled", false );
+      if (actionType !== 'ready') {
+        minWidthElement.val('');
+      }
+      minWidthElement.prop( "readonly", false );
 
       let minHeightElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-height');
-      minHeightElement.val('');
-      minHeightElement.prop( "disabled", false );
+      if (actionType !== 'ready') {
+        minHeightElement.val('');
+      }
+      minHeightElement.prop( "readonly", false );
     }
   }
 
