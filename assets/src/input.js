@@ -708,7 +708,7 @@ import Cropper from 'cropperjs';
 
 
     }
-    if (type === 'aspect_ratio') {
+    if (type !== 'pixel_size') {
       let minWidthElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-width');
       if (actionType !== 'ready') {
         minWidthElement.val('');
