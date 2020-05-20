@@ -13,7 +13,7 @@ The cropped image variants are hidden by default in the media browser and on the
 
 ## Modes of operation
 
-There are two modes of operation: aspect ratio and pixel size. You can select this option when creating the field in ACF field options.
+There are three modes of operation: aspect ratio, pixel size and free crop. You can select this option when creating the field in ACF field options.
 
 ### Aspect ratio
 
@@ -30,6 +30,10 @@ Use this option if you need a specific pixel size image like 640x480. User will 
 After selecting an image, user can select an area from the image they want, which can be larger than the pixel size but may not be smaller. The aspect ratio of the selection is locked according to the pixel size.
 
 When crop button is pressed, the area is cropped from the original image. After the crop is complete, the image will be automatically scaled down to the pixel size. This means the final image will always be the specified size.
+
+## Free crop
+
+Crop can be done freely, there are no aspect ratio limitations.
 
 ## Cropping an image to 16:9 aspect ratio
 
