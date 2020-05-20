@@ -169,7 +169,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'choices' => [
                 'aspect_ratio' => __('Aspect ratio', 'acf-image-aspect-ratio-crop'),
                 'pixel_size' => __('Pixel size', 'acf-image-aspect-ratio-crop'),
-                'simple_crop' => __('Simple cropping (no ratio)', 'acf-image-aspect-ratio-crop'),
+                'free_crop' => __('Free crop', 'acf-image-aspect-ratio-crop'),
             ],
         ]);
 
@@ -182,7 +182,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'conditional_logic' => [
                 'field' => 'crop_type',
                 'operator' => '!=',
-                'value' => 'simple_crop',
+                'value' => 'free_crop',
             ]
         ]);
 
@@ -195,7 +195,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'conditional_logic' => [
                 'field' => 'crop_type',
                 'operator' => '!=',
-                'value' => 'simple_crop',
+                'value' => 'free_crop',
             ]
         ]);
 
@@ -353,7 +353,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         // vars
         $url = '';
         $alt = '';
-        // set aspect width and height to zero for simple cropping
+        // set aspect width and height to zero for free cropping
         $div = [
             'class' => 'acf-image-uploader-aspect-ratio-crop',
             'data-preview_size' => $field['preview_size'],
