@@ -159,10 +159,6 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         // return_format
         acf_render_field_setting($field, [
             'label' => __('Crop type', 'acf-image-aspect-ratio-crop'),
-            'instructions' => __(
-                'Specify the returned value on front end',
-                'acf'
-            ),
             'type' => 'select',
             'name' => 'crop_type',
             'class' => 'crop-type-select',
