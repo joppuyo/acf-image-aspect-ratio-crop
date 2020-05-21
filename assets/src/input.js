@@ -75,10 +75,8 @@ import Cropper from 'cropperjs';
 
       this.escapeHandlerBound = this.escapeHandler.bind(this);
 
-      $(document).on(
-        'click',
-        '.js-acf-image-aspect-ratio-crop-cancel',
-        () => this.closeModal(),
+      $(document).on('click', '.js-acf-image-aspect-ratio-crop-cancel', () =>
+        this.closeModal(),
       );
 
       $(document)
@@ -100,7 +98,6 @@ import Cropper from 'cropperjs';
           var cropType = $(field)
             .find('.acf-image-uploader-aspect-ratio-crop')
             .data('crop_type');
-
 
           var data = {
             action: 'acf_image_aspect_ratio_crop_crop',
@@ -156,13 +153,19 @@ import Cropper from 'cropperjs';
             .done(function(data) {
               self.cropComplete(data);
               $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
-              $('.js-acf-image-aspect-ratio-crop-reset').prop('disabled', false);
+              $('.js-acf-image-aspect-ratio-crop-reset').prop(
+                'disabled',
+                false,
+              );
               $('.js-acf-image-aspect-ratio-crop-modal-footer-status').empty();
             })
             .fail(function() {
               self.cropper.enable();
               $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
-              $('.js-acf-image-aspect-ratio-crop-reset').prop('disabled', false);
+              $('.js-acf-image-aspect-ratio-crop-reset').prop(
+                'disabled',
+                false,
+              );
               $('.js-acf-image-aspect-ratio-crop-modal-footer-status').empty();
               $('.js-acf-image-aspect-ratio-crop-modal-footer-status').html(
                 error,
@@ -492,19 +495,16 @@ import Cropper from 'cropperjs';
       };
 
       if (cropType === 'pixel_size') {
-
-        options.crop  = function (event) {
+        options.crop = function(event) {
           let width = event.detail.width;
           let height = event.detail.height;
-          if (
-            width < aspectRatioWidth || height < aspectRatioHeight
-          ) {
+          if (width < aspectRatioWidth || height < aspectRatioHeight) {
             this.cropper.setData({
               width: aspectRatioWidth,
               height: aspectRatioHeight,
             });
           }
-        }
+        };
       }
 
       let coordinates = $(field)
@@ -653,83 +653,127 @@ import Cropper from 'cropperjs';
 
   // On page ready
   $(document).ready(() => {
-    $('.acf-field-object-image-aspect-ratio-crop .crop-type-select').each(function() {
-      toggleCropType(this, 'ready');
-    });
+    $('.acf-field-object-image-aspect-ratio-crop .crop-type-select').each(
+      function() {
+        toggleCropType(this, 'ready');
+      },
+    );
   });
 
   // When field is added / changed
-  acf.add_action('append', function(){
-    $('.acf-field-object-image-aspect-ratio-crop .crop-type-select').each(function() {
-      toggleCropType(this, 'append');
-    });
+  acf.add_action('append', function() {
+    $('.acf-field-object-image-aspect-ratio-crop .crop-type-select').each(
+      function() {
+        toggleCropType(this, 'append');
+      },
+    );
   });
 
   // When crop type is changed
-  $(document).on('change', '.acf-field-object-image-aspect-ratio-crop .crop-type-select', function(event) {
-    toggleCropType(this, 'change')
-  });
+  $(document).on(
+    'change',
+    '.acf-field-object-image-aspect-ratio-crop .crop-type-select',
+    function(event) {
+      toggleCropType(this, 'change');
+    },
+  );
 
   // When height is changed
-  $(document).on('input change', '.acf-field-object-image-aspect-ratio-crop .js-aspect-ratio-height', function(event) {
-    toggleCropType($(this).parents('.acf-field-object-image-aspect-ratio-crop').first().find('.crop-type-select'))
-  });
+  $(document).on(
+    'input change',
+    '.acf-field-object-image-aspect-ratio-crop .js-aspect-ratio-height',
+    function(event) {
+      toggleCropType(
+        $(this)
+          .parents('.acf-field-object-image-aspect-ratio-crop')
+          .first()
+          .find('.crop-type-select'),
+      );
+    },
+  );
 
   // When width is changed
-  $(document).on('input change', '.acf-field-object-image-aspect-ratio-crop .js-aspect-ratio-width', function(event) {
-    toggleCropType($(this).parents('.acf-field-object-image-aspect-ratio-crop').first().find('.crop-type-select'))
-  });
-
+  $(document).on(
+    'input change',
+    '.acf-field-object-image-aspect-ratio-crop .js-aspect-ratio-width',
+    function(event) {
+      toggleCropType(
+        $(this)
+          .parents('.acf-field-object-image-aspect-ratio-crop')
+          .first()
+          .find('.crop-type-select'),
+      );
+    },
+  );
 
   function toggleCropType(element, actionType) {
     let $element = $(element);
     let type = $element.val();
     if (type === 'pixel_size') {
-      let minWidthElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-width');
+      let minWidthElement = $element
+        .parents('.acf-field-object-image-aspect-ratio-crop')
+        .first()
+        .find('.js-min-width');
       minWidthElement.val('');
 
-
-      let widthElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-aspect-ratio-width');
+      let widthElement = $element
+        .parents('.acf-field-object-image-aspect-ratio-crop')
+        .first()
+        .find('.js-aspect-ratio-width');
       widthElement.prop('required', true);
       if (widthElement.val()) {
         minWidthElement.attr('value', widthElement.val());
       }
 
-      minWidthElement.prop( "readonly", true );
+      minWidthElement.prop('readonly', true);
 
-      let minHeightElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-height');
+      let minHeightElement = $element
+        .parents('.acf-field-object-image-aspect-ratio-crop')
+        .first()
+        .find('.js-min-height');
       minHeightElement.val('');
 
-      let heightElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-aspect-ratio-height');
-      heightElement.prop('required', true)
+      let heightElement = $element
+        .parents('.acf-field-object-image-aspect-ratio-crop')
+        .first()
+        .find('.js-aspect-ratio-height');
+      heightElement.prop('required', true);
       if (heightElement.val()) {
         minHeightElement.attr('value', heightElement.val());
       }
 
-      minHeightElement.prop( "readonly", true );
-
-
+      minHeightElement.prop('readonly', true);
     }
     if (type !== 'pixel_size') {
-
-      let heightElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-aspect-ratio-height');
+      let heightElement = $element
+        .parents('.acf-field-object-image-aspect-ratio-crop')
+        .first()
+        .find('.js-aspect-ratio-height');
       heightElement.prop('required', false);
 
-      let minWidthElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-width');
+      let minWidthElement = $element
+        .parents('.acf-field-object-image-aspect-ratio-crop')
+        .first()
+        .find('.js-min-width');
       if (actionType !== 'ready') {
         minWidthElement.val('');
       }
-      minWidthElement.prop( "readonly", false );
+      minWidthElement.prop('readonly', false);
 
-      let widthElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-aspect-ratio-width');
+      let widthElement = $element
+        .parents('.acf-field-object-image-aspect-ratio-crop')
+        .first()
+        .find('.js-aspect-ratio-width');
       widthElement.prop('required', false);
 
-      let minHeightElement = $element.parents('.acf-field-object-image-aspect-ratio-crop').first().find('.js-min-height');
+      let minHeightElement = $element
+        .parents('.acf-field-object-image-aspect-ratio-crop')
+        .first()
+        .find('.js-min-height');
       if (actionType !== 'ready') {
         minHeightElement.val('');
       }
-      minHeightElement.prop( "readonly", false );
+      minHeightElement.prop('readonly', false);
     }
   }
-
 })(jQuery);
