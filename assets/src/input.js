@@ -709,6 +709,17 @@ import Cropper from 'cropperjs';
   function toggleCropType(element, actionType) {
     let $element = $(element);
     let type = $element.val();
+
+    let widthElement = $element
+      .parents('.acf-field-object-image-aspect-ratio-crop')
+      .first()
+      .find('.js-aspect-ratio-width');
+
+    let heightElement = $element
+      .parents('.acf-field-object-image-aspect-ratio-crop')
+      .first()
+      .find('.js-aspect-ratio-height');
+
     if (type === 'pixel_size') {
       let minWidthElement = $element
         .parents('.acf-field-object-image-aspect-ratio-crop')
@@ -716,10 +727,6 @@ import Cropper from 'cropperjs';
         .find('.js-min-width');
       minWidthElement.val('');
 
-      let widthElement = $element
-        .parents('.acf-field-object-image-aspect-ratio-crop')
-        .first()
-        .find('.js-aspect-ratio-width');
       widthElement.prop('required', true);
       if (widthElement.val()) {
         minWidthElement.attr('value', widthElement.val());
@@ -733,10 +740,6 @@ import Cropper from 'cropperjs';
         .find('.js-min-height');
       minHeightElement.val('');
 
-      let heightElement = $element
-        .parents('.acf-field-object-image-aspect-ratio-crop')
-        .first()
-        .find('.js-aspect-ratio-height');
       heightElement.prop('required', true);
       if (heightElement.val()) {
         minHeightElement.attr('value', heightElement.val());
@@ -745,12 +748,6 @@ import Cropper from 'cropperjs';
       minHeightElement.prop('readonly', true);
     }
     if (type !== 'pixel_size') {
-      let heightElement = $element
-        .parents('.acf-field-object-image-aspect-ratio-crop')
-        .first()
-        .find('.js-aspect-ratio-height');
-      heightElement.prop('required', false);
-
       let minWidthElement = $element
         .parents('.acf-field-object-image-aspect-ratio-crop')
         .first()
@@ -760,12 +757,6 @@ import Cropper from 'cropperjs';
       }
       minWidthElement.prop('readonly', false);
 
-      let widthElement = $element
-        .parents('.acf-field-object-image-aspect-ratio-crop')
-        .first()
-        .find('.js-aspect-ratio-width');
-      widthElement.prop('required', false);
-
       let minHeightElement = $element
         .parents('.acf-field-object-image-aspect-ratio-crop')
         .first()
@@ -774,6 +765,14 @@ import Cropper from 'cropperjs';
         minHeightElement.val('');
       }
       minHeightElement.prop('readonly', false);
+    }
+    if (type === 'free_crop') {
+      widthElement.prop('required', false);
+      heightElement.prop('required', false);
+    }
+    if (type !== 'free_crop') {
+      widthElement.prop('required', true);
+      heightElement.prop('required', true);
     }
   }
 })(jQuery);
