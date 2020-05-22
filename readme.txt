@@ -89,6 +89,10 @@ The other plugin is not actively maintained and does not work well with latest A
 
 == Changelog ==
 
+= 3.3.1 =
+* Fix: Fix issue where hidden required field prevented saving custom fields
+* Fix: Remove duplicated field hint
+
 = 3.3.0 =
 * Feature: Added option for free cropping, special thanks to @phildittrich on GitHub for contributing this feature
 * Fix: Fixed issue where min height and min width are not save when using pixel size option
