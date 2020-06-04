@@ -167,7 +167,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
             $data = json_decode($post['data'], true);
 
-            $image_data = wp_get_attachment_metadata($data['id']);
+            $image_data = apply_filters('aiarc_image_data', wp_get_attachment_metadata($data['id']), $data['id']);
 
             // If the difference between the images is less than half a percentage, use the original image
             // prettier-ignore
@@ -180,7 +180,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
             do_action('aiarc_pre_customize_upload_dir');
 
-            $media_dir = wp_upload_dir();
+            $media_dir = apply_filters('aiarc_upload_dir', wp_upload_dir(), $data['id']);
 
             do_action('aiarc_after_customize_upload_dir');
 
@@ -227,8 +227,11 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 $temp_directory = get_temp_dir();
                 $this->temp_path = $temp_directory . $temp_name;
                 try {
-                    $guzzle = new \GuzzleHttp\Client();
-                    $fetched_image = $guzzle->get(wp_get_attachment_url($data['id']));
+                    $guzzle = new \GuzzleHttp\Client(apply_filters('aiarc_client_options', array(), $data['id']));
+                    $fetched_image = $guzzle->get(
+                        apply_filters('aiarc_request_url', wp_get_attachment_url($data['id']), $data['id']),
+                        apply_filters('aiarc_request_options', array(), $data['id'])
+                    );
                     $result = @file_put_contents($this->temp_path, $fetched_image->getBody());
                     if ($result === false) {
                         throw new Exception('Failed to save image');
