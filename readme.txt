@@ -7,6 +7,7 @@ Requires PHP: 5.5
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Stable Tag: 3.3.1
 
 ACF field that allows user to crop image to a specific aspect ratio or pixel size
 
