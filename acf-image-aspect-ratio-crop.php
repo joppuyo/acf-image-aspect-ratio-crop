@@ -171,7 +171,8 @@ class npx_acf_plugin_image_aspect_ratio_crop
             // If the difference between the images is less than half a percentage, use the original image
             // prettier-ignore
             if ($image_data['height'] - $data['height'] < $image_data['height'] * 0.005 &&
-                $image_data['width'] - $data['width'] < $image_data['width'] * 0.005
+                $image_data['width'] - $data['width'] < $image_data['width'] * 0.005 &&
+                $data['cropType'] !== 'pixel_size'
             ) {
                 wp_send_json(['id' => $data['id']]);
                 wp_die();
