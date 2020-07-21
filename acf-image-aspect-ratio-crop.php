@@ -263,13 +263,23 @@ class npx_acf_plugin_image_aspect_ratio_crop
             // Retrieve and remove file extension from array
             $original_file_extension = array_pop($original_file_name);
 
+            $width = $data['aspectRatioWidth'];
+            $height = $data['aspectRatioHeight'];
+
+            $this->debug($data['cropType']);
+
+            if ($data['cropType'] === 'free_crop') {
+                $width = $data['width'];
+                $height = $data['height'];
+            }
+
             // Generate new base filename
             $target_file_name =
                 implode('.', $original_file_name) .
                 '-aspect-ratio-' .
-                $data['aspectRatioWidth'] .
+                $width .
                 '-' .
-                $data['aspectRatioHeight'] .
+                $height .
                 '.' .
                 $original_file_extension;
 
