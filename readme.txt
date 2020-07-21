@@ -7,7 +7,7 @@ Requires PHP: 5.5
 Stable tag: trunk
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Stable Tag: 3.3.1
+Stable Tag: 3.3.2
 
 ACF field that allows user to crop image to a specific aspect ratio or pixel size
 
@@ -89,6 +89,10 @@ The other plugin is not actively maintained and does not work well with latest A
 3. Option to re-crop the image after upload
 
 == Changelog ==
+
+= 3.3.2 =
+* Fix: Fixed issue where pixel size image is not scaled when it matches the aspect ratio
+* Fix: Fixed file name when using free crop, use actual file dimensions instead of 0x0
 
 = 3.3.1 =
 * Fix: Fixed issue where hidden required field prevented saving custom fields
