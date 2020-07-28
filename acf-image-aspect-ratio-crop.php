@@ -243,6 +243,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
             if (is_wp_error($image)) {
                 $this->cleanup();
+                $this->debug($image);
                 wp_send_json('Failed to open image', 500);
                 wp_die();
             }
