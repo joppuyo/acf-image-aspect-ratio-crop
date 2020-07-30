@@ -690,7 +690,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
             if (!empty($matches[0])) {
                 $last = array_values(array_slice($matches[0], -1))[0];
                 $definition = get_field_object($last);
-                if (!empty($field) && $definition['type'] === 'image_aspect_ratio_crop') {
+                if (!empty($field) && !empty($definition) && $definition['type'] === 'image_aspect_ratio_crop') {
                     array_push($preserve_ids, $field);
                 }
             }
