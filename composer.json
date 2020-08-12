@@ -10,16 +10,25 @@
         }
     ],
     "require": {
-        "guzzlehttp/guzzle": "^6.3"
     },
     "require-dev": {
-        "lucatume/wp-browser": "^2.2"
+        "lucatume/wp-browser": "^2.4",
+        "codeception/module-db": "^1.0",
+        "codeception/module-webdriver": "^1.0",
+        "codeception/module-filesystem": "^1.0",
+        "codeception/module-asserts": "^1.0",
+        "codeception/module-phpbrowser": "^1.0",
+        "codeception/module-cli": "^1.0",
+        "codeception/util-universalframework": "^1.0"
     },
     "scripts": {
         "test-host": "chromedriver --whitelisted-ips='' --url-base=/wd/hub",
         "test": "vendor/bin/codecept run acceptance --fail-fast"
     },
     "config": {
-        "process-timeout": 0
+        "process-timeout": 0,
+        "platform": {
+            "php": "5.6.0"
+        }
     }
 }

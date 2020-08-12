@@ -1,4 +1,6 @@
-FROM wordpress:php5.6
+# https://github.com/conetix/docker-wordpress-wp-cli/blob/master/Dockerfile
+
+FROM wordpress:php5.6-apache
 
 # Add sudo in order to run wp-cli as the www-data user
 RUN apt-get update && apt-get install -y sudo less mysql-client
