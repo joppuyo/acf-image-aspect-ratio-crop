@@ -9,6 +9,7 @@ jobs:
       matrix:
         wp_version: [4.9, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5]
         acf_version: [5.8.13, 5.7.13]
+      fail-fast: false
     env:
       WP_VERSION: ${{ matrix.wp_version }}
       ACF_VERSION: ${{ matrix.acf_version }}
