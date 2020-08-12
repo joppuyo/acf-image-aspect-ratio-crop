@@ -11,6 +11,11 @@ class PostCest
     {
         $I->cleanUploadsDir();
 
+        if (getenv('WP_VERSION')) {
+            $I->cli(['core', 'update', '--version=' . getenv('WP_VERSION'), '--force']);
+            $I->wait(10);
+        }
+
         $I->cli(['core', 'update-db']);
         $I->cli(['plugin', 'install', getenv('ACF_ZIP_URL'), '--force']);
         $I->loginAsAdmin();
@@ -54,7 +59,7 @@ class PostCest
         global $wp_version;
         $I->loadSessionSnapshot('login');
         $I->amOnAdminPage('post-new.php');
-        $I->fillField("Add title", "Test Post");
+        $I->fillField(version_compare($wp_version, '5.0', 'ge') ? "Add title" : "Enter title here", "Test Post");
         $I->click('Add Image');
         $I->attachFile('.moxie-shim input', 'zoltan-kovacs-285132-unsplash.jpg');
         $I->waitForElementClickable('div.media-toolbar-primary.search-form > button', 30); // secs
@@ -64,9 +69,21 @@ class PostCest
         $I->click('.js-acf-image-aspect-ratio-crop-crop');
         $I->waitForElementNotVisible('.js-acf-image-aspect-ratio-crop-modal', 10);
         $this->verifyImage($I, version_compare($wp_version, '5.3', 'ge') ? 'cropped-scaled.jpg' : 'cropped.jpg');
-        $I->click('Publish…');
-        $I->waitForElementVisible('.editor-post-publish-button', 10);
-        $I->click('.editor-post-publish-button');
+        $publish_text = 'Publish';
+        if (version_compare($wp_version, '5', 'ge')) {
+            $publish_text = 'Publish…';
+        }
+        if (version_compare($wp_version, '5.5', 'ge')) {
+            $publish_text = 'Publish';
+        }
+        $I->click($publish_text);
+
+        if (version_compare($wp_version, '5', 'ge')) {
+            $I->waitForElementVisible('.editor-post-publish-button', 10);
+            $I->click('.editor-post-publish-button');
+        }
+
+
         $I->waitForText('Post published.');
         $I->amOnAdminPage('edit.php');
         $I->see('Test Post');
@@ -175,8 +192,11 @@ class PostCest
         $I->waitForElementNotVisible('.js-acf-image-aspect-ratio-crop-modal', 10);
         $this->verifyImage($I, $verify_path);
         $I->click('Update');
-        $I->waitForElementVisible('.editor-post-publish-button', 10);
-        $I->click('.editor-post-publish-button');
+        global $wp_version;
+        if (version_compare($wp_version, '5', 'ge')) {
+            $I->waitForElementVisible('.editor-post-publish-button', 10);
+            $I->click('.editor-post-publish-button');
+        }
         $I->waitForText('Post updated.');
     }
 }
