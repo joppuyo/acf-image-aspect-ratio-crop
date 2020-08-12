@@ -44,7 +44,7 @@ jobs:
       run: npx wait-on http://localhost/wp-login.php --verbose && docker exec -w /var/www/html acf-image-aspect-ratio-crop_wordpress_1 wp core install --url=wordpress --title=example --admin_user=admin --admin_email=example@example.com
 
     - name: Change version
-      run: npx wait-on http://localhost/wp-login.php --verbose && docker exec -w /var/www/html acf-image-aspect-ratio-crop_wordpress_1 wp core update --version=WP_VERSION --force
+      run: npx wait-on http://localhost/wp-login.php --verbose && docker exec -w /var/www/html acf-image-aspect-ratio-crop_wordpress_1 wp core update --version=$WP_VERSION --force
 
     - name: Run test suite
       run: npx wait-on http://localhost/wp-login.php --verbose && docker exec -w /var/www/html/wp-content/plugins/acf-image-aspect-ratio-crop -e WP_ROOT_FOLDER -e TEST_SITE_WP_ADMIN_PATH -e TEST_SITE_DB_NAME -e TEST_SITE_DB_HOST -e TEST_SITE_DB_USER -e TEST_SITE_DB_PASSWORD -e TEST_SITE_DB_PASSWORD -e TEST_SITE_TABLE_PREFIX -e TEST_SITE_WP_URL -e TEST_SITE_WP_DOMAIN -e TEST_SITE_ADMIN_EMAIL -e TEST_SITE_ADMIN_USERNAME -e TEST_SITE_ADMIN_PASSWORD -e ACF_ZIP_URL -e CHROMEDRIVER_HOST -e CHROMEDRIVER_PORT -e WP_VERSION -e ACF_VERSION acf-image-aspect-ratio-crop_wordpress_1 bash -c 'mkdir -p /var/www/html/wp-content/uploads && sudo chown -R www-data:www-data /var/www/html/wp-content/uploads && sudo chmod -R 775 /var/www/html/wp-content/uploads && ./vendor/bin/codecept run acceptance --fail-fast --debug'
