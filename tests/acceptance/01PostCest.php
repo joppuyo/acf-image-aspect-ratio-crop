@@ -13,11 +13,15 @@ class PostCest
 
         if (getenv('WP_VERSION')) {
             $I->cli(['core', 'update', '--version=' . getenv('WP_VERSION'), '--force']);
-            $I->wait(10);
+            $I->wait(20);
         }
 
         $I->cli(['core', 'update-db']);
-        $I->cli(['plugin', 'install', getenv('ACF_ZIP_URL'), '--force']);
+
+        if (getenv('ACF_VERSION')) {
+            $I->cli(['plugin', 'install', "https://49tbjtl57ervo3wxw.b-cdn.net/acf/advanced-custom-fields-pro." . getenv('ACF_VERSION') . ".zip", '--force']);
+        }
+
         $I->loginAsAdmin();
         $I->amOnPluginsPage();
         $I->activatePlugin('advanced-custom-fields-pro');
