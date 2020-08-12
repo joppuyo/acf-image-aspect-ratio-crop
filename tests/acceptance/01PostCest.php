@@ -4,18 +4,13 @@ class PostCest
 {
     public function _before(AcceptanceTester $I)
     {
-        if (getenv('WP_VERSION')) {
-            $I->cli(['core', 'update', '--version=' . getenv('WP_VERSION'), '--force']);
-            $I->wait(20);
-        }
-
-        $I->cli(['core', 'update-db']);
     }
 
     // tests
     public function activateAcf(AcceptanceTester $I)
     {
         $I->cleanUploadsDir();
+        $I->cli(['core', 'update-db']);
 
         if (getenv('ACF_VERSION')) {
             $I->cli(['plugin', 'install', "https://49tbjtl57ervo3wxw.b-cdn.net/acf/advanced-custom-fields-pro." . getenv('ACF_VERSION') . ".zip", '--force']);
