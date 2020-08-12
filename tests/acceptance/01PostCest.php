@@ -58,8 +58,8 @@ class PostCest
         $I->loadSessionSnapshot('login');
         $I->amOnAdminPage('post-new.php');
         $I->fillField(version_compare($wp_version, '5.0', 'ge') ? "Add title" : "Enter title here", "Test Post");
+        $I->scrollTo('.acf-field-image-aspect-ratio-crop');
         $I->click('Add Image');
-        $I->waitForElement('.moxie-shim');
         $I->attachFile('.moxie-shim input', 'zoltan-kovacs-285132-unsplash.jpg');
         $I->waitForElementClickable('div.media-toolbar-primary.search-form > button', 30); // secs
         $I->click('div.media-toolbar-primary.search-form > button');
