@@ -7,8 +7,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        wp_version: [4.9, 5.0, 5.1, 5.2, 5.3, 5.4, 5.5]
-        acf_version: [5.8.13, 5.7.13]
+        wp_version: ["4.9", "5.0", "5.1", "5.2", "5.3", "5.4", "5.5"]
+        acf_version: ["5.8.13", "5.7.13"]
       fail-fast: false
     env:
       WP_VERSION: ${{ matrix.wp_version }}
@@ -22,6 +22,30 @@ jobs:
     - name: Install dependencies
       run: composer install --prefer-dist --no-progress --no-suggest
 
+    - name: Get Composer Cache Directory
+      id: composer-cache
+      run: |
+        echo "::set-output name=dir::$(composer config cache-files-dir)"
+    - uses: actions/cache@v2
+      with:
+        path: ${{ steps.composer-cache.outputs.dir }}
+        key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-composer-
+
+    - name: Cache node modules
+      uses: actions/cache@v2
+      env:
+        cache-name: cache-node-modules
+      with:
+        # npm cache files are stored in `~/.npm` on Linux/macOS
+        path: ~/.npm
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-build-${{ env.cache-name }}-
+          ${{ runner.os }}-build-
+          ${{ runner.os }}-
+
     - name: Install dependencies
       run: npm install
 
@@ -29,7 +53,7 @@ jobs:
       run: npx webpack -p
 
     - name: Extra NPM
-      run: npm install chromedriver@78.0.1 wait-on
+      run: npm install wait-on
 
     - name: Setup docker
       run: docker-compose up -d
@@ -41,7 +65,10 @@ jobs:
       run: docker ps -a
 
     - name: Run test suite
-      run: npx wait-on http://localhost/wp-login.php --verbose && docker exec -w /var/www/html/wp-content/plugins/acf-image-aspect-ratio-crop -e WP_ROOT_FOLDER -e TEST_SITE_WP_ADMIN_PATH -e TEST_SITE_DB_NAME -e TEST_SITE_DB_HOST -e TEST_SITE_DB_USER -e TEST_SITE_DB_PASSWORD -e TEST_SITE_DB_PASSWORD -e TEST_SITE_TABLE_PREFIX -e TEST_SITE_WP_URL -e TEST_SITE_WP_DOMAIN -e TEST_SITE_ADMIN_EMAIL -e TEST_SITE_ADMIN_USERNAME -e TEST_SITE_ADMIN_PASSWORD -e ACF_ZIP_URL -e CHROMEDRIVER_HOST -e CHROMEDRIVER_PORT -e WP_VERSION -e ACF_VERSION acf-image-aspect-ratio-crop_wordpress_1 bash -c 'mkdir -p /var/www/html/wp-content/uploads && sudo chown -R www-data:www-data /var/www/html/wp-content/uploads && sudo chmod -R 775 /var/www/html/wp-content/uploads && ./vendor/bin/codecept run acceptance --fail-fast --debug'
+      run: |
+        npx wait-on http://localhost/wp-login.php --verbose && docker exec -w /var/www/html acf-image-aspect-ratio-crop_wordpress_1 bash -c "sudo chown -R www-data:www-data /var/www/html && sudo chmod -R 775 /var/www/html && wp core install --url=wordpress --title=example --admin_user=admin --admin_email=example@example.com"
+        npx wait-on http://localhost/wp-login.php --verbose && docker exec -w /var/www/html acf-image-aspect-ratio-crop_wordpress_1 bash -c "wp core update --version=$WP_VERSION --force"
+        npx wait-on http://localhost/wp-login.php --verbose && docker exec -w /var/www/html/wp-content/plugins/acf-image-aspect-ratio-crop -e WP_ROOT_FOLDER -e TEST_SITE_WP_ADMIN_PATH -e TEST_SITE_DB_NAME -e TEST_SITE_DB_HOST -e TEST_SITE_DB_USER -e TEST_SITE_DB_PASSWORD -e TEST_SITE_DB_PASSWORD -e TEST_SITE_TABLE_PREFIX -e TEST_SITE_WP_URL -e TEST_SITE_WP_DOMAIN -e TEST_SITE_ADMIN_EMAIL -e TEST_SITE_ADMIN_USERNAME -e TEST_SITE_ADMIN_PASSWORD -e ACF_ZIP_URL -e CHROMEDRIVER_HOST -e CHROMEDRIVER_PORT -e WP_VERSION -e ACF_VERSION acf-image-aspect-ratio-crop_wordpress_1 bash -c './vendor/bin/codecept run acceptance --fail-fast --debug'
 
       env:
         WP_ROOT_FOLDER: /var/www/html
