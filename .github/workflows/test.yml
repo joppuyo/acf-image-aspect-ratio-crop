@@ -53,7 +53,7 @@ jobs:
       run: npx webpack -p
 
     - name: Extra NPM
-      run: npm install chromedriver@78.0.1 wait-on
+      run: npm install wait-on
 
     - name: Setup docker
       run: docker-compose up -d
