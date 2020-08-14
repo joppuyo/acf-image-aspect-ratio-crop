@@ -7,6 +7,7 @@
 .gitignore
 .prettierrc.js
 .distignore
+.env.testing.example
 codeception.dist.yml
 composer.lock
 docker-compose.yml
