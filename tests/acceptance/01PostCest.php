@@ -40,7 +40,7 @@ class PostCest
         $I->loadSessionSnapshot('login');
         $I->amOnAdminPage('edit.php?post_type=acf-field-group');
         $I->wait(1);
-        $I->click('#acf-field-group-wrap > a');
+        $I->click('a.page-title-action');
         $I->fillField("#title", "Post");
         $I->click('#acf-field-group-fields > div > div > ul.acf-hl.acf-tfoot > li > a');
         $I->fillField("Field Label", "Crop Image");
