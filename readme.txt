@@ -2,12 +2,11 @@
 Contributors: joppuyo
 Tags: acf, field, image, crop
 Requires at least: 4.9
-Tested up to: 5.4
-Requires PHP: 5.5
-Stable tag: trunk
+Tested up to: 5.5
+Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Stable Tag: 3.4.0
+Stable Tag: 4.0.0
 
 ACF field that allows user to crop image to a specific aspect ratio or pixel size
 
@@ -45,7 +44,7 @@ Crop can be done freely, there are no aspect ratio limitations.
 
 This ACF field type is compatible with:
 
-* ACF 5
+* ACF 5.8 or later (Pro or Free)
 
 = Thanks =
 
@@ -89,6 +88,12 @@ The other plugin is not actively maintained and does not work well with latest A
 3. Option to re-crop the image after upload
 
 == Changelog ==
+
+= 4.0.0 =
+* Breaking change: Minimum required PHP version is now 5.6
+* Breaking change: Minimum required ACF version is now 5.8. An earlier version might work but this is the earliest version that has automated tests
+* Breaking change: wp_remote_get is used instead of Guzzle when fetching remote images. This doesn't change much unless you are using filters to change the remove image fetching behavior
+* Change: Checked compatibility with WordPress 5.5
 
 = 3.4.0 =
 * Feature: Added compatibility with WPGraphQL

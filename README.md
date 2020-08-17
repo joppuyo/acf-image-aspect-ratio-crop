@@ -35,22 +35,30 @@ When crop button is pressed, the area is cropped from the original image. After 
 
 Crop can be done freely, there are no aspect ratio limitations.
 
-## Cropping an image to 16:9 aspect ratio
+## Screenshots
+
+### Cropping an image to 16:9 aspect ratio
 
 ![Screenshot of cropping an image](assets/images/screenshot-1.jpg?v=1552838494)
 
-## Cropping in progress
+### Cropping in progress
 
 ![Screenshot of cropping in progress](assets/images/screenshot-2.jpg?v=1552838494)
 
 
-## Option to re-crop the image after upload
+### Option to re-crop the image after upload
 
 ![Screenshot of the image field](assets/images/screenshot-3.png?v=1552838494)
 
 ## Download
 
 You can download the plugin from the [WordPress plugin directory](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/), or download the latest release as a zip file from [GitHub releases](https://github.com/joppuyo/acf-image-aspect-ratio-crop/releases).
+
+## Requirements
+
+* WordPress 4.9 or later
+* PHP 5.6 or later
+* Advanced Custom Fields 5.8 or later (Pro or Free)
 
 ## Frequently Asked Questions
 
