@@ -225,10 +225,13 @@ class npx_acf_plugin_image_aspect_ratio_crop
                     $url = wp_get_attachment_url($data['id']);
                     $url = apply_filters('aiarc_request_url', $url, $data['id']);
 
-                    $result = wp_remote_get($url, [
-                       'stream' => true,
-                       'filename' => $this->temp_path,
-                    ]);
+                    $request_options = [
+                        'stream' => true,
+                        'filename' => $this->temp_path,
+                        'timeout' => 25,
+                    ];
+
+                    $result = wp_remote_get($url, $request_options);
 
                     if (is_wp_error($result)) {
                         throw new Exception('Failed to save image');
