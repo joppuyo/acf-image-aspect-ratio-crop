@@ -51,32 +51,3 @@ jobs:
         files: acf-image-aspect-ratio-crop.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        
-    - name: Remove zip
-      if: startsWith(github.ref, 'refs/tags/')
-      run: rm acf-image-aspect-ratio-crop.zip
-
-    - name: Commit files
-      if: startsWith(github.ref, 'refs/tags/')
-      run: |
-        cd ..        
-        git clone https://${{ secrets.PERSONAL_ACCESS_TOKEN }}@github.com/joppuyo/acf-image-aspect-ratio-crop-packagist-release
-        cd acf-image-aspect-ratio-crop-packagist-release
-        git rm -rf .
-        git clean -fxd
-        cd ..
-        rsync -av --progress acf-image-aspect-ratio-crop/ acf-image-aspect-ratio-crop-packagist-release/ --exclude vendor/ --exclude .git/
-        git config --global user.email "johannes@siipo.la"
-        git config --global user.name "Johannes Siipola"
-        cd acf-image-aspect-ratio-crop-packagist-release
-        git add -A -f
-        git commit -m "Release ${{ steps.get_version.outputs.VERSION }}"
-        git tag "${{ steps.get_version.outputs.VERSION }}"
-        git push
-        git push --tags
-        
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
-
-    # - name: Run test suite
-    #   run: composer run-script test
