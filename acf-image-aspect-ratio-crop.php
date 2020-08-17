@@ -17,11 +17,6 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-// Check if we are using local Composer
-if (file_exists(__DIR__ . '/vendor')) {
-    require 'vendor/autoload.php';
-}
-
 class npx_acf_plugin_image_aspect_ratio_crop
 {
     // vars
@@ -227,13 +222,15 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 $temp_directory = get_temp_dir();
                 $this->temp_path = $temp_directory . $temp_name;
                 try {
-                    $guzzle = new \GuzzleHttp\Client(apply_filters('aiarc_client_options', [], $data['id']));
-                    $fetched_image = $guzzle->get(
-                        apply_filters('aiarc_request_url', wp_get_attachment_url($data['id']), $data['id']),
-                        apply_filters('aiarc_request_options', [], $data['id'])
-                    );
-                    $result = @file_put_contents($this->temp_path, $fetched_image->getBody());
-                    if ($result === false) {
+                    $url = wp_get_attachment_url($data['id']);
+                    $url = apply_filters('aiarc_request_url', $url, $data['id']);
+
+                    $result = wp_remote_get($url, [
+                       'stream' => true,
+                       'filename' => $this->temp_path,
+                    ]);
+
+                    if (is_wp_error($result)) {
                         throw new Exception('Failed to save image');
                     }
                     $image = wp_get_image_editor($this->temp_path);
