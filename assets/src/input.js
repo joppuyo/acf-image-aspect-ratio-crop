@@ -729,6 +729,7 @@ import Cropper from 'cropperjs';
 
       widthElement.prop('required', true);
       if (widthElement.val()) {
+        minWidthElement.val(widthElement.val());
         minWidthElement.attr('value', widthElement.val());
       }
 
@@ -742,6 +743,7 @@ import Cropper from 'cropperjs';
 
       heightElement.prop('required', true);
       if (heightElement.val()) {
+        minHeightElement.val(heightElement.val());
         minHeightElement.attr('value', heightElement.val());
       }
 
