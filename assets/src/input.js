@@ -492,6 +492,7 @@ import Cropper from 'cropperjs';
         zoomable: false,
         checkCrossOrigin: false,
         checkOrientation: false,
+        responsive: true,
       };
 
       if (cropType === 'pixel_size') {
@@ -546,16 +547,16 @@ import Cropper from 'cropperjs';
         ></div>
         <div class="acf-image-aspect-ratio-crop-modal-footer-buttons">
           <button
-            class="button button-link acf-image-aspect-ratio-crop-reset js-acf-image-aspect-ratio-crop-reset"
+            class="aiarc-button aiarc-button-link acf-image-aspect-ratio-crop-reset js-acf-image-aspect-ratio-crop-reset"
           >
             ${require('!raw-loader!./reset.svg')}
             ${aiarc_translations.reset}
           </button>
-          <button class="button js-acf-image-aspect-ratio-crop-cancel">
+          <button class="aiarc-button aiarc-button-default js-acf-image-aspect-ratio-crop-cancel">
             ${aiarc_translations.cancel}
           </button>
           <button
-            class="button button-primary js-acf-image-aspect-ratio-crop-crop"
+            class="aiarc-button aiarc-button-primary js-acf-image-aspect-ratio-crop-crop"
             data-id="${id}"
             data-aspect-ratio-height="${aspectRatioHeight}"
             data-aspect-ratio-width="${aspectRatioWidth}"
