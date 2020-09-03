@@ -4,7 +4,7 @@ const path = require('path');
 
 module.exports = (env, argv) => ({
   entry: {
-    'input-script': './assets/src/input.js',
+    'input-script': './assets/src/index.js',
     'input-style': './assets/src/input.scss',
   },
   output: {
