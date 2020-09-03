@@ -89,6 +89,11 @@ The other plugin is not actively maintained and does not work well with latest A
 
 == Changelog ==
 
+= 4.X.X =
+* Fix: Improve misaligned crop, edit and delete buttons on ACF 5.9
+* Fix: Use custom button styles instead of WordPress defaults. This is paving the way for front end crop since themes can't wreck havoc on the modal styles.
+* Fix: Improve cropper responsive scaling on mobile devices
+
 = 4.0.2 =
 * Fix: Removed unused vendor folder
 
