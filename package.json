@@ -15,17 +15,17 @@
     "@babel/preset-env": "^7.4.5",
     "autoprefixer": "^9.6.0",
     "babel-loader": "^8.0.6",
-    "cropperjs": "^1.5.1",
+    "cropperjs": "^1.5.7",
     "css-loader": "^2.1.1",
     "extract-loader": "^3.1.0",
     "file-loader": "^3.0.1",
     "mini-css-extract-plugin": "^0.5.0",
-    "node-sass": "^4.12.0",
+    "node-sass": "^4.14.1",
     "postcss-loader": "^3.0.0",
     "raw-loader": "^1.0.0",
     "sass-loader": "^7.1.0",
-    "webpack": "^4.35.0",
-    "webpack-cli": "^3.3.4",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
     "webpack-watch-time-plugin": "^0.3.0"
   }
 }
