@@ -469,6 +469,14 @@ class npx_acf_plugin_image_aspect_ratio_crop
             return $links;
         });
 
+        // Donate link
+        add_filter('plugin_row_meta', function ($links, $file) {
+            if ($file === plugin_basename(__FILE__)) {
+              array_push($links, '<a href="https://github.com/sponsors/joppuyo">' . esc_html__('Support development on GitHub Sponsors', 'acf-image-aspect-ratio-crop') . '</a>');
+            }
+            return $links;
+        }, 10, 2);
+
         if (!wp_next_scheduled('aiarc_delete_unused_attachments')) {
             wp_schedule_event(time(), 'daily', 'aiarc_delete_unused_attachments');
         }
