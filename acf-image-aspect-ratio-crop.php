@@ -62,6 +62,8 @@ class npx_acf_plugin_image_aspect_ratio_crop
         // include field
         add_action('acf/include_field_types', [$this, 'include_field_types']); // v5
 
+        add_action('rest_api_init', [$this, 'rest_api_init']);
+
         add_action(
             'acf/save_post',
             function ($post_id) {
@@ -836,6 +838,74 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 }
             }
         }
+    }
+
+    public function rest_api_init()
+    {
+        register_rest_route('aiarc/v1', '/upload', [
+            'methods' => 'POST',
+            'callback' => [$this, 'rest_api_upload_callback'],
+            'permission_callback' => function () {
+                return true;
+            },
+        ]);
+    }
+
+    public function rest_api_upload_callback(WP_REST_Request $data)
+    {
+        if (empty($data->get_file_params()['image'])) {
+            return new WP_Error(
+                'image_field_missing',
+                __('Image field missing', 'acf-image-aspect-ratio-crop')
+            );
+        }
+
+        // TODO: validate nonce
+
+        $file_mime = mime_content_type(
+            $data->get_file_params()['image']['tmp_name']
+        );
+
+        $allowed_mime_types = apply_filters('aiarc_allowed_mime_types', [
+            'image/jpeg',
+            'image/png',
+        ]);
+
+        if (!in_array($file_mime, $allowed_mime_types)) {
+            return new WP_Error(
+                'invalid_mime_type',
+                __('Invalid mime type', 'acf-image-aspect-ratio-crop')
+            );
+        }
+
+        $upload = wp_upload_bits(
+            $data->get_file_params()['image']['name'],
+            null,
+            file_get_contents($data->get_file_params()['image']['tmp_name'])
+        );
+        $wp_filetype = wp_check_filetype(basename($upload['file']), null);
+        $wp_upload_dir = wp_upload_dir();
+
+        $attachment = [
+            'post_mime_type' => $wp_filetype['type'],
+            'post_title' => preg_replace(
+                '/\.[^.]+$/',
+                '',
+                basename($upload['file'])
+            ),
+            'post_content' => '',
+            'post_status' => 'inherit',
+        ];
+
+        $attachment_id = wp_insert_attachment($attachment, $upload['file']);
+        require_once ABSPATH . 'wp-admin/includes/image.php';
+        $attachment_data = wp_generate_attachment_metadata(
+            $attachment_id,
+            $upload['file']
+        );
+        wp_update_attachment_metadata($attachment_id, $attachment_data);
+
+        return new WP_REST_Response(['attachment_id' => $attachment_id]);
     }
 }
 
