@@ -1,0 +1,108 @@
+body {
+    &.version-4-9,
+    &.version-5-0,
+    &.version-5-1,
+    &.version-5-2 {
+        .acf-image-aspect-ratio-crop-modal {
+            .aiarc-button-primary {
+                display: inline-block;
+                text-decoration: none;
+                font-size: 13px;
+                line-height: 26px;
+                height: 28px;
+                padding: 0 10px 1px;
+                cursor: pointer;
+                border-width: 1px;
+                border-style: solid;
+                -webkit-appearance: none;
+                border-radius: 3px;
+                white-space: nowrap;
+                box-sizing: border-box;
+
+                /* Primary buttons styles */
+                background: #0085ba;
+                border-color: #0073aa #006799 #006799;
+                box-shadow: 0 1px 0 #006799;
+                color: #fff;
+                text-decoration: none;
+                text-shadow: 0 -1px 1px #006799, 1px 0 1px #006799,
+                    0 1px 1px #006799, -1px 0 1px #006799;
+
+                /* Primary buttons :hover styles */
+                &:focus,
+                &:hover {
+                    background: #008ec2;
+                    border-color: #006799;
+                    color: #fff;
+                }
+                /* Primary buttons :focus styles */
+                &:focus {
+                    box-shadow: 0 1px 0 #0073aa, 0 0 2px 1px #33b3db;
+                }
+            }
+
+            .aiarc-button-default {
+                display: inline-block;
+                text-decoration: none;
+                font-size: 13px;
+                line-height: 26px;
+                height: 28px;
+                padding: 0 10px 1px;
+                cursor: pointer;
+                border-width: 1px;
+                border-style: solid;
+                -webkit-appearance: none;
+                border-radius: 3px;
+                white-space: nowrap;
+                box-sizing: border-box;
+
+                color: #555;
+                border-color: #ccc;
+                background: #f7f7f7;
+                box-shadow: 0 1px 0 #ccc;
+                vertical-align: top;
+
+                /* Secondary buttons :hover styles */
+                &:focus,
+                &:hover,
+                &:focus {
+                    background: #fafafa;
+                    border-color: #999;
+                    color: #23282d;
+                }
+
+                /* Secondary buttons :focus styles */
+                &:focus,
+                &:focus {
+                    border-color: #5b9dd9;
+                    box-shadow: 0 0 3px rgba(0, 115, 170, 0.8);
+                }
+            }
+
+            .aiarc-button-link {
+                margin: 0;
+                padding: 0;
+                box-shadow: none;
+                border: 0;
+                border-radius: 0;
+                background: 0 0;
+                cursor: pointer;
+                text-align: left;
+                color: #0073aa;
+                transition-property: border, background, color;
+                transition-duration: 0.05s;
+                transition-timing-function: ease-in-out;
+                svg {
+                    fill: #0073aa;
+                }
+                &:hover,
+                &:active {
+                    color: #00a0d2;
+                    svg {
+                        fill: #00a0d2;
+                    }
+                }
+            }
+        }
+    }
+}
