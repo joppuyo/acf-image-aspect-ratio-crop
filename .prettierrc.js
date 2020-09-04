@@ -6,6 +6,8 @@ module.exports = {
       files: ['*.php'],
       options: {
         trailingComma: 'all',
+        trailingCommaPHP: true,
+        phpVersion: '5.6',
       },
     },
   ],
