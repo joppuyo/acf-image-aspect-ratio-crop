@@ -7,7 +7,9 @@
   "private": false,
   "devDependencies": {
     "@prettier/plugin-php": "github:prettier/plugin-php",
-    "prettier": "^1.18.2"
+    "husky": "^4.2.5",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^3.0.0"
   },
   "dependencies": {
     "@babel/core": "^7.4.5",
@@ -27,5 +29,10 @@
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-watch-time-plugin": "^0.3.0"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
   }
 }
