@@ -342,6 +342,10 @@
         &:disabled svg {
             fill: #828282;
         }
+        &:hover svg {
+            fill: #0071a1;
+            fill: var(--wp-admin-theme-color-darker-10, #0071a1);
+        }
     }
 
     .acf-image-aspect-ratio-crop-reset svg {
@@ -385,6 +389,13 @@
             text-shadow: none !important;
             cursor: default;
         }
+        &:hover {
+            background: #f1f1f1;
+            color: #016087;
+            color: var(--wp-admin-theme-color-darker-20, #016087);
+            border-color: #016087;
+            border-color: var(--wp-admin-theme-color-darker-20, #016087);
+        }
     }
     .aiarc-button-primary {
         display: block;
@@ -409,6 +420,13 @@
         color: #fff;
         text-decoration: none;
         text-shadow: none;
+        &:hover {
+            background: #0071a1;
+            background: var(--wp-admin-theme-color-darker-10, #0071a1);
+            border-color: #0071a1;
+            border-color: var(--wp-admin-theme-color-darker-10, #0071a1);
+            color: #fff;
+        }
         &:disabled {
             color: #a0a5aa !important;
             background: #f7f7f7 !important;
@@ -441,6 +459,10 @@
         padding-right: 10px;
         margin-left: -10px;
         margin-right: -10px;
+        &:hover {
+            color: #0071a1;
+            color: var(--wp-admin-theme-color-darker-10, #0071a1);
+        }
         &:disabled {
             color: #828282;
         }
