@@ -90,6 +90,9 @@ The other plugin is not actively maintained and does not work well with latest A
 
 == Changelog ==
 
+= 4.0.4 =
+* Change: Update screenshots to reflect latest plugin and WordPress versions
+
 = 4.0.3 =
 * Change: Update dependencies
 * Fix: Improve misaligned crop, edit and delete buttons on ACF 5.9
