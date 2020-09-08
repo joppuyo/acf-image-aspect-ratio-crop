@@ -15,6 +15,7 @@ class Acceptance extends \Codeception\Module
         $width,
         $height
     ) {
+        global $wp_version;
         $I->waitForElementVisible(
             '.acf-image-uploader-aspect-ratio-crop div img',
             10
