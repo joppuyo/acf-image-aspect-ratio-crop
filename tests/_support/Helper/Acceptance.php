@@ -24,11 +24,11 @@ class Acceptance extends \Codeception\Module
         );
         $I->click('.acf-icon.-pencil.dark');
         $I->waitForJqueryAjax();
-        // This changed in WP 5.3
-        try {
+        $url = null; 
+        if(version_compare($wp_version, '5.3', 'ge')) {
             $I->waitForElementVisible('#attachment-details-copy-link');
             $url = $I->grabValueFrom('#attachment-details-copy-link');
-        } catch (Exception $exception) {
+        } else {
             $I->waitForElementVisible('label[data-setting="url"] input');
             $url = $I->grabValueFrom('label[data-setting="url"] input');
         }
