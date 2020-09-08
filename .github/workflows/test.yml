@@ -92,7 +92,7 @@ jobs:
       uses: actions/upload-artifact@v1.0.0
       with:
         # Artifact name
-        name: Test output
+        name: Test output ${{ matrix.wp_version }} ${{ matrix.acf_version }}
         # Directory containing files to upload
         path: tests/_output/
 
