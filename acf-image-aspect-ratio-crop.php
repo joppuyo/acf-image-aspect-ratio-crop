@@ -174,247 +174,8 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
             $data = json_decode($post['data'], true);
 
-            $image_data = apply_filters(
-                'aiarc_image_data',
-                wp_get_attachment_metadata($data['id']),
-                $data['id']
-            );
+            $attachment_id = $this->create_crop($data);
 
-            // If the difference between the images is less than half a percentage, use the original image
-            // prettier-ignore
-            if ($image_data['height'] - $data['height'] < $image_data['height'] * 0.005 &&
-                $image_data['width'] - $data['width'] < $image_data['width'] * 0.005 &&
-                $data['cropType'] !== 'pixel_size'
-            ) {
-                wp_send_json(['id' => $data['id']]);
-                wp_die();
-            }
-
-            do_action('aiarc_pre_customize_upload_dir');
-
-            $media_dir = apply_filters(
-                'aiarc_upload_dir',
-                wp_upload_dir(),
-                $data['id']
-            );
-
-            do_action('aiarc_after_customize_upload_dir');
-
-            // WP Smush compat: use original image if it exists
-            $file = $media_dir['basedir'] . '/' . $image_data['file'];
-            $parts = explode('.', $file);
-            $extension = array_pop($parts);
-            $backup_file = implode('.', $parts) . '.bak.' . $extension;
-
-            $image = null;
-            $scaled_data = null;
-            if (
-                file_exists($file) &&
-                function_exists('wp_get_original_image_path') &&
-                wp_get_original_image_path($data['id']) &&
-                wp_get_original_image_path($data['id']) !== $file
-            ) {
-                // Handle the new asinine feature in WP 5.3 which resizes images without asking the user. We want the
-                // original image so we do original_image -> crop instead or original_image -> resized_image -> crop
-                $resized_image = wp_get_image_editor($file);
-                $image = wp_get_image_editor(
-                    wp_get_original_image_path($data['id'])
-                );
-                $resized_width = $resized_image->get_size()['width'];
-                $original_width = $image->get_size()['width'];
-
-                // Get the scale
-                $scale = $original_width / $resized_width;
-
-                // Clone data array
-                $scaled_data = $data;
-
-                // Scale crop coordinates to fit larger image
-                $scaled_data['x'] = floor($data['x'] * $scale);
-                $scaled_data['y'] = floor($data['y'] * $scale);
-                $scaled_data['width'] = floor($data['width'] * $scale);
-                $scaled_data['height'] = floor($data['height'] * $scale);
-            } elseif (file_exists($backup_file)) {
-                $image = wp_get_image_editor($backup_file);
-            } elseif (file_exists($file)) {
-                $image = wp_get_image_editor($file);
-            } else {
-                // Let's attempt to get the file by URL
-                $temp_name = wp_generate_uuid4();
-                $temp_directory = get_temp_dir();
-                $this->temp_path = $temp_directory . $temp_name;
-                try {
-                    $url = wp_get_attachment_url($data['id']);
-                    $url = apply_filters(
-                        'aiarc_request_url',
-                        $url,
-                        $data['id']
-                    );
-
-                    $request_options = [
-                        'stream' => true,
-                        'filename' => $this->temp_path,
-                        'timeout' => 25,
-                    ];
-
-                    $result = wp_remote_get($url, $request_options);
-
-                    if (is_wp_error($result)) {
-                        throw new Exception('Failed to save image');
-                    }
-                    $image = wp_get_image_editor($this->temp_path);
-                } catch (Exception $exception) {
-                    $this->cleanup();
-                    wp_send_json('Failed fetch remote image', 500);
-                    wp_die();
-                }
-            }
-
-            if (is_wp_error($image)) {
-                $this->cleanup();
-                $this->debug($image);
-                wp_send_json('Failed to open image', 500);
-                wp_die();
-            }
-
-            // Use scaled coordinates if we have those
-            $this->crop($image, $scaled_data ? $scaled_data : $data);
-
-            if ($data['cropType'] === 'pixel_size') {
-                $image->resize(
-                    $data['aspectRatioWidth'],
-                    $data['aspectRatioHeight'],
-                    true
-                );
-            }
-
-            // Retrieve original filename and seperate it from its file extension
-            $original_file_name = explode('.', basename($image_data['file']));
-
-            // Retrieve and remove file extension from array
-            $original_file_extension = array_pop($original_file_name);
-
-            $width = $data['aspectRatioWidth'];
-            $height = $data['aspectRatioHeight'];
-
-            $this->debug($data['cropType']);
-
-            if ($data['cropType'] === 'free_crop') {
-                $width = $data['width'];
-                $height = $data['height'];
-            }
-
-            // Generate new base filename
-            $target_file_name =
-                implode('.', $original_file_name) .
-                '-aspect-ratio-' .
-                $width .
-                '-' .
-                $height .
-                '.' .
-                $original_file_extension;
-
-            // Generate target path new file using existing media library
-            $target_file_path =
-                $media_dir['path'] .
-                '/' .
-                wp_unique_filename($media_dir['path'], $target_file_name);
-
-            // Get the relative path to save as the actual image url
-            $target_relative_path = str_replace(
-                $media_dir['basedir'] . '/',
-                '',
-                $target_file_path
-            );
-
-            //$save = $image->save('test.jpg');
-            $save = $image->save($target_file_path);
-            if (is_wp_error($save)) {
-                $this->cleanup();
-                wp_send_json('Failed to crop', 500);
-                wp_die();
-            }
-
-            $wp_filetype = wp_check_filetype($target_relative_path, null);
-
-            $attachment = [
-                'post_mime_type' => $wp_filetype['type'],
-                'post_title' => preg_replace(
-                    '/\.[^.]+$/',
-                    '',
-                    $target_file_name
-                ),
-                'post_content' => '',
-                'post_status' => 'publish',
-            ];
-
-            $attachment_id = wp_insert_attachment(
-                $attachment,
-                $target_relative_path
-            );
-
-            if (is_wp_error($attachment_id)) {
-                $this->cleanup();
-                wp_send_json('Failed to save attachment', 500);
-                wp_die();
-            }
-
-            require_once ABSPATH . 'wp-admin' . '/includes/image.php';
-            $attachment_data = wp_generate_attachment_metadata(
-                $attachment_id,
-                $target_file_path
-            );
-            wp_update_attachment_metadata($attachment_id, $attachment_data);
-            add_post_meta(
-                $attachment_id,
-                'acf_image_aspect_ratio_crop',
-                true,
-                true
-            );
-            add_post_meta(
-                $attachment_id,
-                'acf_image_aspect_ratio_crop_original_image_id',
-                $data['id'],
-                true
-            );
-            add_post_meta(
-                $attachment_id,
-                'acf_image_aspect_ratio_crop_coordinates',
-                [
-                    'x' => $data['x'],
-                    'y' => $data['y'],
-                    'width' => $data['width'],
-                    'height' => $data['height'],
-                ],
-                true
-            );
-
-            /* Timestamp so we can purge unattached crop attachments periodically after specific time
-             (like a week or so) */
-            add_post_meta(
-                $attachment_id,
-                'acf_image_aspect_ratio_crop_timestamp',
-                (new DateTime())->format('U'),
-                true
-            );
-
-            $this->debug('data');
-            $this->debug($data);
-
-            $this->debug('temp post id');
-            $this->debug($data['temp_post_id']);
-
-            add_post_meta(
-                $attachment_id,
-                'acf_image_aspect_ratio_crop_temp_post_id',
-                $data['temp_post_id'],
-                true
-            );
-
-            // WPML compat
-            do_action('wpml_sync_all_custom_fields', $attachment_id);
-
-            $this->cleanup();
             wp_send_json(['id' => $attachment_id]);
             wp_die();
         });
@@ -849,6 +610,23 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 return true;
             },
         ]);
+        register_rest_route('aiarc/v1', '/crop', [
+            'methods' => 'POST',
+            'callback' => [$this, 'rest_api_crop_callback'],
+            'permission_callback' => function () {
+                return true;
+            },
+        ]);
+    }
+
+    public function rest_api_crop_callback(WP_REST_Request $data)
+    {
+        // TODO: validate nonce
+        $parameters = $data->get_json_params();
+        $attachment_id = $this->create_crop($parameters);
+        return [
+            'id' => $attachment_id,
+        ];
     }
 
     public function rest_api_upload_callback(WP_REST_Request $data)
@@ -906,6 +684,248 @@ class npx_acf_plugin_image_aspect_ratio_crop
         wp_update_attachment_metadata($attachment_id, $attachment_data);
 
         return new WP_REST_Response(['attachment_id' => $attachment_id]);
+    }
+
+    /**
+     * @param $data
+     * @return array
+     */
+    public function create_crop($data)
+    {
+        $image_data = apply_filters(
+            'aiarc_image_data',
+            wp_get_attachment_metadata($data['id']),
+            $data['id']
+        );
+
+        // If the difference between the images is less than half a percentage, use the original image
+        // prettier-ignore
+        if ($image_data['height'] - $data['height'] < $image_data['height'] * 0.005 &&
+            $image_data['width'] - $data['width'] < $image_data['width'] * 0.005 &&
+            $data['cropType'] !== 'pixel_size'
+        ) {
+            wp_send_json(['id' => $data['id']]);
+            wp_die();
+        }
+
+        do_action('aiarc_pre_customize_upload_dir');
+
+        $media_dir = apply_filters(
+            'aiarc_upload_dir',
+            wp_upload_dir(),
+            $data['id']
+        );
+
+        do_action('aiarc_after_customize_upload_dir');
+
+        // WP Smush compat: use original image if it exists
+        $file = $media_dir['basedir'] . '/' . $image_data['file'];
+        $parts = explode('.', $file);
+        $extension = array_pop($parts);
+        $backup_file = implode('.', $parts) . '.bak.' . $extension;
+
+        $image = null;
+        $scaled_data = null;
+        if (
+            file_exists($file) &&
+            function_exists('wp_get_original_image_path') &&
+            wp_get_original_image_path($data['id']) &&
+            wp_get_original_image_path($data['id']) !== $file
+        ) {
+            // Handle the new asinine feature in WP 5.3 which resizes images without asking the user. We want the
+            // original image so we do original_image -> crop instead or original_image -> resized_image -> crop
+            $resized_image = wp_get_image_editor($file);
+            $image = wp_get_image_editor(
+                wp_get_original_image_path($data['id'])
+            );
+            $resized_width = $resized_image->get_size()['width'];
+            $original_width = $image->get_size()['width'];
+
+            // Get the scale
+            $scale = $original_width / $resized_width;
+
+            // Clone data array
+            $scaled_data = $data;
+
+            // Scale crop coordinates to fit larger image
+            $scaled_data['x'] = floor($data['x'] * $scale);
+            $scaled_data['y'] = floor($data['y'] * $scale);
+            $scaled_data['width'] = floor($data['width'] * $scale);
+            $scaled_data['height'] = floor($data['height'] * $scale);
+        } elseif (file_exists($backup_file)) {
+            $image = wp_get_image_editor($backup_file);
+        } elseif (file_exists($file)) {
+            $image = wp_get_image_editor($file);
+        } else {
+            // Let's attempt to get the file by URL
+            $temp_name = wp_generate_uuid4();
+            $temp_directory = get_temp_dir();
+            $this->temp_path = $temp_directory . $temp_name;
+            try {
+                $url = wp_get_attachment_url($data['id']);
+                $url = apply_filters('aiarc_request_url', $url, $data['id']);
+
+                $request_options = [
+                    'stream' => true,
+                    'filename' => $this->temp_path,
+                    'timeout' => 25,
+                ];
+
+                $result = wp_remote_get($url, $request_options);
+
+                if (is_wp_error($result)) {
+                    throw new Exception('Failed to save image');
+                }
+                $image = wp_get_image_editor($this->temp_path);
+            } catch (Exception $exception) {
+                $this->cleanup();
+                wp_send_json('Failed fetch remote image', 500);
+                wp_die();
+            }
+        }
+
+        if (is_wp_error($image)) {
+            $this->cleanup();
+            $this->debug($image);
+            wp_send_json('Failed to open image', 500);
+            wp_die();
+        }
+
+        // Use scaled coordinates if we have those
+        $this->crop($image, $scaled_data ? $scaled_data : $data);
+
+        if ($data['cropType'] === 'pixel_size') {
+            $image->resize(
+                $data['aspectRatioWidth'],
+                $data['aspectRatioHeight'],
+                true
+            );
+        }
+
+        // Retrieve original filename and seperate it from its file extension
+        $original_file_name = explode('.', basename($image_data['file']));
+
+        // Retrieve and remove file extension from array
+        $original_file_extension = array_pop($original_file_name);
+
+        $width = $data['aspectRatioWidth'];
+        $height = $data['aspectRatioHeight'];
+
+        $this->debug($data['cropType']);
+
+        if ($data['cropType'] === 'free_crop') {
+            $width = $data['width'];
+            $height = $data['height'];
+        }
+
+        // Generate new base filename
+        $target_file_name =
+            implode('.', $original_file_name) .
+            '-aspect-ratio-' .
+            $width .
+            '-' .
+            $height .
+            '.' .
+            $original_file_extension;
+
+        // Generate target path new file using existing media library
+        $target_file_path =
+            $media_dir['path'] .
+            '/' .
+            wp_unique_filename($media_dir['path'], $target_file_name);
+
+        // Get the relative path to save as the actual image url
+        $target_relative_path = str_replace(
+            $media_dir['basedir'] . '/',
+            '',
+            $target_file_path
+        );
+
+        //$save = $image->save('test.jpg');
+        $save = $image->save($target_file_path);
+        if (is_wp_error($save)) {
+            $this->cleanup();
+            wp_send_json('Failed to crop', 500);
+            wp_die();
+        }
+
+        $wp_filetype = wp_check_filetype($target_relative_path, null);
+
+        $attachment = [
+            'post_mime_type' => $wp_filetype['type'],
+            'post_title' => preg_replace('/\.[^.]+$/', '', $target_file_name),
+            'post_content' => '',
+            'post_status' => 'publish',
+        ];
+
+        $attachment_id = wp_insert_attachment(
+            $attachment,
+            $target_relative_path
+        );
+
+        if (is_wp_error($attachment_id)) {
+            $this->cleanup();
+            wp_send_json('Failed to save attachment', 500);
+            wp_die();
+        }
+
+        require_once ABSPATH . 'wp-admin' . '/includes/image.php';
+        $attachment_data = wp_generate_attachment_metadata(
+            $attachment_id,
+            $target_file_path
+        );
+        wp_update_attachment_metadata($attachment_id, $attachment_data);
+        add_post_meta(
+            $attachment_id,
+            'acf_image_aspect_ratio_crop',
+            true,
+            true
+        );
+        add_post_meta(
+            $attachment_id,
+            'acf_image_aspect_ratio_crop_original_image_id',
+            $data['id'],
+            true
+        );
+        add_post_meta(
+            $attachment_id,
+            'acf_image_aspect_ratio_crop_coordinates',
+            [
+                'x' => $data['x'],
+                'y' => $data['y'],
+                'width' => $data['width'],
+                'height' => $data['height'],
+            ],
+            true
+        );
+
+        /* Timestamp so we can purge unattached crop attachments periodically after specific time
+         (like a week or so) */
+        add_post_meta(
+            $attachment_id,
+            'acf_image_aspect_ratio_crop_timestamp',
+            (new DateTime())->format('U'),
+            true
+        );
+
+        $this->debug('data');
+        $this->debug($data);
+
+        $this->debug('temp post id');
+        $this->debug($data['temp_post_id']);
+
+        add_post_meta(
+            $attachment_id,
+            'acf_image_aspect_ratio_crop_temp_post_id',
+            $data['temp_post_id'],
+            true
+        );
+
+        // WPML compat
+        do_action('wpml_sync_all_custom_fields', $attachment_id);
+
+        $this->cleanup();
+        return $attachment_id;
     }
 }
 
