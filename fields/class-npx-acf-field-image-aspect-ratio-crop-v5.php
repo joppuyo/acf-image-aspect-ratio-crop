@@ -83,9 +83,14 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         $this->temp_post_id = wp_generate_uuid4();
 
         // Store temporary post id in a hidden field
-        add_action('acf/input/form_data', function () {
-            echo "<input type='hidden' name='aiarc_temp_post_id' value='$this->temp_post_id'>";
-        }, 10, 1);
+        add_action(
+            'acf/input/form_data',
+            function () {
+                echo "<input type='hidden' name='aiarc_temp_post_id' value='$this->temp_post_id'>";
+            },
+            10,
+            1
+        );
 
         // filters
         add_filter('get_media_item_args', [$this, 'get_media_item_args']);
@@ -163,7 +168,10 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'name' => 'crop_type',
             'class' => 'crop-type-select',
             'choices' => [
-                'aspect_ratio' => __('Aspect ratio', 'acf-image-aspect-ratio-crop'),
+                'aspect_ratio' => __(
+                    'Aspect ratio',
+                    'acf-image-aspect-ratio-crop'
+                ),
                 'pixel_size' => __('Pixel size', 'acf-image-aspect-ratio-crop'),
                 'free_crop' => __('Free crop', 'acf-image-aspect-ratio-crop'),
             ],
@@ -179,7 +187,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                 'field' => 'crop_type',
                 'operator' => '!=',
                 'value' => 'free_crop',
-            ]
+            ],
         ]);
 
         acf_render_field_setting($field, [
@@ -192,7 +200,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                 'field' => 'crop_type',
                 'operator' => '!=',
                 'value' => 'free_crop',
-            ]
+            ],
         ]);
 
         // return_format
@@ -357,8 +365,18 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'data-mime_types' => $field['mime_types'],
             'data-uploader' => $uploader,
             'data-crop_type' => $field['crop_type'],
-            'data-aspect_ratio_width' => array_key_exists('aspect_ratio_width', $field) ? $field['aspect_ratio_width'] : 0,
-            'data-aspect_ratio_height' => array_key_exists('aspect_ratio_height', $field) ? $field['aspect_ratio_height'] : 0,
+            'data-aspect_ratio_width' => array_key_exists(
+                'aspect_ratio_width',
+                $field
+            )
+                ? $field['aspect_ratio_width']
+                : 0,
+            'data-aspect_ratio_height' => array_key_exists(
+                'aspect_ratio_height',
+                $field
+            )
+                ? $field['aspect_ratio_height']
+                : 0,
         ];
 
         $image_id = null;
@@ -366,7 +384,6 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 
         // has value?
         if ($field['value']) {
-
             if (is_numeric($field['value'])) {
                 $image_id = $field['value'];
                 $original = get_post_meta(
@@ -379,7 +396,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                 // Retrieves the image from that plugin which it has saved inside JSON encoded value.
                 // Thanks to https://github.com/carlblock
                 $backwards_compatible_json = json_decode($field['value']);
-                if(
+                if (
                     $backwards_compatible_json !== null &&
                     isset($backwards_compatible_json->original_image) &&
                     isset($backwards_compatible_json->cropped_image)
@@ -407,11 +424,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                 $image_id,
                 $field['preview_size']
             );
-            $alt = get_post_meta(
-                $image_id,
-                '_wp_attachment_image_alt',
-                true
-            );
+            $alt = get_post_meta($image_id, '_wp_attachment_image_alt', true);
 
             $coordinates = get_post_meta(
                 $image_id,
@@ -455,10 +468,9 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                     $url
                 ); ?>" alt="<?php echo esc_attr($alt); ?>"/>
                 <div class="acf-actions -hover">
-                    <?php if (
-                        $uploader != 'basic'
-                    ): ?><a class="acf-icon -crop dark" data-name="crop" href="#"
-                             title="<?php _e('Crop', 'acf'); ?>"></a>
+                    <a class="acf-icon -crop dark" data-name="crop" href="#"
+                       title="<?php _e('Crop', 'acf'); ?>"></a>
+                    <?php if ($uploader != 'basic'): ?>
                     <a class="acf-icon -pencil dark" data-name="edit" href="#"
                        title="<?php _e(
                            'Edit',
@@ -470,23 +482,26 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             <div class="hide-if-value">
                 <?php if ($uploader == 'basic'): ?>
 
-                    <?php if (
-                        $image_id &&
-                        !is_numeric($image_id)
-                    ): ?>
+                <!-- basic uploader start -->
+
+                <!-- <?php echo $field['name']; ?> -->
+                <!-- <?php echo $field['id']; ?> -->
+
+                <input type="file" class="aiarc-upload js-aiarc-upload" data-id="<?php echo $field[
+                    'name'
+                ]; ?>" accept="image/*">
+
+                    <?php if ($image_id && !is_numeric($image_id)): ?>
                         <div class="acf-error-message"><p><?php echo acf_esc_html(
                             $image_id
                         ); ?></p></div>
                     <?php endif; ?>
 
-                    <label class="acf-basic-uploader">
-                        <?php acf_file_input([
-                            'name' => $field['name'],
-                            'id' => $field['id'],
-                        ]); ?>
-                    </label>
+                    <!-- basic uploader end -->
 
                 <?php else: ?>
+
+                    <!-- advanced uploader start -->
 
                     <p><?php _e(
                         'No image selected',
@@ -496,6 +511,8 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                                                                        'Add Image',
                                                                        'acf'
                                                                    ); ?></a></p>
+
+                    <!-- advanced uploader end -->
 
                 <?php endif; ?>
             </div>
@@ -527,7 +544,11 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'acf-image-aspect-ratio-crop',
             "{$url}assets/dist/input-script.js",
             ['acf-input'],
-            WP_DEBUG ? md5_file($this->settings['path'] . '/assets/dist/input-script.js') : $version
+            WP_DEBUG
+                ? md5_file(
+                    $this->settings['path'] . '/assets/dist/input-script.js'
+                )
+                : $version
         );
         $translation_array = [
             'cropping_in_progress' => __(
@@ -560,18 +581,18 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'aiarc_translations',
             $translation_array
         );
-        wp_localize_script(
-            'acf-image-aspect-ratio-crop',
-            'aiarc',
-            $data_array
-        );
+        wp_localize_script('acf-image-aspect-ratio-crop', 'aiarc', $data_array);
 
         wp_enqueue_script('acf-image-aspect-ratio-crop');
         wp_register_style(
             'acf-image-aspect-ratio-crop',
             "{$url}assets/dist/input-style.css",
             ['acf-input'],
-            WP_DEBUG ? md5_file($this->settings['path'] . '/assets/dist/input-style.css') : $version
+            WP_DEBUG
+                ? md5_file(
+                    $this->settings['path'] . '/assets/dist/input-style.css'
+                )
+                : $version
         );
         wp_enqueue_style('acf-image-aspect-ratio-crop');
     }
@@ -833,7 +854,10 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         // Retrieves the image from that plugin which it has saved inside JSON encoded value.
         if (is_numeric($value)) {
             $image_id = $value;
-        } else if (json_decode($value) !== false && !empty(json_decode($value)->cropped_image)) {
+        } elseif (
+            json_decode($value) !== false &&
+            !empty(json_decode($value)->cropped_image)
+        ) {
             $image_id = json_decode($value)->cropped_image;
         }
 
@@ -858,7 +882,9 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                     'acf_image_aspect_ratio_crop_original_image_id'
                 );
                 if (count($original)) {
-                    $output['original_image'] = acf_get_attachment($original[0]);
+                    $output['original_image'] = acf_get_attachment(
+                        $original[0]
+                    );
                 }
             }
 

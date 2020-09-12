@@ -16,6 +16,7 @@
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
     "autoprefixer": "^9.6.0",
+    "axios": "^0.20.0",
     "babel-loader": "^8.0.6",
     "cropperjs": "^1.5.7",
     "css-loader": "^2.1.1",
