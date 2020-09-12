@@ -617,6 +617,35 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 return true;
             },
         ]);
+        register_rest_route('aiarc/v1', '/get/(?P<id>\d+)', [
+            'methods' => 'GET',
+            'callback' => [$this, 'rest_api_get_callback'],
+            'args' => ['id'],
+            'permission_callback' => function () {
+                return true;
+            },
+        ]);
+    }
+
+    public function rest_api_get_callback(WP_REST_Request $data)
+    {
+        // TODO: validate nonce
+        $attachment_id = $data->get_param('id');
+
+        $attachment = get_post($attachment_id);
+
+        if (!$attachment) {
+            wp_send_json_error(
+                new WP_Error(
+                    'attachment_not_found',
+                    __('Attachment not found', 'acf-image-aspect-ratio-crop')
+                ),
+                404
+            );
+        }
+
+        $attachment = wp_prepare_attachment_for_js($attachment);
+        return new WP_REST_Response($attachment);
     }
 
     public function rest_api_crop_callback(WP_REST_Request $data)
