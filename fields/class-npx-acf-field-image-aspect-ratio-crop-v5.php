@@ -487,6 +487,8 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                 <!-- <?php echo $field['name']; ?> -->
                 <!-- <?php echo $field['id']; ?> -->
 
+                <div class="js-aiarc-upload-progress" style="display: none"></div>
+
                 <input type="file" class="aiarc-upload js-aiarc-upload" data-id="<?php echo $field[
                     'name'
                 ]; ?>" accept="image/*">
