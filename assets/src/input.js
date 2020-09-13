@@ -103,29 +103,72 @@ import { Model } from 'backbone';
 
         uploadElement.value = '';
 
-        axios.post('/wp-json/aiarc/v1/upload', formData).then(response => {
-          $(field)
-            .find('input')
-            .first()
-            .val(response.data.attachment_id);
+        var settings = {
+          onUploadProgress: progressEvent => {
+            console.log(progressEvent);
+            var percentCompleted = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total,
+            );
 
-          let $field = this.$field;
+            console.log(this.$el);
 
-          // Add original id attribute to the image so we can recrop it right away without saving the post
-          $field
-            .find('.acf-image-uploader-aspect-ratio-crop')
-            .data('original-image-id', response.data.attachment_id)
-            .attr('data-original-image-id', response.data.attachment_id);
+            this.$el
+              .find('.js-aiarc-upload-progress')
+              .html('Uploading image. Progress ' + percentCompleted + '%.'); // TODO: i18n
+          },
+        };
 
-          axios
-            .get(`/wp-json/aiarc/v1/get/${response.data.attachment_id}`)
-            .then(response => {
-              let attachment = new Backbone.Model(response.data);
+        $(this.$el)
+          .find('.js-aiarc-upload')
+          .hide();
 
-              this.render(attachment);
-              self.openModal({ attachment: attachment, field: $field });
-            });
-        });
+        $(this.$el)
+          .find('.js-aiarc-upload-progress')
+          .show();
+
+        axios
+          .post('/wp-json/aiarc/v1/upload', formData, settings)
+          .then(response => {
+            $(field)
+              .find('input')
+              .first()
+              .val(response.data.attachment_id);
+
+            $(this.$el)
+              .find('.js-aiarc-upload-progress')
+              .hide();
+
+            $(this.$el)
+              .find('.js-aiarc-upload')
+              .show();
+
+            let $field = this.$field;
+
+            // Add original id attribute to the image so we can recrop it right away without saving the post
+            $field
+              .find('.acf-image-uploader-aspect-ratio-crop')
+              .data('original-image-id', response.data.attachment_id)
+              .attr('data-original-image-id', response.data.attachment_id);
+
+            axios
+              .get(`/wp-json/aiarc/v1/get/${response.data.attachment_id}`)
+              .then(response => {
+                let attachment = new Backbone.Model(response.data);
+
+                this.render(attachment);
+                self.openModal({ attachment: attachment, field: $field });
+              });
+          })
+          .catch(() => {
+            $(this.$el)
+              .find('.js-aiarc-upload-progress')
+              .hide();
+
+            $(this.$el)
+              .find('.js-aiarc-upload')
+              .show();
+            window.alert('Failed to upload image'); // TODO: i18n
+          });
       });
 
       // Basic upload form end
