@@ -90,6 +90,13 @@ The other plugin is not actively maintained and does not work well with latest A
 
 == Changelog ==
 
+= 5.0.0-beta1 =
+* Breaking change: REST API is now used for cropping image instead of admin-ajax
+* Feature: Added frontend image crop. Please be aware of the following limitations:
+  * It’s currently not possible to limit upload file size for front-end uploads
+  * It’s currently not possible to to limit file format for front-end uploads. JPEG, PNG and GIF images are allowed
+  * It’s currently not possible to limit height and width for front-end uploads. This means that pixel crop images may be smaller than the target but they will still have the correct aspect ratio.
+
 = 4.0.5 =
 * Fix: Bump version
 
