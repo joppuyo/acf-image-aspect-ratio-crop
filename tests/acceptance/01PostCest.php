@@ -11,6 +11,7 @@ class PostCest
     {
         $I->cleanUploadsDir();
         $I->cli(['core', 'update-db']);
+        $I->cli(['rewrite', 'flush']);
 
         if (getenv('ACF_VERSION')) {
             $I->cli([
