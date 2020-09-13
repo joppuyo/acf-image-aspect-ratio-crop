@@ -646,10 +646,6 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
         $attachment = wp_prepare_attachment_for_js($attachment);
 
-        // This is some weird Backbone model stuff I don't understand
-
-        $attachment['attributes'] = $attachment;
-
         return new WP_REST_Response($attachment);
     }
 

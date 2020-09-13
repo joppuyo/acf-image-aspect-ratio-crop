@@ -6,6 +6,7 @@
 
 import Cropper from 'cropperjs';
 import axios from 'axios';
+import { Model } from 'backbone';
 
 (function($) {
   var field = null;
@@ -83,8 +84,14 @@ import axios from 'axios';
       // Basic upload form start
 
       $(document).on('change', '.js-aiarc-upload', event => {
-        let files = event.currentTarget.files;
+        let uploadElement = event.currentTarget;
+
+        console.log(event.currentTarget);
+
+        let files = uploadElement.files;
         let formData = new FormData();
+
+        this.isFirstCrop = true;
 
         if (!files.length) {
           return;
@@ -94,12 +101,13 @@ import axios from 'axios';
           formData.append('image', files[index], files[index].name);
         });
 
+        uploadElement.value = '';
+
         axios.post('/wp-json/aiarc/v1/upload', formData).then(response => {
           $(field)
             .find('input')
+            .first()
             .val(response.data.attachment_id);
-
-          event.currentTarget.value = '';
 
           let $field = this.$field;
 
@@ -112,9 +120,10 @@ import axios from 'axios';
           axios
             .get(`/wp-json/aiarc/v1/get/${response.data.attachment_id}`)
             .then(response => {
-              response.data._valid = true;
-              this.render(response.data);
-              self.openModal({ attachment: response.data, field: $field });
+              let attachment = new Backbone.Model(response.data);
+
+              this.render(attachment);
+              self.openModal({ attachment: attachment, field: $field });
             });
         });
       });
@@ -253,11 +262,11 @@ import axios from 'axios';
         data = attachment.attributes;
 
         // maybe get preview size
-        data.url = acf.maybe_get(
-          data,
-          'sizes.' + this.o.preview_size + '.url',
-          data.url,
-        );
+        //data.url = acf.maybe_get(
+        //  data,
+        //  'sizes.' + this.o.preview_size + '.url',
+        //  data.url,
+        //);
       }
 
       // valid
@@ -282,7 +291,12 @@ import axios from 'axios';
 
     render: function(data) {
       // prepare
+
+      console.log(data);
+
       data = this.prepare(data);
+
+      console.log(data);
 
       // update image
       this.$img.attr({
@@ -385,7 +399,7 @@ import axios from 'axios';
             }
           }
 
-          self.isFirstCrop = true;
+          this.isFirstCrop = true;
 
           // Add original id attribute to the image so we can recrop it right away without saving the post
           $field
@@ -408,9 +422,9 @@ import axios from 'axios';
         .data('original-image-id');
 
       axios.get(`/wp-json/aiarc/v1/get/${originalImageId}`).then(response => {
-        response.data._valid = true;
+        let attachment = new Model(response.data);
         let $field = this.$field;
-        this.openModal({ attachment: response.data, field: $field });
+        this.openModal({ attachment: attachment, field: $field });
       });
     },
 
@@ -635,8 +649,10 @@ import axios from 'axios';
         .val(data.id);
 
       axios.get(`/wp-json/aiarc/v1/get/${data.id}`).then(response => {
-        response.data._valid = true;
-        this.render(response.data);
+        let attachment = new Backbone.Model(response.data);
+
+        this.render(attachment);
+        this.isFirstCrop = false;
         this.closeModal();
       });
     },
