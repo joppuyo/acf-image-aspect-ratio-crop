@@ -581,6 +581,10 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         $data_array = [
             'temp_post_id' => $this->temp_post_id,
             'nonce' => wp_create_nonce('aiarc'),
+            // This thing is required because WordPress is weird and not having this makes
+            // verify_nonce always return false when the API is called on the admin side
+            // https://stackoverflow.com/questions/41878315/wp-ajax-nonce-works-when-logged-out-but-not-when-logged-in
+            'wp_rest_nonce' => wp_create_nonce('wp_rest'),
         ];
         wp_localize_script(
             'acf-image-aspect-ratio-crop',

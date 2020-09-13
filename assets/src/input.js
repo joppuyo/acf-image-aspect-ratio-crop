@@ -123,6 +123,7 @@ import { sprintf } from 'sprintf-js';
           },
           headers: {
             'X-Aiarc-Nonce': window.aiarc.nonce,
+            'X-WP-Nonce': window.aiarc.wp_rest_nonce,
           },
         };
 
@@ -251,6 +252,7 @@ import { sprintf } from 'sprintf-js';
           let options = {
             headers: {
               'X-Aiarc-Nonce': window.aiarc.nonce,
+              'X-WP-Nonce': window.aiarc.wp_rest_nonce,
             },
           };
 
