@@ -972,7 +972,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
                     'nonce_missing',
                     __('Nonce missing', 'acf-image-aspect-ratio-crop')
                 ),
-                404
+                400
             );
         }
 
@@ -982,7 +982,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
                     'invalid_nonce',
                     __('Invalid nonce', 'acf-image-aspect-ratio-crop')
                 ),
-                404
+                400
             );
         }
     }
