@@ -651,7 +651,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
     public function rest_api_crop_callback(WP_REST_Request $data)
     {
-        // TODO: validate nonce
+        $this->rest_api_check_nonce($data);
         $parameters = $data->get_json_params();
         $attachment_id = $this->create_crop($parameters);
         return [
@@ -661,14 +661,14 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
     public function rest_api_upload_callback(WP_REST_Request $data)
     {
+        $this->rest_api_check_nonce($data);
+
         if (empty($data->get_file_params()['image'])) {
             return new WP_Error(
                 'image_field_missing',
                 __('Image field missing', 'acf-image-aspect-ratio-crop')
             );
         }
-
-        // TODO: validate nonce
 
         $file_mime = mime_content_type(
             $data->get_file_params()['image']['tmp_name']
@@ -677,6 +677,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
         $allowed_mime_types = apply_filters('aiarc_allowed_mime_types', [
             'image/jpeg',
             'image/png',
+            'image/gif',
         ]);
 
         if (!in_array($file_mime, $allowed_mime_types)) {
@@ -956,6 +957,34 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
         $this->cleanup();
         return $attachment_id;
+    }
+
+    /**
+     * @param WP_REST_Request $data
+     */
+    public function rest_api_check_nonce(WP_REST_Request $data)
+    {
+        $nonce = $data->get_header('X-Aiarc-Nonce');
+
+        if (empty($nonce)) {
+            wp_send_json_error(
+                new WP_Error(
+                    'nonce_missing',
+                    __('Nonce missing', 'acf-image-aspect-ratio-crop')
+                ),
+                404
+            );
+        }
+
+        if (!wp_verify_nonce($nonce, 'aiarc')) {
+            wp_send_json_error(
+                new WP_Error(
+                    'invalid_nonce',
+                    __('Invalid nonce', 'acf-image-aspect-ratio-crop')
+                ),
+                404
+            );
+        }
     }
 }
 

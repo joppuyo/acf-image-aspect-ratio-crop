@@ -491,7 +491,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 
                 <input type="file" class="aiarc-upload js-aiarc-upload" data-id="<?php echo $field[
                     'name'
-                ]; ?>" accept="image/*">
+                ]; ?>" accept="image/jpeg,image/png,image/gif">
 
                     <?php if ($image_id && !is_numeric($image_id)): ?>
                         <div class="acf-error-message"><p><?php echo acf_esc_html(
@@ -565,6 +565,14 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'cancel' => __('Cancel', 'acf-image-aspect-ratio-crop'),
             'modal_title' => __('Crop image', 'acf-image-aspect-ratio-crop'),
             'reset' => __('Reset crop', 'acf-image-aspect-ratio-crop'),
+            'upload_progress' => __(
+                'Uploading image. Progress %d%%.',
+                'acf-image-aspect-ratio-crop'
+            ),
+            'upload_failed' => __(
+                'Uploading image. Progress %d%%.',
+                'acf-image-aspect-ratio-crop'
+            ),
         ];
         $settings_array = [
             'modal_type' => $this->settings['user_settings']['modal_type'],
@@ -572,6 +580,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 
         $data_array = [
             'temp_post_id' => $this->temp_post_id,
+            'nonce' => wp_create_nonce('aiarc'),
         ];
         wp_localize_script(
             'acf-image-aspect-ratio-crop',

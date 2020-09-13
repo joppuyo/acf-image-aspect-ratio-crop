@@ -7,6 +7,7 @@
 import Cropper from 'cropperjs';
 import axios from 'axios';
 import { Model } from 'backbone';
+import { sprintf } from 'sprintf-js';
 
 (function($) {
   var field = null;
@@ -103,10 +104,9 @@ import { Model } from 'backbone';
 
         uploadElement.value = '';
 
-        var settings = {
+        let settings = {
           onUploadProgress: progressEvent => {
-            console.log(progressEvent);
-            var percentCompleted = Math.round(
+            let percentCompleted = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total,
             );
 
@@ -114,7 +114,15 @@ import { Model } from 'backbone';
 
             this.$el
               .find('.js-aiarc-upload-progress')
-              .html('Uploading image. Progress ' + percentCompleted + '%.'); // TODO: i18n
+              .html(
+                sprintf(
+                  window.aiarc_translations.upload_progress,
+                  percentCompleted,
+                ),
+              );
+          },
+          headers: {
+            'X-Aiarc-Nonce': window.aiarc.nonce,
           },
         };
 
@@ -167,7 +175,7 @@ import { Model } from 'backbone';
             $(this.$el)
               .find('.js-aiarc-upload')
               .show();
-            window.alert('Failed to upload image'); // TODO: i18n
+            window.alert(window.aiarc_translations.upload_failed);
           });
       });
 
@@ -240,8 +248,14 @@ import { Model } from 'backbone';
           );
           self.cropper.disable();
 
+          let options = {
+            headers: {
+              'X-Aiarc-Nonce': window.aiarc.nonce,
+            },
+          };
+
           axios
-            .post('/wp-json/aiarc/v1/crop', data)
+            .post('/wp-json/aiarc/v1/crop', data, options)
             .then(response => {
               self.cropComplete(response.data);
               $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);

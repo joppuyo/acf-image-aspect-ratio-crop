@@ -29,6 +29,7 @@
     "postcss-loader": "^3.0.0",
     "raw-loader": "^1.0.0",
     "sass-loader": "^7.1.0",
+    "sprintf-js": "^1.1.2",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-watch-time-plugin": "^0.3.0"
