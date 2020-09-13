@@ -6,7 +6,8 @@ Tested up to: 5.5
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Stable Tag: 4.0.2
+Donate link: https://github.com/sponsors/joppuyo
+Stable Tag: 4.0.5
 
 ACF field that allows user to crop image to a specific aspect ratio or pixel size
 
@@ -89,9 +90,16 @@ The other plugin is not actively maintained and does not work well with latest A
 
 == Changelog ==
 
-= 4.X.X =
+= 4.0.5 =
+* Fix: Bump version
+
+= 4.0.4 =
+* Change: Update screenshots to reflect latest plugin and WordPress versions
+
+= 4.0.3 =
+* Change: Update dependencies
 * Fix: Improve misaligned crop, edit and delete buttons on ACF 5.9
-* Fix: Use custom button styles instead of WordPress defaults. This is paving the way for front end crop since themes can't wreck havoc on the modal styles.
+* Fix: Use custom button styles instead of WordPress defaults. This is paving the way for front end crop since themes can't wreak havoc on the modal styles.
 * Fix: Improve cropper responsive scaling on mobile devices
 
 = 4.0.2 =

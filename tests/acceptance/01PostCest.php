@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 class PostCest
 {
@@ -13,7 +13,14 @@ class PostCest
         $I->cli(['core', 'update-db']);
 
         if (getenv('ACF_VERSION')) {
-            $I->cli(['plugin', 'install', "https://49tbjtl57ervo3wxw.b-cdn.net/acf/advanced-custom-fields-pro." . getenv('ACF_VERSION') . ".zip", '--force']);
+            $I->cli([
+                'plugin',
+                'install',
+                'https://49tbjtl57ervo3wxw.b-cdn.net/acf/advanced-custom-fields-pro.' .
+                getenv('ACF_VERSION') .
+                '.zip',
+                '--force',
+            ]);
         }
 
         $I->loginAsAdmin();
@@ -41,13 +48,15 @@ class PostCest
         $I->amOnAdminPage('edit.php?post_type=acf-field-group');
         $I->wait(1);
         $I->click('a.page-title-action');
-        $I->fillField("#title", "Post");
-        $I->click('#acf-field-group-fields > div > div > ul.acf-hl.acf-tfoot > li > a');
-        $I->fillField("Field Label", "Crop Image");
+        $I->fillField('#title', 'Post');
+        $I->click(
+            '#acf-field-group-fields > div > div > ul.acf-hl.acf-tfoot > li > a'
+        );
+        $I->fillField('Field Label', 'Crop Image');
         $I->selectOption('Field Type', 'Image Aspect Ratio Crop');
-        $I->waitForText("Width");
-        $I->fillField("Width", "16");
-        $I->fillField("Height", "9");
+        $I->waitForText('Width');
+        $I->fillField('Width', '16');
+        $I->fillField('Height', '9');
         $I->scrollTo('#submitdiv');
         $I->click('Publish');
     }
@@ -57,17 +66,38 @@ class PostCest
         global $wp_version;
         $I->loadSessionSnapshot('login');
         $I->amOnAdminPage('post-new.php');
-        $I->fillField(version_compare($wp_version, '5.0', 'ge') ? "Add title" : "Enter title here", "Test Post");
+        $I->fillField(
+            version_compare($wp_version, '5.0', 'ge')
+                ? 'Add title'
+                : 'Enter title here',
+            'Test Post'
+        );
         $I->scrollTo('.acf-field-image-aspect-ratio-crop');
         $I->click('Add Image');
-        $I->attachFile('.moxie-shim input', 'zoltan-kovacs-285132-unsplash.jpg');
-        $I->waitForElementClickable('div.media-toolbar-primary.search-form > button', 30); // secs
+        $I->attachFile(
+            '.moxie-shim input',
+            'zoltan-kovacs-285132-unsplash.jpg'
+        );
+        $I->waitForElementClickable(
+            'div.media-toolbar-primary.search-form > button',
+            30
+        ); // secs
         $I->click('div.media-toolbar-primary.search-form > button');
         $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 10);
         $I->waitForElementVisible('.cropper-crop-box', 10);
         $I->click('.js-acf-image-aspect-ratio-crop-crop');
-        $I->waitForElementNotVisible('.js-acf-image-aspect-ratio-crop-modal', 10);
-        $this->verifyImage($I, version_compare($wp_version, '5.3', 'ge') ? 'cropped-scaled.jpg' : 'cropped.jpg');
+        $I->waitForElementNotVisible(
+            '.js-acf-image-aspect-ratio-crop-modal',
+            10
+        );
+        $I->verifyImage(
+            $I,
+            version_compare($wp_version, '5.3', 'ge')
+                ? 'cropped-scaled.jpg'
+                : 'cropped.jpg',
+            16,
+            9
+        );
         $publish_text = 'Publish';
         if (version_compare($wp_version, '5', 'ge')) {
             $publish_text = 'Publish…';
@@ -82,7 +112,6 @@ class PostCest
             $I->click('.editor-post-publish-button');
         }
 
-
         $I->waitForText('Post published.');
         $I->amOnAdminPage('edit.php');
         $I->see('Test Post');
@@ -94,47 +123,26 @@ class PostCest
         $I->loadSessionSnapshot('login');
         $I->amOnAdminPage('edit.php');
         $I->click('Test Post');
-        $this->verifyImage($I, version_compare($wp_version, '5.3', 'ge') ? 'cropped-scaled.jpg' : 'cropped.jpg');
-    }
-
-    private function verifyImage(AcceptanceTester $I, $comparison_image)
-    {
-        $I->waitForElementVisible('.acf-image-uploader-aspect-ratio-crop div img', 10);
-        $I->moveMouseOver('.acf-field.acf-field-image-aspect-ratio-crop div img');
-        $I->click('.acf-icon.-pencil.dark');
-        $I->waitForJqueryAjax();
-        // This changed in WP 5.3
-        try {
-            $I->waitForElementVisible('#attachment-details-copy-link');
-            $url = $I->grabValueFrom('#attachment-details-copy-link');
-        } catch (Exception $exception) {
-            $I->waitForElementVisible('label[data-setting="url"] input');
-            $url = $I->grabValueFrom('label[data-setting="url"] input');
-        }
-        // Image path is sometimes thumbnail???
-
-        $filename = $I->grabTextFrom('.filename');
-
-        $url = explode('/', $url);
-        array_pop($url);
-        array_push($url, $filename);
-        $url = implode('/', $url);
-
-        codecept_debug($filename);
-        PHPUnit_Framework_Assert::assertContains('-aspect-ratio-16-9', $url);
-        PHPUnit_Framework_Assert::assertEquals(
-            json_encode(getimagesize(__DIR__ . "../../_data/$comparison_image")),
-            json_encode(getimagesize($url))
+        $I->verifyImage(
+            $I,
+            version_compare($wp_version, '5.3', 'ge')
+                ? 'cropped-scaled.jpg'
+                : 'cropped.jpg',
+            16,
+            9
         );
-        $I->click('button.media-modal-close');
     }
 
-    public function updateImageFirst(AcceptanceTester $I) {
+    public function updateImageFirst(AcceptanceTester $I)
+    {
         global $wp_version;
         $I->loadSessionSnapshot('login');
-        $this->updateImage($I,
+        $this->updateImage(
+            $I,
             'sylwia-pietruszka-nPCiBaK8WPk-unsplash.jpg',
-            version_compare($wp_version, '5.3', 'ge') ? 'cropped-2-scaled.jpg' : 'cropped-2.jpg'
+            version_compare($wp_version, '5.3', 'ge')
+                ? 'cropped-2-scaled.jpg'
+                : 'cropped-2.jpg'
         );
         $I->wait(10);
         $I->amOnAdminPage('upload.php?mode=list');
@@ -142,26 +150,37 @@ class PostCest
         $extra = version_compare($wp_version, '5.3', 'ge') ? '-scaled' : '';
 
         $I->see("zoltan-kovacs-285132-unsplash$extra.jpg");
-        $I->see("zoltan-kovacs-285132-unsplash$extra-aspect-ratio-16-9$extra.jpg");
+        $I->see(
+            "zoltan-kovacs-285132-unsplash$extra-aspect-ratio-16-9$extra.jpg"
+        );
         $I->see("sylwia-pietruszka-nPCiBaK8WPk-unsplash$extra.jpg");
-        $I->see("sylwia-pietruszka-nPCiBaK8WPk-unsplash$extra-aspect-ratio-16-9$extra.jpg");
+        $I->see(
+            "sylwia-pietruszka-nPCiBaK8WPk-unsplash$extra-aspect-ratio-16-9$extra.jpg"
+        );
     }
 
-    public function enableUnusedImageDeletion(AcceptanceTester $I) {
+    public function enableUnusedImageDeletion(AcceptanceTester $I)
+    {
         $I->loadSessionSnapshot('login');
         $I->amOnPluginsPage();
-        $I->click('a[href="options-general.php?page=acf-image-aspect-ratio-crop"]');
+        $I->click(
+            'a[href="options-general.php?page=acf-image-aspect-ratio-crop"]'
+        );
         $I->see('Delete unused cropped images');
         $I->click('#delete_unused_true');
         $I->click('Save');
     }
 
-    public function updateImageSecond(AcceptanceTester $I) {
+    public function updateImageSecond(AcceptanceTester $I)
+    {
         global $wp_version;
         $I->loadSessionSnapshot('login');
-        $this->updateImage($I,
+        $this->updateImage(
+            $I,
             'jonas-morgner-sNoWQv4ts3I-unsplash.jpg',
-            version_compare($wp_version, '5.3', 'ge') ? 'cropped-3-scaled.jpg' : 'cropped-3.jpg'
+            version_compare($wp_version, '5.3', 'ge')
+                ? 'cropped-3-scaled.jpg'
+                : 'cropped-3.jpg'
         );
         $I->wait(10);
         $I->amOnAdminPage('upload.php?mode=list');
@@ -169,27 +188,42 @@ class PostCest
         $extra = version_compare($wp_version, '5.3', 'ge') ? '-scaled' : '';
 
         $I->see("jonas-morgner-sNoWQv4ts3I-unsplash$extra.jpg");
-        $I->see("jonas-morgner-sNoWQv4ts3I-unsplash$extra-aspect-ratio-16-9$extra.jpg");
+        $I->see(
+            "jonas-morgner-sNoWQv4ts3I-unsplash$extra-aspect-ratio-16-9$extra.jpg"
+        );
         $I->see("zoltan-kovacs-285132-unsplash$extra.jpg");
-        $I->dontSee("zoltan-kovacs-285132-unsplash$extra-aspect-ratio-16-9$extra.jpg");
+        $I->dontSee(
+            "zoltan-kovacs-285132-unsplash$extra-aspect-ratio-16-9$extra.jpg"
+        );
         $I->see("sylwia-pietruszka-nPCiBaK8WPk-unsplash$extra.jpg");
-        $I->dontSee("sylwia-pietruszka-nPCiBaK8WPk-unsplash$extra-aspect-ratio-16-9$extra.jpg");
+        $I->dontSee(
+            "sylwia-pietruszka-nPCiBaK8WPk-unsplash$extra-aspect-ratio-16-9$extra.jpg"
+        );
     }
 
-    private function updateImage(AcceptanceTester $I, $image_path, $verify_path) {
+    private function updateImage(AcceptanceTester $I, $image_path, $verify_path)
+    {
         $I->amOnAdminPage('edit.php');
         $I->click('Test Post');
-        $I->moveMouseOver('.acf-field.acf-field-image-aspect-ratio-crop div img');
+        $I->moveMouseOver(
+            '.acf-field.acf-field-image-aspect-ratio-crop div img'
+        );
         $I->click('.acf-icon.-cancel.dark');
         $I->click('Add Image');
         $I->attachFile('.moxie-shim input', $image_path);
-        $I->waitForElementClickable('div.media-toolbar-primary.search-form > button', 10); // secs
+        $I->waitForElementClickable(
+            'div.media-toolbar-primary.search-form > button',
+            10
+        ); // secs
         $I->click('div.media-toolbar-primary.search-form > button');
         $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 10);
         $I->waitForElementVisible('.cropper-crop-box', 10);
         $I->click('.js-acf-image-aspect-ratio-crop-crop');
-        $I->waitForElementNotVisible('.js-acf-image-aspect-ratio-crop-modal', 10);
-        $this->verifyImage($I, $verify_path);
+        $I->waitForElementNotVisible(
+            '.js-acf-image-aspect-ratio-crop-modal',
+            10
+        );
+        $I->verifyImage($I, $verify_path, 16, 9);
         $I->click('Update');
         global $wp_version;
         if (version_compare($wp_version, '5', 'ge')) {

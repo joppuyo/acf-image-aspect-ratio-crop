@@ -40,16 +40,15 @@ Crop can be done freely, there are no aspect ratio limitations.
 
 ### Cropping an image to 16:9 aspect ratio
 
-![Screenshot of cropping an image](assets/images/screenshot-1.jpg?v=1552838494)
+![Screenshot of cropping an image](./.wordpress-org/screenshot-1.jpg)
 
 ### Cropping in progress
 
-![Screenshot of cropping in progress](assets/images/screenshot-2.jpg?v=1552838494)
-
+![Screenshot of cropping in progress](./.wordpress-org/screenshot-2.jpg)
 
 ### Option to re-crop the image after upload
 
-![Screenshot of the image field](assets/images/screenshot-3.png?v=1552838494)
+![Screenshot of the image field](./.wordpress-org/screenshot-3.jpg)
 
 ## Download
 
@@ -57,17 +56,17 @@ You can download the plugin from the [WordPress plugin directory](https://wordpr
 
 ## Requirements
 
-* WordPress 4.9 or later
-* PHP 5.6 or later
-* Advanced Custom Fields 5.8 or later (Pro or Free)
+- WordPress 4.9 or later
+- PHP 5.6 or later
+- Advanced Custom Fields 5.8 or later (Pro or Free)
 
 ## Frequently Asked Questions
 
-###  Can I use this plugin with a front-end acf_form?
+### Can I use this plugin with a front-end acf_form?
 
-Unfortunately this is not supported right now since the plugin requires `upload_files` capability to access the media library. If user does not have this permission, a basic upload dialog will be displayed without a cropper. You can enable cropping by assigning  `upload_files`  capability to the user role but this means that users are able to access the media library like admin users. I will look into implementing front-end form cropping without needing this capability in a future release of this plugin.
+Unfortunately this is not supported right now since the plugin requires `upload_files` capability to access the media library. If user does not have this permission, a basic upload dialog will be displayed without a cropper. You can enable cropping by assigning `upload_files` capability to the user role but this means that users are able to access the media library like admin users. I will look into implementing front-end form cropping without needing this capability in a future release of this plugin.
 
-### Can I access metadata in the original image from a cropped image? 
+### Can I access metadata in the original image from a cropped image?
 
 Yes, the original image data is saved under `original_image` key in the returned ACF array. You can access data such as alt text, description and title this way.
 

@@ -24,7 +24,7 @@ modules:
       populate: true
       # re-import the dump between tests; this means the test site database will be repopulated between the tests.
       cleanup: false
-      waitlock: 10
+      waitlock: 20
       url: '%TEST_SITE_WP_URL%'
       urlReplacement: true #replace the hardcoded dump URL with the one above
       tablePrefix: '%TEST_SITE_TABLE_PREFIX%'
