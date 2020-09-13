@@ -637,8 +637,8 @@ import { Model } from 'backbone';
       // Save coordinates so they are remembered even without saving the post first
       $(field)
         .find('.acf-image-uploader-aspect-ratio-crop')
-        .data('coordinates', this.cropper.getData())
-        .attr('data-coordinates', JSON.stringify(this.cropper.getData()));
+        .data('coordinates', this.cropper.getData(true))
+        .attr('data-coordinates', JSON.stringify(this.cropper.getData(true)));
 
       // Cropping successful, change image to cropped version
       this.cropper.destroy();
