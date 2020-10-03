@@ -11,17 +11,6 @@ class PixelSizeCest
     {
         $I->cleanUploadsDir();
         $I->cli(['core', 'update-db']);
-
-        if (getenv('ACF_VERSION')) {
-            $I->cli([
-                'plugin',
-                'install',
-                'https://49tbjtl57ervo3wxw.b-cdn.net/acf/advanced-custom-fields-pro.' .
-                getenv('ACF_VERSION') .
-                '.zip',
-                '--force',
-            ]);
-        }
         $I->dontHavePostInDatabase([]);
         $I->loginAsAdmin();
         $I->amOnPluginsPage();
