@@ -6,7 +6,6 @@ namespace Helper;
 
 use AcceptanceTester;
 use PHPUnit\Framework\Assert;
-use PHPUnit_Framework_Assert;
 
 class Acceptance extends \Codeception\Module
 {
@@ -44,10 +43,7 @@ class Acceptance extends \Codeception\Module
         $url = implode('/', $url);
 
         codecept_debug($filename);
-        PHPUnit_Framework_Assert::assertContains(
-            "-aspect-ratio-$width-$height",
-            $url
-        );
+        Assert::assertContains("-aspect-ratio-$width-$height", $url);
 
         $image_1_size = getimagesize(
             __DIR__ . "../../../_data/$comparison_image"
