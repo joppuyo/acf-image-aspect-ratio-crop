@@ -90,6 +90,9 @@ The other plugin is not actively maintained and does not work well with latest A
 
 == Changelog ==
 
+= 4.0.6 (2020-10-03) =
+* Fix: Issue where image is incorrectly cropped if image has EXIF rotation and exceeds big image threshold
+
 = 4.0.5 =
 * Fix: Bump version
 
