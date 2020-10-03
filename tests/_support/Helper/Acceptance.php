@@ -47,11 +47,19 @@ class Acceptance extends \Codeception\Module
             "-aspect-ratio-$width-$height",
             $url
         );
-        PHPUnit_Framework_Assert::assertEquals(
-            json_encode(
-                getimagesize(__DIR__ . "../../../_data/$comparison_image")
-            ),
-            json_encode(getimagesize($url))
+        
+        $image_1_size = getimagesize(__DIR__ . "../../../_data/$comparison_image");
+        $image_2_size = $url;
+        
+        PHPUnit_Framework_Assert::assertEqualsWithDelta(
+            $image_1_size[0],
+            $image_2_size[0],
+            2
+        );
+        PHPUnit_Framework_Assert::assertEqualsWithDelta(
+            $image_1_size[1],
+            $image_2_size[1],
+            2
         );
         $I->click('button.media-modal-close');
     }
