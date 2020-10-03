@@ -218,6 +218,14 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 $image = wp_get_image_editor(
                     wp_get_original_image_path($data['id'])
                 );
+
+                // Handle case with EXIF rotation where image size exceeds big_image_size_threshold
+                // so the scaled image is rotated but original is not. Rotate original before
+                // calculating co-ordinates and performing crop.
+                // https://wordpress.org/support/topic/srgb-image-turned-into-1x1-white-image/
+                if (method_exists($image, 'maybe_exif_rotate')) {
+                    $image->maybe_exif_rotate();
+                }
                 $resized_width = $resized_image->get_size()['width'];
                 $original_width = $image->get_size()['width'];
 
