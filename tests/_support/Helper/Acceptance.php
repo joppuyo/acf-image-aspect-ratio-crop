@@ -5,6 +5,7 @@ namespace Helper;
 // all public methods declared in helper class will be available in $I
 
 use AcceptanceTester;
+use PHPUnit\Framework\Assert;
 use PHPUnit_Framework_Assert;
 
 class Acceptance extends \Codeception\Module
@@ -25,8 +26,8 @@ class Acceptance extends \Codeception\Module
         );
         $I->click('.acf-icon.-pencil.dark');
         $I->waitForJqueryAjax();
-        $url = null; 
-        if(version_compare($wp_version, '5.3', 'ge')) {
+        $url = null;
+        if (version_compare($wp_version, '5.3', 'ge')) {
             $I->waitForElementVisible('#attachment-details-copy-link');
             $url = $I->grabValueFrom('#attachment-details-copy-link');
         } else {
@@ -47,20 +48,14 @@ class Acceptance extends \Codeception\Module
             "-aspect-ratio-$width-$height",
             $url
         );
-        
-        $image_1_size = getimagesize(__DIR__ . "../../../_data/$comparison_image");
+
+        $image_1_size = getimagesize(
+            __DIR__ . "../../../_data/$comparison_image"
+        );
         $image_2_size = $url;
-        
-        $I->assertEqualsWithDelta(
-            $image_1_size[0],
-            $image_2_size[0],
-            2
-        );
-        $I->assertEqualsWithDelta(
-            $image_1_size[1],
-            $image_2_size[1],
-            2
-        );
+
+        Assert::assertEquals($image_1_size[0], $image_2_size[0], '', 2);
+        Assert::assertEquals($image_1_size[1], $image_2_size[1], '', 2);
         $I->click('button.media-modal-close');
     }
 }
