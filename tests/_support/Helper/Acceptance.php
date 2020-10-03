@@ -52,7 +52,7 @@ class Acceptance extends \Codeception\Module
         $image_1_size = getimagesize(
             __DIR__ . "../../../_data/$comparison_image"
         );
-        $image_2_size = $url;
+        $image_2_size = getimagesize($url);
 
         Assert::assertEquals($image_1_size[0], $image_2_size[0], '', 2);
         Assert::assertEquals($image_1_size[1], $image_2_size[1], '', 2);
