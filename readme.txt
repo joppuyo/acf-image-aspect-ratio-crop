@@ -7,7 +7,7 @@ Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://github.com/sponsors/joppuyo
-Stable Tag: 4.0.6
+Stable Tag: 4.1.0
 
 ACF field that allows user to crop image to a specific aspect ratio or pixel size
 
@@ -98,32 +98,36 @@ The other plugin is not actively maintained and does not work well with latest A
 
 == Changelog ==
 
+= 4.1.0 (2020-10-07) =
+* Feature: Add `aiarc_jpeg_quality` filter to change crop JPEG quality
+* Fix: Remove unnecessarily verbose debugging
+
 = 4.0.6 (2020-10-03) =
 * Fix: Issue where image is incorrectly cropped if image has EXIF rotation and exceeds big image threshold
 
-= 4.0.5 =
+= 4.0.5 (2020-09-06) =
 * Fix: Bump version
 
-= 4.0.4 =
+= 4.0.4 (2020-09-06) =
 * Change: Update screenshots to reflect latest plugin and WordPress versions
 
-= 4.0.3 =
+= 4.0.3 (2020-09-05) =
 * Change: Update dependencies
 * Fix: Improve misaligned crop, edit and delete buttons on ACF 5.9
 * Fix: Use custom button styles instead of WordPress defaults. This is paving the way for front end crop since themes can't wreak havoc on the modal styles.
 * Fix: Improve cropper responsive scaling on mobile devices
 
-= 4.0.2 =
+= 4.0.2 (2020-08-17) =
 * Fix: Removed unused vendor folder
 
-= 3.4.1 =
+= 3.4.1 (2020-08-17) =
 * Fix: Fixed issue where min height and width are not set when using pixel size (Backported from v4.0.1)
 
-= 4.0.1 =
+= 4.0.1 (2020-08-17) =
 * Fix: Fixed issue where min height and width are not set when using pixel size
 * Fix: Increase remote GET timeout from 5 seconds to 25 seconds
 
-= 4.0.0 =
+= 4.0.0 (2020-08-17) =
 * Breaking change: Minimum required PHP version is now 5.6
 * Breaking change: Minimum required ACF version is now 5.8. An earlier version might work but this is the earliest version that has automated tests
 * Breaking change: wp_remote_get is used instead of Guzzle when fetching remote images. This doesn't change much unless you are using filters to change the remove image fetching behavior
