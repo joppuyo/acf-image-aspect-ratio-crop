@@ -70,6 +70,14 @@ Unfortunately this is not supported right now since the plugin requires `upload_
 
 Yes, the original image data is saved under `original_image` key in the returned ACF array. You can access data such as alt text, description and title this way.
 
+### Can I use this plugin with Elementor?
+
+No, not really. Elementor only supports built-in ACF fields. Please contact Elementor support and ask them to add support for 3rd party fields. For some workarounds for limited Elementor support, see this [post](https://wordpress.org/support/topic/excellent-plugin-5518/).
+
+### Can I use this plugin with Beaver Builder?
+
+No, not really. Beaver Builder only supports built-in ACF fields. Please contact Beaver Builder support and ask them to add support for 3rd party fields. However, there is a work around this limitation by using a plugin called "Toolbox For Beaver Builder". Please [see their website](https://beaverplugins.com/) for more details.
+
 ### How is this different from the other plugin?
 
 This plugin is similar to [Advanced Custom Fields: Image Crop Add-on](https://wordpress.org/plugins/acf-image-crop-add-on/). I originally created a fork of that plugin to add functionality I need: specifying an aspect ratio instead of pixel size. Unfortunately the plugin doesn't seem to be maintained anymore so my pull request was not merged.
