@@ -65,10 +65,6 @@ class npx_acf_plugin_image_aspect_ratio_crop
         add_action(
             'acf/save_post',
             function ($post_id) {
-                $this->debug('post_id');
-                $this->debug($post_id);
-                $this->debug('POST');
-                $this->debug($_POST);
 
                 if ($post_id === 'options' && !empty($_GET['page'])) {
                     // Options page needs an unique id
@@ -303,8 +299,6 @@ class npx_acf_plugin_image_aspect_ratio_crop
             $width = $data['aspectRatioWidth'];
             $height = $data['aspectRatioHeight'];
 
-            $this->debug($data['cropType']);
-
             if ($data['cropType'] === 'free_crop') {
                 $width = $data['width'];
                 $height = $data['height'];
@@ -403,12 +397,6 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 (new DateTime())->format('U'),
                 true
             );
-
-            $this->debug('data');
-            $this->debug($data);
-
-            $this->debug('temp post id');
-            $this->debug($data['temp_post_id']);
 
             add_post_meta(
                 $attachment_id,
