@@ -65,7 +65,6 @@ class npx_acf_plugin_image_aspect_ratio_crop
         add_action(
             'acf/save_post',
             function ($post_id) {
-
                 if ($post_id === 'options' && !empty($_GET['page'])) {
                     // Options page needs an unique id
                     $post_id = $_GET['page'];
@@ -200,6 +199,8 @@ class npx_acf_plugin_image_aspect_ratio_crop
             $extension = array_pop($parts);
             $backup_file = implode('.', $parts) . '.bak.' . $extension;
 
+            add_filter('jpeg_quality', [$this, 'jpeg_quality']);
+
             $image = null;
             $scaled_data = null;
             if (
@@ -327,8 +328,9 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 $target_file_path
             );
 
-            //$save = $image->save('test.jpg');
             $save = $image->save($target_file_path);
+            remove_filter('jpeg_quality', [$this, 'jpeg_quality']);
+
             if (is_wp_error($save)) {
                 $this->cleanup();
                 wp_send_json('Failed to crop', 500);
@@ -832,6 +834,11 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 }
             }
         }
+    }
+
+    public function jpeg_quality($jpeg_quality)
+    {
+        return apply_filters('aiarc_jpeg_quality', $jpeg_quality);
     }
 }
 
