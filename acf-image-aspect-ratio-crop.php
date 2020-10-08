@@ -857,18 +857,31 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
     public function translate_post_meta($value, $key, $lang, $from, $to)
     {
-        $original_field = get_field_object($key, $from);
+        // When creating translated duplicated attachment if there is a translated version of
+        // the original image, use it
+        if (get_post_type($from) === 'attachment') {
+            if ($key === 'acf_image_aspect_ratio_crop_original_image_id') {
+                return pll_get_post($value, $lang)
+                    ? pll_get_post($value, $lang)
+                    : $value;
+            }
+        }
 
-        if (
-            $value &&
-            $original_field &&
-            $original_field['type'] &&
-            $original_field['type'] === 'image_aspect_ratio_crop'
-        ) {
-            // If there is a translated version for the cropped image, use it
-            $translated_value = pll_get_post($value, $lang);
-            if ($translated_value) {
-                return $translated_value;
+        // When creating translated copy of any post if there is a translated version of the
+        // cropped image, use it
+        if (get_post_type($from) !== 'attachment') {
+            $original_field = get_field_object($key, $from);
+
+            if (
+                $value &&
+                $original_field &&
+                $original_field['type'] &&
+                $original_field['type'] === 'image_aspect_ratio_crop'
+            ) {
+                $translated_value = pll_get_post($value, $lang);
+                if ($translated_value) {
+                    return $translated_value;
+                }
             }
         }
 
