@@ -130,6 +130,13 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 // Compare crop field names to post input
                 // Delete unused posts
 
+                if (function_exists('parse_blocks')) {
+                    $this->debug('parse blocks');
+                    $current_post = get_post($post_id);
+                    $blocks = parse_blocks($current_post->post_content);
+                    $this->debug($blocks);
+                }
+
                 $this->debug('found following post attachments');
                 $this->debug($post_attachments);
 
