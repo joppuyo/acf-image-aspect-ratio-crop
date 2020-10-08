@@ -595,6 +595,13 @@ class npx_acf_plugin_image_aspect_ratio_crop
             10,
             4
         );
+
+        add_filter(
+            'pll_translate_post_meta',
+            [$this, 'translate_post_meta'],
+            10,
+            5
+        );
     }
 
     /*
@@ -839,6 +846,26 @@ class npx_acf_plugin_image_aspect_ratio_crop
     public function jpeg_quality($jpeg_quality)
     {
         return apply_filters('aiarc_jpeg_quality', $jpeg_quality);
+    }
+
+    public function translate_post_meta($value, $key, $lang, $from, $to)
+    {
+        $original_field = get_field_object($key, $from);
+
+        if (
+            $value &&
+            $original_field &&
+            $original_field['type'] &&
+            $original_field['type'] === 'image_aspect_ratio_crop'
+        ) {
+            // If there is a translated version for the cropped image, use it
+            $translated_value = pll_get_post($value, $lang);
+            if ($translated_value) {
+                return $translated_value;
+            }
+        }
+
+        return $value;
     }
 }
 
