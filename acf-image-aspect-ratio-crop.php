@@ -218,7 +218,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 file_exists(wp_get_original_image_path($data['id']))
             ) {
                 // Handle the new asinine feature in WP 5.3 which resizes images without asking the user. We want the
-                // original image so we do original_image -> crop instead or original_image -> resized_image -> crop
+                // original image so we do "original_image -> crop" instead of "original_image -> resized_image -> crop"
                 $resized_image = wp_get_image_editor($file);
                 $image = wp_get_image_editor(
                     wp_get_original_image_path($data['id'])
