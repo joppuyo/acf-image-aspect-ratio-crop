@@ -125,5 +125,21 @@ class PixelSizeCest
         $I->attachFile('.moxie-shim input', 'small.jpg');
         $I->waitForText('Image width must be at least 640px.');
         $I->see('Image height must be at least 480px.');
+        $I->click('.media-modal-close');
+        $publish_text = 'Publish';
+        if (version_compare($wp_version, '5', 'ge')) {
+            $publish_text = 'Publish…';
+        }
+        if (version_compare($wp_version, '5.5', 'ge')) {
+            $publish_text = 'Publish';
+        }
+
+        $I->click($publish_text);
+
+        if (version_compare($wp_version, '5', 'ge')) {
+            $I->waitForElementVisible('.editor-post-publish-button', 10);
+            $I->click('.editor-post-publish-button');
+        }
+        $I->waitForText('Post published.');
     }
 }
