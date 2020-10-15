@@ -108,4 +108,22 @@ class PixelSizeCest
         $I->click('Test Post');
         $I->verifyImage($I, 'cropped-pixel.jpg', 640, 480);
     }
+
+    public function uploadTooSmallImage(AcceptanceTester $I)
+    {
+        global $wp_version;
+        $I->loadSessionSnapshot('login');
+        $I->amOnAdminPage('post-new.php');
+        $I->fillField(
+            version_compare($wp_version, '5.0', 'ge')
+                ? 'Add title'
+                : 'Enter title here',
+            'Test Post'
+        );
+        $I->scrollTo('.acf-field-image-aspect-ratio-crop');
+        $I->click('Add Image');
+        $I->attachFile('.moxie-shim input', 'small.jpg');
+        $I->waitForText('Image width must be at least 640px.');
+        $I->see('Image height must be at least 480px.');
+    }
 }
