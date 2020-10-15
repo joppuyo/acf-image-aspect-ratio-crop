@@ -41,9 +41,17 @@ When crop button is pressed, the area is cropped from the original image. After 
 
 Crop can be done freely, there are no aspect ratio limitations.
 
+= Requirements =
+
+* WordPress 4.9 or later
+* PHP 5.6 or later
+* Advanced Custom Fields 5.8 or later (Pro or Free)
+
 = Compatibility =
 
-This ACF field type is compatible with:
+* Polylang Pro
+* Enable Media Replace
+* WP Offload Media, Media Cloud and other plugins that move media files to remote location
 
 * ACF 5.8 or later (Pro or Free)
 
