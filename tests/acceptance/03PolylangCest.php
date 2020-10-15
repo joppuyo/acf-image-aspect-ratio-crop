@@ -17,9 +17,7 @@ class PolylangCest
         $I->cli([
             'plugin',
             'install',
-            str_rot13(
-                'uggcf://49gowgy57reib3jkj.o-pqa.arg/nps/cbylynat-ceb.2.8.2.mvc'
-            ),
+            __DIR__ . '/../_data/polylang-pro.2.8.2.zip',
             '--force',
         ]);
         $I->activatePlugin('advanced-custom-fields-pro');
