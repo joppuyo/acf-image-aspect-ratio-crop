@@ -60,6 +60,12 @@ You can download the plugin from the [WordPress plugin directory](https://wordpr
 - PHP 5.6 or later
 - Advanced Custom Fields 5.8 or later (Pro or Free)
 
+## Compatiblity
+
+- Polylang Pro
+- Enable Media Replace
+- WP Offload Media, Media Cloud and other plugins that move media files to remote location
+
 ## Frequently Asked Questions
 
 ### Can I use this plugin with a front-end acf_form?
