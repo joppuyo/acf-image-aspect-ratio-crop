@@ -12,15 +12,13 @@ class PostCest
         $I->cleanUploadsDir();
         $I->cli(['core', 'update-db']);
 
-        $acf_version = getenv('ACF_VERSION');
-
         if (getenv('ACF_VERSION')) {
+            $acf_version = getenv('ACF_VERSION');
             $I->cli([
                 'plugin',
                 'install',
                 __DIR__ .
                 "/../_data/advanced-custom-fields-pro.$acf_version.zip",
-                '.zip',
                 '--force',
             ]);
         }
