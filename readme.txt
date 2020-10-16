@@ -7,7 +7,7 @@ Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://github.com/sponsors/joppuyo
-Stable Tag: 4.1.1
+Stable Tag: 4.1.2
 
 ACF field that allows user to crop image to a specific aspect ratio or pixel size
 
@@ -105,6 +105,9 @@ The other plugin is not actively maintained and does not work well with latest A
 3. Option to re-crop the image after upload
 
 == Changelog ==
+
+= 4.1.2 (2020-10-16) =
+* Fix: PHP Notice when saving ACF options page with delete unused images enabled
 
 = 4.1.1 (2020-10-14) =
 * Fix: Check that original image exists before using it during cropping process
