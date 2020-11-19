@@ -435,7 +435,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
             2
         );
 
-        // New WPML compat
+        // New 4.3.19, 4.4.3  WPML compat
         add_action(
             'wpml_after_update_attachment_texts',
             [$this, 'wpml_copy_fields_new'],
