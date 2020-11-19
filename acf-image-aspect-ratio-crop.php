@@ -939,13 +939,11 @@ class npx_acf_plugin_image_aspect_ratio_crop
         $attachment_id,
         $duplicate_attachment_id
     ) {
-        $this->debug('doing old');
         $this->wpml_copy_fields($attachment_id, $duplicate_attachment_id);
     }
 
     public function wpml_copy_fields_new($attachment_id, $duplicate_attachment)
     {
-        $this->debug('doing new');
         $duplicate_attachment_id = $duplicate_attachment->element_id;
         $this->wpml_copy_fields($attachment_id, $duplicate_attachment_id);
     }
