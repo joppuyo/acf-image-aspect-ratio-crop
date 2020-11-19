@@ -427,26 +427,18 @@ class npx_acf_plugin_image_aspect_ratio_crop
             wp_die();
         });
 
-        // WPML compat
+        // Old WPML 4.2.9 compat
         add_action(
             'wpml_media_create_duplicate_attachment',
-            function ($attachment_id, $duplicate_attachment_id) {
-                $keys = [
-                    'acf_image_aspect_ratio_crop',
-                    'acf_image_aspect_ratio_crop_original_image_id',
-                    'acf_image_aspect_ratio_crop_coordinates',
-                ];
-                foreach ($keys as $key) {
-                    $value = get_post_meta($attachment_id, $key, true);
-                    if ($value) {
-                        update_post_meta(
-                            $duplicate_attachment_id,
-                            $key,
-                            $value
-                        );
-                    }
-                }
-            },
+            [$this, 'wpml_copy_fields_old'],
+            25,
+            2
+        );
+
+        // New WPML compat
+        add_action(
+            'wpml_after_update_attachment_texts',
+            [$this, 'wpml_copy_fields_new'],
             25,
             2
         );
@@ -942,6 +934,40 @@ class npx_acf_plugin_image_aspect_ratio_crop
         }
 
         return $value;
+    }
+
+    public function wpml_copy_fields_old(
+        $attachment_id,
+        $duplicate_attachment_id
+    ) {
+        $keys = [
+            'acf_image_aspect_ratio_crop',
+            'acf_image_aspect_ratio_crop_original_image_id',
+            'acf_image_aspect_ratio_crop_coordinates',
+        ];
+        foreach ($keys as $key) {
+            $value = get_post_meta($attachment_id, $key, true);
+            if ($value) {
+                update_post_meta($duplicate_attachment_id, $key, $value);
+            }
+        }
+    }
+
+    public function wpml_copy_fields_new($attachment_id, $duplicate_attachment)
+    {
+        $duplicate_attachment_id = $duplicate_attachment->element_id;
+
+        $keys = [
+            'acf_image_aspect_ratio_crop',
+            'acf_image_aspect_ratio_crop_original_image_id',
+            'acf_image_aspect_ratio_crop_coordinates',
+        ];
+        foreach ($keys as $key) {
+            $value = get_post_meta($attachment_id, $key, true);
+            if ($value) {
+                update_post_meta($duplicate_attachment_id, $key, $value);
+            }
+        }
     }
 }
 
