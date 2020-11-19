@@ -927,7 +927,6 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 );
 
                 if ($translated_value) {
-                    $this->debug($translated_value);
                     return $translated_value;
                 }
             }
@@ -940,23 +939,19 @@ class npx_acf_plugin_image_aspect_ratio_crop
         $attachment_id,
         $duplicate_attachment_id
     ) {
-        $keys = [
-            'acf_image_aspect_ratio_crop',
-            'acf_image_aspect_ratio_crop_original_image_id',
-            'acf_image_aspect_ratio_crop_coordinates',
-        ];
-        foreach ($keys as $key) {
-            $value = get_post_meta($attachment_id, $key, true);
-            if ($value) {
-                update_post_meta($duplicate_attachment_id, $key, $value);
-            }
-        }
+        $this->debug('doing old');
+        $this->wpml_copy_fields($attachment_id, $duplicate_attachment_id);
     }
 
     public function wpml_copy_fields_new($attachment_id, $duplicate_attachment)
     {
+        $this->debug('doing new');
         $duplicate_attachment_id = $duplicate_attachment->element_id;
+        $this->wpml_copy_fields($attachment_id, $duplicate_attachment_id);
+    }
 
+    public function wpml_copy_fields($attachment_id, $duplicate_attachment_id)
+    {
         $keys = [
             'acf_image_aspect_ratio_crop',
             'acf_image_aspect_ratio_crop_original_image_id',
