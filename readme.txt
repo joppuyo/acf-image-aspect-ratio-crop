@@ -106,6 +106,11 @@ The other plugin is not actively maintained and does not work well with latest A
 
 == Changelog ==
 
+= 4.1.3 (2020-11-19) =
+* Fix: WPML: Fixed issue with WPML where cropped images were visible in the media gallery
+* Fix: WPML: When duplicating post to translation in WPML, image fields are now changed to translated version
+* Fix: Fixed issue where PHP error messages printed on the page pushed the cropper modal outside the browser window
+
 = 4.1.2 (2020-10-16) =
 * Fix: PHP Notice when saving ACF options page with delete unused images enabled
 
