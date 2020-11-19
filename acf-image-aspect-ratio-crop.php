@@ -864,8 +864,13 @@ class npx_acf_plugin_image_aspect_ratio_crop
         return apply_filters('aiarc_jpeg_quality', $jpeg_quality);
     }
 
-    public function translate_post_meta_polylang($value, $key, $lang, $from, $to)
-    {
+    public function translate_post_meta_polylang(
+        $value,
+        $key,
+        $lang,
+        $from,
+        $to
+    ) {
         // When creating translated duplicated attachment if there is a translated version of
         // the original image, use it
         if (get_post_type($from) === 'attachment') {
