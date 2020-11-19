@@ -611,6 +611,13 @@ class npx_acf_plugin_image_aspect_ratio_crop
             10,
             5
         );
+
+        add_filter(
+            'wpml_duplicate_generic_string',
+            [$this, 'translate_post_meta_wpml'],
+            10,
+            3
+        );
     }
 
     /*
@@ -882,6 +889,45 @@ class npx_acf_plugin_image_aspect_ratio_crop
             ) {
                 $translated_value = pll_get_post($value, $lang);
                 if ($translated_value) {
+                    return $translated_value;
+                }
+            }
+        }
+
+        return $value;
+    }
+
+    public function translate_post_meta_wpml($value, $lang, $meta_data)
+    {
+        if ($meta_data['context'] !== 'custom_field') {
+            return $value;
+        }
+
+        $key = $meta_data['key'];
+        $to = $meta_data['post_id'];
+        $from = $meta_data['master_post_id'];
+
+        // When creating translated copy of any post if there is a translated version of the
+        // cropped image, use it
+        if (get_post_type($from) !== 'attachment') {
+            $original_field = get_field_object($key, $from);
+
+            if (
+                $value &&
+                $original_field &&
+                $original_field['type'] &&
+                $original_field['type'] === 'image_aspect_ratio_crop'
+            ) {
+                $translated_value = apply_filters(
+                    'wpml_object_id',
+                    $value,
+                    'attachment',
+                    false,
+                    $lang
+                );
+
+                if ($translated_value) {
+                    $this->debug($translated_value);
                     return $translated_value;
                 }
             }
