@@ -788,6 +788,33 @@ class npx_acf_plugin_image_aspect_ratio_crop
             );
         }
 
+        if (empty($data->get_param('key'))) {
+            return new WP_Error(
+                'key_field_missing',
+                __('Key field missing', 'acf-image-aspect-ratio-crop')
+            );
+        }
+
+        $key = $data->get_param('key');
+
+        $field_object = get_field_object($key);
+        $mime_types = $field_object['mime_types'];
+        $min_size = $field_object['min_size'];
+        $max_size = $field_object['max_size'];
+
+        if (
+            !empty($max_size) &&
+            $data->get_file_params()['image']['size'] > $max_size * 1000000
+        ) {
+            return new WP_Error(
+                'file_too_large',
+                __('File too large', 'acf-image-aspect-ratio-crop')
+            );
+        }
+
+        $this->debug();
+        $this->debug($max_size);
+
         $file_mime = mime_content_type(
             $data->get_file_params()['image']['tmp_name']
         );

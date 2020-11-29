@@ -361,6 +361,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         $div = [
             'class' => 'acf-image-uploader-aspect-ratio-crop',
             'data-preview_size' => $field['preview_size'],
+            'data-key' => $field['key'],
             'data-library' => $field['library'],
             'data-mime_types' => $field['mime_types'],
             'data-uploader' => $uploader,
@@ -570,7 +571,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                 'acf-image-aspect-ratio-crop'
             ),
             'upload_failed' => __(
-                'Uploading image. Progress %d%%.',
+                'Upload failed',
                 'acf-image-aspect-ratio-crop'
             ),
         ];

@@ -87,6 +87,10 @@ import { sprintf } from 'sprintf-js';
       $(document).on('change', '.js-aiarc-upload', event => {
         let uploadElement = event.currentTarget;
 
+        var acfKey = $(this.$field)
+          .find('.acf-image-uploader-aspect-ratio-crop')
+          .data('key');
+
         console.log(event.currentTarget);
 
         let files = uploadElement.files;
@@ -100,6 +104,7 @@ import { sprintf } from 'sprintf-js';
 
         Array.from(Array(files.length).keys()).map(index => {
           formData.append('image', files[index], files[index].name);
+          formData.append('key', acfKey);
         });
 
         uploadElement.value = '';
