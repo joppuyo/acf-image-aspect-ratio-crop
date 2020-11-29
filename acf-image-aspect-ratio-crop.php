@@ -615,6 +615,14 @@ class npx_acf_plugin_image_aspect_ratio_crop
         }
     }
 
+    private function log_error($description, $object)
+    {
+        error_log("ACF Image Aspect Ratio Crop: $description");
+        if ($object) {
+            error_log(print_r($object, true));
+        }
+    }
+
     private function crop(WP_Image_Editor $image, $data)
     {
         $image->crop($data['x'], $data['y'], $data['width'], $data['height']);
@@ -1088,15 +1096,18 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 $image = wp_get_image_editor($this->temp_path);
             } catch (Exception $exception) {
                 $this->cleanup();
-                wp_send_json('Failed fetch remote image', 500);
+                $error_text = 'Failed fetch remote image';
+                $this->log_error($error_text, $exception);
+                wp_send_json($error_text, 500);
                 wp_die();
             }
         }
 
         if (is_wp_error($image)) {
             $this->cleanup();
-            $this->debug($image);
-            wp_send_json('Failed to open image', 500);
+            $error_text = 'Failed to open image';
+            $this->log_error($error_text, $image);
+            wp_send_json($error_text, 500);
             wp_die();
         }
 
@@ -1153,7 +1164,9 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
         if (is_wp_error($save)) {
             $this->cleanup();
-            wp_send_json('Failed to crop', 500);
+            $error_text = 'Failed to crop';
+            $this->log_error($error_text, $save);
+            wp_send_json($error_text, 500);
             wp_die();
         }
 
@@ -1176,7 +1189,9 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
         if (is_wp_error($attachment_id)) {
             $this->cleanup();
-            wp_send_json('Failed to save attachment', 500);
+            $error_text = 'Failed to save attachment';
+            $this->log_error($error_text, $attachment_id);
+            wp_send_json($error_text, 500);
             wp_die();
         }
 
