@@ -808,7 +808,17 @@ class npx_acf_plugin_image_aspect_ratio_crop
         ) {
             return new WP_Error(
                 'file_too_large',
-                __('File too large', 'acf-image-aspect-ratio-crop')
+                __('File size too large', 'acf-image-aspect-ratio-crop')
+            );
+        }
+
+        if (
+            !empty($min_size) &&
+            $data->get_file_params()['image']['size'] < $min_size * 1000000
+        ) {
+            return new WP_Error(
+                'file_too_small',
+                __('File size too small', 'acf-image-aspect-ratio-crop')
             );
         }
 
