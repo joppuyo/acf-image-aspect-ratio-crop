@@ -7,7 +7,7 @@ Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://github.com/sponsors/joppuyo
-Stable Tag: 4.0.5
+Stable Tag: 4.1.4
 
 ACF field that allows user to crop image to a specific aspect ratio or pixel size
 
@@ -41,9 +41,17 @@ When crop button is pressed, the area is cropped from the original image. After 
 
 Crop can be done freely, there are no aspect ratio limitations.
 
+= Requirements =
+
+* WordPress 4.9 or later
+* PHP 5.6 or later
+* Advanced Custom Fields 5.8 or later (Pro or Free)
+
 = Compatibility =
 
-This ACF field type is compatible with:
+* Polylang Pro
+* Enable Media Replace
+* WP Offload Media, Media Cloud and other plugins that move media files to remote location
 
 * ACF 5.8 or later (Pro or Free)
 
@@ -67,6 +75,14 @@ Unfortunately this is not supported right now since the plugin requires `upload_
 = Can I access metadata in the original image from a cropped image? =
 
 Yes, the original image data is saved under `original_image` key in the returned ACF array. You can access data such as alt text, description and title this way.
+
+= Can I use this plugin with Elementor? =
+
+No, not really. Elementor only supports built-in ACF fields. Please contact Elementor support and ask them to add support for 3rd party fields. For some workarounds for limited Elementor support, see this [post](https://wordpress.org/support/topic/excellent-plugin-5518/).
+
+= Can I use this plugin with Beaver Builder? =
+
+No, not really. Beaver Builder only supports built-in ACF fields. Please contact Beaver Builder support and ask them to add support for 3rd party fields. However, there is a work around this limitation by using a plugin called "Toolbox For Beaver Builder". Please [see their website](https://beaverplugins.com/) for more details.
 
 = I have an issue or I want to contribute code =
 
@@ -97,29 +113,51 @@ The other plugin is not actively maintained and does not work well with latest A
   * It’s currently not possible to to limit file format for front-end uploads. JPEG, PNG and GIF images are allowed
   * It’s currently not possible to limit height and width for front-end uploads. This means that pixel crop images may be smaller than the target but they will still have the correct aspect ratio.
 
-= 4.0.5 =
+= 4.1.4 (2020-11-19) =
+* Bump stable tag
+
+= 4.1.3 (2020-11-19) =
+* Fix: WPML: Fixed issue with WPML where cropped images were visible in the media gallery
+* Fix: WPML: When duplicating post to translation in WPML, image fields are now changed to translated version
+* Fix: Fixed issue where PHP error messages printed on the page pushed the cropper modal outside the browser window
+
+= 4.1.2 (2020-10-16) =
+* Fix: PHP Notice when saving ACF options page with delete unused images enabled
+
+= 4.1.1 (2020-10-14) =
+* Fix: Check that original image exists before using it during cropping process
+* Fix: Improve compatibility with Polylang Pro by using translated version of the attachment when duplicating post to another language
+
+= 4.1.0 (2020-10-07) =
+* Feature: Add `aiarc_jpeg_quality` filter to change crop JPEG quality
+* Fix: Remove unnecessarily verbose debugging
+
+= 4.0.6 (2020-10-03) =
+* Fix: Issue where image is incorrectly cropped if image has EXIF rotation and exceeds big image threshold
+
+= 4.0.5 (2020-09-06) =
 * Fix: Bump version
 
-= 4.0.4 =
+= 4.0.4 (2020-09-06) =
 * Change: Update screenshots to reflect latest plugin and WordPress versions
 
-= 4.0.3 =
+= 4.0.3 (2020-09-05) =
 * Change: Update dependencies
 * Fix: Improve misaligned crop, edit and delete buttons on ACF 5.9
 * Fix: Use custom button styles instead of WordPress defaults. This is paving the way for front end crop since themes can't wreak havoc on the modal styles.
 * Fix: Improve cropper responsive scaling on mobile devices
 
-= 4.0.2 =
+= 4.0.2 (2020-08-17) =
 * Fix: Removed unused vendor folder
 
-= 3.4.1 =
+= 3.4.1 (2020-08-17) =
 * Fix: Fixed issue where min height and width are not set when using pixel size (Backported from v4.0.1)
 
-= 4.0.1 =
+= 4.0.1 (2020-08-17) =
 * Fix: Fixed issue where min height and width are not set when using pixel size
 * Fix: Increase remote GET timeout from 5 seconds to 25 seconds
 
-= 4.0.0 =
+= 4.0.0 (2020-08-17) =
 * Breaking change: Minimum required PHP version is now 5.6
 * Breaking change: Minimum required ACF version is now 5.8. An earlier version might work but this is the earliest version that has automated tests
 * Breaking change: wp_remote_get is used instead of Guzzle when fetching remote images. This doesn't change much unless you are using filters to change the remove image fetching behavior

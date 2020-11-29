@@ -67,11 +67,6 @@ class npx_acf_plugin_image_aspect_ratio_crop
         add_action(
             'acf/save_post',
             function ($post_id) {
-                $this->debug('post_id');
-                $this->debug($post_id);
-                $this->debug('POST');
-                $this->debug($_POST);
-
                 if ($post_id === 'options' && !empty($_GET['page'])) {
                     // Options page needs an unique id
                     $post_id = $_GET['page'];
@@ -137,6 +132,14 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 // Compare crop field names to post input
                 // Delete unused posts
 
+                $current_post = get_post($post_id);
+
+                if (function_exists('parse_blocks') && $current_post) {
+                    $this->debug('parse blocks');
+                    $blocks = parse_blocks($current_post->post_content);
+                    $this->debug($blocks);
+                }
+
                 $this->debug('found following post attachments');
                 $this->debug($post_attachments);
 
@@ -180,26 +183,18 @@ class npx_acf_plugin_image_aspect_ratio_crop
             wp_die();
         });
 
-        // WPML compat
+        // Old WPML 4.2.9 compat
         add_action(
             'wpml_media_create_duplicate_attachment',
-            function ($attachment_id, $duplicate_attachment_id) {
-                $keys = [
-                    'acf_image_aspect_ratio_crop',
-                    'acf_image_aspect_ratio_crop_original_image_id',
-                    'acf_image_aspect_ratio_crop_coordinates',
-                ];
-                foreach ($keys as $key) {
-                    $value = get_post_meta($attachment_id, $key, true);
-                    if ($value) {
-                        update_post_meta(
-                            $duplicate_attachment_id,
-                            $key,
-                            $value
-                        );
-                    }
-                }
-            },
+            [$this, 'wpml_copy_fields_old'],
+            25,
+            2
+        );
+
+        // New 4.3.19, 4.4.3  WPML compat
+        add_action(
+            'wpml_after_update_attachment_texts',
+            [$this, 'wpml_copy_fields_new'],
             25,
             2
         );
@@ -359,6 +354,20 @@ class npx_acf_plugin_image_aspect_ratio_crop
             },
             10,
             4
+        );
+
+        add_filter(
+            'pll_translate_post_meta',
+            [$this, 'translate_post_meta_polylang'],
+            10,
+            5
+        );
+
+        add_filter(
+            'wpml_duplicate_generic_string',
+            [$this, 'translate_post_meta_wpml'],
+            10,
+            3
         );
     }
 
@@ -601,6 +610,115 @@ class npx_acf_plugin_image_aspect_ratio_crop
         }
     }
 
+    public function jpeg_quality($jpeg_quality)
+    {
+        return apply_filters('aiarc_jpeg_quality', $jpeg_quality);
+    }
+
+    public function translate_post_meta_polylang(
+        $value,
+        $key,
+        $lang,
+        $from,
+        $to
+    ) {
+        // When creating translated duplicated attachment if there is a translated version of
+        // the original image, use it
+        if (get_post_type($from) === 'attachment') {
+            if ($key === 'acf_image_aspect_ratio_crop_original_image_id') {
+                return pll_get_post($value, $lang)
+                    ? pll_get_post($value, $lang)
+                    : $value;
+            }
+        }
+
+        // When creating translated copy of any post if there is a translated version of the
+        // cropped image, use it
+        if (get_post_type($from) !== 'attachment') {
+            $original_field = get_field_object($key, $from);
+
+            if (
+                $value &&
+                $original_field &&
+                $original_field['type'] &&
+                $original_field['type'] === 'image_aspect_ratio_crop'
+            ) {
+                $translated_value = pll_get_post($value, $lang);
+                if ($translated_value) {
+                    return $translated_value;
+                }
+            }
+        }
+
+        return $value;
+    }
+
+    public function translate_post_meta_wpml($value, $lang, $meta_data)
+    {
+        if ($meta_data['context'] !== 'custom_field') {
+            return $value;
+        }
+
+        $key = $meta_data['key'];
+        $to = $meta_data['post_id'];
+        $from = $meta_data['master_post_id'];
+
+        // When creating translated copy of any post if there is a translated version of the
+        // cropped image, use it
+        if (get_post_type($from) !== 'attachment') {
+            $original_field = get_field_object($key, $from);
+
+            if (
+                $value &&
+                $original_field &&
+                $original_field['type'] &&
+                $original_field['type'] === 'image_aspect_ratio_crop'
+            ) {
+                $translated_value = apply_filters(
+                    'wpml_object_id',
+                    $value,
+                    'attachment',
+                    false,
+                    $lang
+                );
+
+                if ($translated_value) {
+                    return $translated_value;
+                }
+            }
+        }
+
+        return $value;
+    }
+
+    public function wpml_copy_fields_old(
+        $attachment_id,
+        $duplicate_attachment_id
+    ) {
+        $this->wpml_copy_fields($attachment_id, $duplicate_attachment_id);
+    }
+
+    public function wpml_copy_fields_new($attachment_id, $duplicate_attachment)
+    {
+        $duplicate_attachment_id = $duplicate_attachment->element_id;
+        $this->wpml_copy_fields($attachment_id, $duplicate_attachment_id);
+    }
+
+    public function wpml_copy_fields($attachment_id, $duplicate_attachment_id)
+    {
+        $keys = [
+            'acf_image_aspect_ratio_crop',
+            'acf_image_aspect_ratio_crop_original_image_id',
+            'acf_image_aspect_ratio_crop_coordinates',
+        ];
+        foreach ($keys as $key) {
+            $value = get_post_meta($attachment_id, $key, true);
+            if ($value) {
+                update_post_meta($duplicate_attachment_id, $key, $value);
+            }
+        }
+    }
+
     public function rest_api_init()
     {
         register_rest_route('aiarc/v1', '/upload', [
@@ -755,20 +873,31 @@ class npx_acf_plugin_image_aspect_ratio_crop
         $extension = array_pop($parts);
         $backup_file = implode('.', $parts) . '.bak.' . $extension;
 
+        add_filter('jpeg_quality', [$this, 'jpeg_quality']);
+
         $image = null;
         $scaled_data = null;
         if (
             file_exists($file) &&
             function_exists('wp_get_original_image_path') &&
             wp_get_original_image_path($data['id']) &&
-            wp_get_original_image_path($data['id']) !== $file
+            wp_get_original_image_path($data['id']) !== $file &&
+            file_exists(wp_get_original_image_path($data['id']))
         ) {
             // Handle the new asinine feature in WP 5.3 which resizes images without asking the user. We want the
-            // original image so we do original_image -> crop instead or original_image -> resized_image -> crop
+            // original image so we do "original_image -> crop" instead of "original_image -> resized_image -> crop"
             $resized_image = wp_get_image_editor($file);
             $image = wp_get_image_editor(
                 wp_get_original_image_path($data['id'])
             );
+
+            // Handle case with EXIF rotation where image size exceeds big_image_size_threshold
+            // so the scaled image is rotated but original is not. Rotate original before
+            // calculating co-ordinates and performing crop.
+            // https://wordpress.org/support/topic/srgb-image-turned-into-1x1-white-image/
+            if (method_exists($image, 'maybe_exif_rotate')) {
+                $image->maybe_exif_rotate();
+            }
             $resized_width = $resized_image->get_size()['width'];
             $original_width = $image->get_size()['width'];
 
@@ -842,8 +971,6 @@ class npx_acf_plugin_image_aspect_ratio_crop
         $width = $data['aspectRatioWidth'];
         $height = $data['aspectRatioHeight'];
 
-        $this->debug($data['cropType']);
-
         if ($data['cropType'] === 'free_crop') {
             $width = $data['width'];
             $height = $data['height'];
@@ -872,8 +999,9 @@ class npx_acf_plugin_image_aspect_ratio_crop
             $target_file_path
         );
 
-        //$save = $image->save('test.jpg');
         $save = $image->save($target_file_path);
+        remove_filter('jpeg_quality', [$this, 'jpeg_quality']);
+
         if (is_wp_error($save)) {
             $this->cleanup();
             wp_send_json('Failed to crop', 500);
@@ -900,24 +1028,20 @@ class npx_acf_plugin_image_aspect_ratio_crop
             wp_die();
         }
 
-        require_once ABSPATH . 'wp-admin' . '/includes/image.php';
-        $attachment_data = wp_generate_attachment_metadata(
-            $attachment_id,
-            $target_file_path
-        );
-        wp_update_attachment_metadata($attachment_id, $attachment_data);
         add_post_meta(
             $attachment_id,
             'acf_image_aspect_ratio_crop',
             true,
             true
         );
+
         add_post_meta(
             $attachment_id,
             'acf_image_aspect_ratio_crop_original_image_id',
             $data['id'],
             true
         );
+
         add_post_meta(
             $attachment_id,
             'acf_image_aspect_ratio_crop_coordinates',
@@ -939,12 +1063,6 @@ class npx_acf_plugin_image_aspect_ratio_crop
             true
         );
 
-        $this->debug('data');
-        $this->debug($data);
-
-        $this->debug('temp post id');
-        $this->debug($data['temp_post_id']);
-
         add_post_meta(
             $attachment_id,
             'acf_image_aspect_ratio_crop_temp_post_id',
@@ -952,10 +1070,18 @@ class npx_acf_plugin_image_aspect_ratio_crop
             true
         );
 
+        require_once ABSPATH . 'wp-admin' . '/includes/image.php';
+        $attachment_data = wp_generate_attachment_metadata(
+            $attachment_id,
+            $target_file_path
+        );
+        wp_update_attachment_metadata($attachment_id, $attachment_data);
+
         // WPML compat
         do_action('wpml_sync_all_custom_fields', $attachment_id);
 
         $this->cleanup();
+
         return $attachment_id;
     }
 

@@ -5,7 +5,7 @@ namespace Helper;
 // all public methods declared in helper class will be available in $I
 
 use AcceptanceTester;
-use PHPUnit_Framework_Assert;
+use PHPUnit\Framework\Assert;
 
 class Acceptance extends \Codeception\Module
 {
@@ -43,16 +43,15 @@ class Acceptance extends \Codeception\Module
         $url = implode('/', $url);
 
         codecept_debug($filename);
-        PHPUnit_Framework_Assert::assertContains(
-            "-aspect-ratio-$width-$height",
-            $url
+        Assert::assertContains("-aspect-ratio-$width-$height", $url);
+
+        $image_1_size = getimagesize(
+            __DIR__ . "../../../_data/$comparison_image"
         );
-        PHPUnit_Framework_Assert::assertEquals(
-            json_encode(
-                getimagesize(__DIR__ . "../../../_data/$comparison_image")
-            ),
-            json_encode(getimagesize($url))
-        );
+        $image_2_size = getimagesize($url);
+
+        Assert::assertEquals($image_1_size[0], $image_2_size[0], '', 2);
+        Assert::assertEquals($image_1_size[1], $image_2_size[1], '', 2);
         $I->click('button.media-modal-close');
     }
 }

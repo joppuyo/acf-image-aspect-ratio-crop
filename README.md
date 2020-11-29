@@ -60,6 +60,12 @@ You can download the plugin from the [WordPress plugin directory](https://wordpr
 - PHP 5.6 or later
 - Advanced Custom Fields 5.8 or later (Pro or Free)
 
+## Compatiblity
+
+- Polylang Pro
+- Enable Media Replace
+- WP Offload Media, Media Cloud and other plugins that move media files to remote location
+
 ## Frequently Asked Questions
 
 ### Can I use this plugin with a front-end acf_form?
@@ -69,6 +75,14 @@ Unfortunately this is not supported right now since the plugin requires `upload_
 ### Can I access metadata in the original image from a cropped image?
 
 Yes, the original image data is saved under `original_image` key in the returned ACF array. You can access data such as alt text, description and title this way.
+
+### Can I use this plugin with Elementor?
+
+No, not really. Elementor only supports built-in ACF fields. Please contact Elementor support and ask them to add support for 3rd party fields. For some workarounds for limited Elementor support, see this [post](https://wordpress.org/support/topic/excellent-plugin-5518/).
+
+### Can I use this plugin with Beaver Builder?
+
+No, not really. Beaver Builder only supports built-in ACF fields. Please contact Beaver Builder support and ask them to add support for 3rd party fields. However, there is a work around this limitation by using a plugin called "Toolbox For Beaver Builder". Please [see their website](https://beaverplugins.com/) for more details.
 
 ### How is this different from the other plugin?
 

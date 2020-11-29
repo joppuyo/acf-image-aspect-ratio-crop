@@ -14,12 +14,12 @@ class PostCest
         $I->cli(['rewrite', 'flush']);
 
         if (getenv('ACF_VERSION')) {
+            $acf_version = getenv('ACF_VERSION');
             $I->cli([
                 'plugin',
                 'install',
-                'https://49tbjtl57ervo3wxw.b-cdn.net/acf/advanced-custom-fields-pro.' .
-                getenv('ACF_VERSION') .
-                '.zip',
+                __DIR__ .
+                "/../_data/advanced-custom-fields-pro.$acf_version.zip",
                 '--force',
             ]);
         }

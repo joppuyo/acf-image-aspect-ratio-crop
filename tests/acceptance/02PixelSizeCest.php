@@ -11,17 +11,6 @@ class PixelSizeCest
     {
         $I->cleanUploadsDir();
         $I->cli(['core', 'update-db']);
-
-        if (getenv('ACF_VERSION')) {
-            $I->cli([
-                'plugin',
-                'install',
-                'https://49tbjtl57ervo3wxw.b-cdn.net/acf/advanced-custom-fields-pro.' .
-                getenv('ACF_VERSION') .
-                '.zip',
-                '--force',
-            ]);
-        }
         $I->dontHavePostInDatabase([]);
         $I->loginAsAdmin();
         $I->amOnPluginsPage();
@@ -118,5 +107,39 @@ class PixelSizeCest
         $I->amOnAdminPage('edit.php');
         $I->click('Test Post');
         $I->verifyImage($I, 'cropped-pixel.jpg', 640, 480);
+    }
+
+    public function uploadTooSmallImage(AcceptanceTester $I)
+    {
+        global $wp_version;
+        $I->loadSessionSnapshot('login');
+        $I->amOnAdminPage('post-new.php');
+        $I->fillField(
+            version_compare($wp_version, '5.0', 'ge')
+                ? 'Add title'
+                : 'Enter title here',
+            'Test Post'
+        );
+        $I->scrollTo('.acf-field-image-aspect-ratio-crop');
+        $I->click('Add Image');
+        $I->attachFile('.moxie-shim input', 'small.jpg');
+        $I->waitForText('Image width must be at least 640px.');
+        $I->see('Image height must be at least 480px.');
+        $I->click('.media-modal-close');
+        $publish_text = 'Publish';
+        if (version_compare($wp_version, '5', 'ge')) {
+            $publish_text = 'Publish…';
+        }
+        if (version_compare($wp_version, '5.5', 'ge')) {
+            $publish_text = 'Publish';
+        }
+
+        $I->click($publish_text);
+
+        if (version_compare($wp_version, '5', 'ge')) {
+            $I->waitForElementVisible('.editor-post-publish-button', 10);
+            $I->click('.editor-post-publish-button');
+        }
+        $I->waitForText('Post published.');
     }
 }
