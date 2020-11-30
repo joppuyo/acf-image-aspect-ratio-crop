@@ -91,8 +91,6 @@ import { sprintf } from 'sprintf-js';
           .find('.acf-image-uploader-aspect-ratio-crop')
           .data('key');
 
-        console.log(event.currentTarget);
-
         let files = uploadElement.files;
         let formData = new FormData();
 
@@ -114,8 +112,6 @@ import { sprintf } from 'sprintf-js';
             let percentCompleted = Math.round(
               (progressEvent.loaded * 100) / progressEvent.total,
             );
-
-            console.log(this.$el);
 
             this.$el
               .find('.js-aiarc-upload-progress')
@@ -367,11 +363,7 @@ import { sprintf } from 'sprintf-js';
     render: function(data) {
       // prepare
 
-      console.log(data);
-
       data = this.prepare(data);
-
-      console.log(data);
 
       // update image
       this.$img.attr({
