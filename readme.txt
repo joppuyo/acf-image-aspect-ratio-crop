@@ -70,7 +70,7 @@ Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/anders
 
 = Can I use this plugin with a front-end acf_form? =
 
-Unfortunately this is not supported right now since the plugin requires `upload_files` capability to access the media library. If user does not have this permission, a basic upload dialog will be displayed without a cropper. You can enable cropping by assigning  `upload_files`  capability to the user role but this means that users are able to access the media library like admin users. I will look into implementing front-end form cropping without needing this capability in a future release of this plugin.
+Yes, this functionality has been added in version 5.0.0. Please test it and give feedback if you encounter any issues.
 
 = Can I access metadata in the original image from a cropped image? =
 
@@ -106,12 +106,13 @@ The other plugin is not actively maintained and does not work well with latest A
 
 == Changelog ==
 
-= 5.0.0-beta1 =
+= 5.0.0 =
 * Breaking change: REST API is now used for cropping image instead of admin-ajax
-* Feature: Added frontend image crop. Please be aware of the following limitations:
-  * It’s currently not possible to limit upload file size for front-end uploads
-  * It’s currently not possible to to limit file format for front-end uploads. JPEG, PNG and GIF images are allowed
-  * It’s currently not possible to limit height and width for front-end uploads. This means that pixel crop images may be smaller than the target but they will still have the correct aspect ratio.
+* Feature: Added frontend image crop. This allows you to use crop functionality with [ACF forms](https://www.advancedcustomfields.com/resources/create-a-front-end-form/) on the front-end, even if the user does not have access to the media library.
+
+I'd like to take this moment to announce that I have a [GitHub Sponsors](https://github.com/sponsors/joppuyo/) page. Maintaining this plugin is a lot of work and front-end image crop is one of those features I don't use personally but I was requested so many times had to add it to the plugin, which took multiple days of work.
+
+If you find this feature useful or if you otherwise want to support the development of this plugin, please consider [supporting me on GitHub Sponsors](https://github.com/sponsors/joppuyo/). Thank you!
 
 = 4.1.4 (2020-11-19) =
 * Bump stable tag
@@ -134,6 +135,13 @@ The other plugin is not actively maintained and does not work well with latest A
 
 = 4.0.6 (2020-10-03) =
 * Fix: Issue where image is incorrectly cropped if image has EXIF rotation and exceeds big image threshold
+
+= 5.0.0-beta1 (13.09.2020) =
+* Breaking change: REST API is now used for cropping image instead of admin-ajax
+* Feature: Added frontend image crop. Please be aware of the following limitations:
+  * It’s currently not possible to limit upload file size for front-end uploads
+  * It’s currently not possible to to limit file format for front-end uploads. JPEG, PNG and GIF images are allowed
+  * It’s currently not possible to limit height and width for front-end uploads. This means that pixel crop images may be smaller than the target but they will still have the correct aspect ratio.
 
 = 4.0.5 (2020-09-06) =
 * Fix: Bump version
