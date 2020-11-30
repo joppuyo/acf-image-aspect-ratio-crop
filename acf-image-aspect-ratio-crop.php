@@ -808,7 +808,22 @@ class npx_acf_plugin_image_aspect_ratio_crop
         $min_height = $field_object['min_height'];
         $max_height = $field_object['max_height'];
 
-        $this->debug($mime_types);
+        // MIME validation
+
+        $file_mime = mime_content_type(
+            $data->get_file_params()['image']['tmp_name']
+        );
+
+        $allowed_mime_types = $this->extension_list_to_mime_array($mime_types);
+
+        if (!in_array($file_mime, $allowed_mime_types)) {
+            return new WP_Error(
+                'invalid_mime_type',
+                __('Invalid file type.', 'acf-image-aspect-ratio-crop')
+            );
+        }
+
+        // File size validation
 
         if (
             !empty($max_size) &&
@@ -841,6 +856,8 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 )
             );
         }
+
+        // Image size validation
 
         $image_size = @getimagesize(
             $data->get_file_params()['image']['tmp_name']
@@ -889,19 +906,6 @@ class npx_acf_plugin_image_aspect_ratio_crop
                     ),
                     'acf-image-aspect-ratio-crop'
                 )
-            );
-        }
-
-        $file_mime = mime_content_type(
-            $data->get_file_params()['image']['tmp_name']
-        );
-
-        $allowed_mime_types = $this->extension_list_to_mime_array($mime_types);
-
-        if (!in_array($file_mime, $allowed_mime_types)) {
-            return new WP_Error(
-                'invalid_mime_type',
-                __('Invalid file type.', 'acf-image-aspect-ratio-crop')
             );
         }
 
