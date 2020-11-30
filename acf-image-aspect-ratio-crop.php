@@ -784,14 +784,14 @@ class npx_acf_plugin_image_aspect_ratio_crop
         if (empty($data->get_file_params()['image'])) {
             return new WP_Error(
                 'image_field_missing',
-                __('Image field missing', 'acf-image-aspect-ratio-crop')
+                __('Image field missing.', 'acf-image-aspect-ratio-crop')
             );
         }
 
         if (empty($data->get_param('key'))) {
             return new WP_Error(
                 'key_field_missing',
-                __('Key field missing', 'acf-image-aspect-ratio-crop')
+                __('Key field missing.', 'acf-image-aspect-ratio-crop')
             );
         }
 
@@ -833,7 +833,10 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 'file_too_large',
                 __(
                     sprintf(
-                        'File size too large. Maximum file size is %d Megabytes.',
+                        __(
+                            'File size too large. Maximum file size is %d megabytes.',
+                            'acf-image-aspect-ratio-crop'
+                        ),
                         $max_size
                     ),
                     'acf-image-aspect-ratio-crop'
@@ -849,7 +852,10 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 'file_too_small',
                 __(
                     sprintf(
-                        'File size too small. Minimum file size is %d Megabytes.',
+                        __(
+                            'File size too small. Minimum file size is %d megabytes.',
+                            'acf-image-aspect-ratio-crop'
+                        ),
                         $min_size
                     ),
                     'acf-image-aspect-ratio-crop'
@@ -882,7 +888,10 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 'image_too_small',
                 __(
                     sprintf(
-                        'Image too small. Minimum image dimensions are %d×%d pixels.',
+                        __(
+                            'Image too small. Minimum image dimensions are %d×%d pixels.',
+                            'acf-image-aspect-ratio-crop'
+                        ),
                         $min_width,
                         $min_height
                     ),
@@ -900,7 +909,10 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 'image_too_large',
                 __(
                     sprintf(
-                        'Image too large. Maximum image dimensions are %d×%d pixels.',
+                        __(
+                            'Image too large. Maximum image dimensions are %d×%d pixels.',
+                            'acf-image-aspect-ratio-crop'
+                        ),
                         $max_width,
                         $max_height
                     ),
@@ -1200,7 +1212,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
             wp_send_json_error(
                 new WP_Error(
                     'nonce_missing',
-                    __('Nonce missing', 'acf-image-aspect-ratio-crop')
+                    __('Nonce missing.', 'acf-image-aspect-ratio-crop')
                 ),
                 400
             );
@@ -1210,7 +1222,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
             wp_send_json_error(
                 new WP_Error(
                     'invalid_nonce',
-                    __('Invalid nonce', 'acf-image-aspect-ratio-crop')
+                    __('Invalid nonce.', 'acf-image-aspect-ratio-crop')
                 ),
                 400
             );
