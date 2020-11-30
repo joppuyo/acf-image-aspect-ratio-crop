@@ -896,16 +896,12 @@ class npx_acf_plugin_image_aspect_ratio_crop
             $data->get_file_params()['image']['tmp_name']
         );
 
-        $allowed_mime_types = apply_filters('aiarc_allowed_mime_types', [
-            'image/jpeg',
-            'image/png',
-            'image/gif',
-        ]);
+        $allowed_mime_types = $this->extension_list_to_mime_array($mime_types);
 
         if (!in_array($file_mime, $allowed_mime_types)) {
             return new WP_Error(
                 'invalid_mime_type',
-                __('Invalid mime type', 'acf-image-aspect-ratio-crop')
+                __('Invalid file type.', 'acf-image-aspect-ratio-crop')
             );
         }
 
@@ -1215,6 +1211,35 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 400
             );
         }
+    }
+
+    /**
+     * @param $mime_types
+     * @return array
+     */
+    public static function extension_list_to_mime_array($mime_types)
+    {
+        $extension_array = explode(',', $mime_types);
+        $extension_array = array_map(function ($extension) {
+            return trim($extension);
+        }, $extension_array);
+
+        $allowed_mime_types = [];
+
+        foreach ($extension_array as $extension) {
+            if ($extension === 'jpeg' || $extension === 'jpg') {
+                array_push($allowed_mime_types, 'image/jpeg');
+            }
+            if ($extension === 'png') {
+                array_push($allowed_mime_types, 'image/png');
+            }
+            if ($extension === 'gif') {
+                array_push($allowed_mime_types, 'image/gif');
+            }
+        }
+
+        $allowed_mime_types = array_unique($allowed_mime_types);
+        return $allowed_mime_types;
     }
 }
 
