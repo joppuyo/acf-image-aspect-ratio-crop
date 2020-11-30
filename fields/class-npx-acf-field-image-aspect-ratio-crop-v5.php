@@ -485,10 +485,6 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 
                 <!-- basic uploader start -->
 
-                <!-- <?php echo $field['name']; ?> -->
-                <!-- <?php echo $field['id']; ?> -->
-                <!-- <?php echo $field['mime_types']; ?> -->
-
                 <?php $mime_array = npx_acf_plugin_image_aspect_ratio_crop::extension_list_to_mime_array(
                     $field['mime_types']
                 ); ?>
