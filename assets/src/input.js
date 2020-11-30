@@ -463,7 +463,7 @@ import { sprintf } from 'sprintf-js';
             }
           }
 
-          this.isFirstCrop = true;
+          self.isFirstCrop = true;
 
           // Add original id attribute to the image so we can recrop it right away without saving the post
           $field
