@@ -7,7 +7,7 @@ Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://github.com/sponsors/joppuyo
-Stable Tag: 5.0.1
+Stable Tag: 5.0.2
 
 ACF field that allows user to crop image to a specific aspect ratio or pixel size
 
@@ -106,8 +106,11 @@ The other plugin is not actively maintained and does not work well with latest A
 
 == Changelog ==
 
+= 5.0.2 (2020-11-30) =
+* Fix: Updated translation strings
+
 = 5.0.1 (2020-11-30) =
-* Fixed compatibility issue with Yoast SEO that caused a bug where media modal didn't open
+* Fix: Fixed compatibility issue with Yoast SEO that caused a bug where media modal didn't open
 
 = 5.0.0 (2020-11-30) =
 * Breaking change: REST API is now used for cropping image instead of admin-ajax
