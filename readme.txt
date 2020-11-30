@@ -106,7 +106,7 @@ The other plugin is not actively maintained and does not work well with latest A
 
 == Changelog ==
 
-= 5.0.0 (2020-30-11) =
+= 5.0.0 (2020-11-30) =
 * Breaking change: REST API is now used for cropping image instead of admin-ajax
 * Feature: Added frontend image crop. This allows you to use crop functionality with [ACF forms](https://www.advancedcustomfields.com/resources/create-a-front-end-form/) on the front-end, even if the user does not have access to the media library.
 
