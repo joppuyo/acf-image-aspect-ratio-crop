@@ -547,7 +547,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         wp_register_script(
             'acf-image-aspect-ratio-crop',
             "{$url}assets/dist/input-script.js",
-            ['acf-input'],
+            ['acf-input', 'backbone'],
             WP_DEBUG
                 ? md5_file(
                     $this->settings['path'] . '/assets/dist/input-script.js'

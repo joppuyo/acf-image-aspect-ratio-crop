@@ -6,7 +6,6 @@
 
 import Cropper from 'cropperjs';
 import axios from 'axios';
-import { Model } from 'backbone';
 import { sprintf } from 'sprintf-js';
 
 (function($) {
@@ -163,7 +162,7 @@ import { sprintf } from 'sprintf-js';
             axios
               .get(`/wp-json/aiarc/v1/get/${response.data.attachment_id}`)
               .then(response => {
-                let attachment = new Backbone.Model(response.data);
+                let attachment = new window.Backbone.Model(response.data);
 
                 this.render(attachment);
                 self.openModal({ attachment: attachment, field: $field });
@@ -489,7 +488,7 @@ import { sprintf } from 'sprintf-js';
         .data('original-image-id');
 
       axios.get(`/wp-json/aiarc/v1/get/${originalImageId}`).then(response => {
-        let attachment = new Model(response.data);
+        let attachment = new window.Backbone.Model(response.data);
         let $field = this.$field;
         this.openModal({ attachment: attachment, field: $field });
       });
@@ -716,7 +715,7 @@ import { sprintf } from 'sprintf-js';
         .val(data.id);
 
       axios.get(`/wp-json/aiarc/v1/get/${data.id}`).then(response => {
-        let attachment = new Backbone.Model(response.data);
+        let attachment = new window.Backbone.Model(response.data);
 
         this.render(attachment);
         this.isFirstCrop = false;
