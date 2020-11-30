@@ -571,7 +571,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                 'acf-image-aspect-ratio-crop'
             ),
             'upload_failed' => __(
-                'Upload failed',
+                'Upload failed.',
                 'acf-image-aspect-ratio-crop'
             ),
         ];

@@ -173,7 +173,7 @@ import { sprintf } from 'sprintf-js';
                 self.openModal({ attachment: attachment, field: $field });
               });
           })
-          .catch(() => {
+          .catch(error => {
             $(this.$el)
               .find('.js-aiarc-upload-progress')
               .hide();
@@ -181,7 +181,18 @@ import { sprintf } from 'sprintf-js';
             $(this.$el)
               .find('.js-aiarc-upload')
               .show();
-            window.alert(window.aiarc_translations.upload_failed);
+
+            let errorMessage = window.aiarc_translations.upload_failed;
+
+            if (
+              error.response &&
+              error.response.data &&
+              error.response.data.message
+            ) {
+              errorMessage = error.response.data.message;
+            }
+
+            window.alert(errorMessage);
           });
       });
 

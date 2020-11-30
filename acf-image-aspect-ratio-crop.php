@@ -802,13 +802,21 @@ class npx_acf_plugin_image_aspect_ratio_crop
         $min_size = $field_object['min_size'];
         $max_size = $field_object['max_size'];
 
+        $this->debug($mime_types);
+
         if (
             !empty($max_size) &&
             $data->get_file_params()['image']['size'] > $max_size * 1000000
         ) {
             return new WP_Error(
                 'file_too_large',
-                __('File size too large', 'acf-image-aspect-ratio-crop')
+                __(
+                    sprintf(
+                        'File size too large. Maximum file size is %d Megabytes.',
+                        $max_size
+                    ),
+                    'acf-image-aspect-ratio-crop'
+                )
             );
         }
 
@@ -818,12 +826,15 @@ class npx_acf_plugin_image_aspect_ratio_crop
         ) {
             return new WP_Error(
                 'file_too_small',
-                __('File size too small', 'acf-image-aspect-ratio-crop')
+                __(
+                    sprintf(
+                        'File size too small. Minimum file size is %d Megabytes.',
+                        $min_size
+                    ),
+                    'acf-image-aspect-ratio-crop'
+                )
             );
         }
-
-        $this->debug();
-        $this->debug($max_size);
 
         $file_mime = mime_content_type(
             $data->get_file_params()['image']['tmp_name']
