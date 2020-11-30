@@ -7,7 +7,7 @@ Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://github.com/sponsors/joppuyo
-Stable Tag: 4.1.4
+Stable Tag: 5.0.0
 
 ACF field that allows user to crop image to a specific aspect ratio or pixel size
 
