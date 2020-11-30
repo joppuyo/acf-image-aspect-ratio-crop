@@ -802,6 +802,12 @@ class npx_acf_plugin_image_aspect_ratio_crop
         $min_size = $field_object['min_size'];
         $max_size = $field_object['max_size'];
 
+        $min_width = $field_object['min_width'];
+        $max_width = $field_object['max_width'];
+
+        $min_height = $field_object['min_height'];
+        $max_height = $field_object['max_height'];
+
         $this->debug($mime_types);
 
         if (
@@ -830,6 +836,56 @@ class npx_acf_plugin_image_aspect_ratio_crop
                     sprintf(
                         'File size too small. Minimum file size is %d Megabytes.',
                         $min_size
+                    ),
+                    'acf-image-aspect-ratio-crop'
+                )
+            );
+        }
+
+        $image_size = @getimagesize(
+            $data->get_file_params()['image']['tmp_name']
+        );
+
+        if (!$image_size) {
+            return new WP_Error(
+                'failed_to_parse_image',
+                __('Failed to parse image.', 'acf-image-aspect-ratio-crop')
+            );
+        }
+
+        $image_width = $image_size[0];
+        $image_height = $image_size[1];
+
+        if (
+            !empty($min_width) &&
+            !empty($min_height) &&
+            ($image_width < $min_width || $image_height < $min_height)
+        ) {
+            return new WP_Error(
+                'image_too_small',
+                __(
+                    sprintf(
+                        'Image too small. Minimum image dimensions are %d×%d pixels.',
+                        $min_width,
+                        $min_height
+                    ),
+                    'acf-image-aspect-ratio-crop'
+                )
+            );
+        }
+
+        if (
+            !empty($max_width) &&
+            !empty($max_height) &&
+            ($image_width > $max_width || $image_height > $max_height)
+        ) {
+            return new WP_Error(
+                'image_too_large',
+                __(
+                    sprintf(
+                        'Image too large. Maximum image dimensions are %d×%d pixels.',
+                        $max_width,
+                        $max_height
                     ),
                     'acf-image-aspect-ratio-crop'
                 )
