@@ -587,6 +587,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             // verify_nonce always return false when the API is called on the admin side
             // https://stackoverflow.com/questions/41878315/wp-ajax-nonce-works-when-logged-out-but-not-when-logged-in
             'wp_rest_nonce' => wp_create_nonce('wp_rest'),
+            'api_root' => untrailingslashit(get_rest_url()),
         ];
         wp_localize_script(
             'acf-image-aspect-ratio-crop',

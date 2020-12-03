@@ -136,7 +136,7 @@ import { sprintf } from 'sprintf-js';
           .show();
 
         axios
-          .post('/wp-json/aiarc/v1/upload', formData, settings)
+          .post(`${window.aiarc.api_root}/aiarc/v1/upload`, formData, settings)
           .then(response => {
             $(field)
               .find('input')
@@ -160,7 +160,9 @@ import { sprintf } from 'sprintf-js';
               .attr('data-original-image-id', response.data.attachment_id);
 
             axios
-              .get(`/wp-json/aiarc/v1/get/${response.data.attachment_id}`)
+              .get(
+                `${window.aiarc.api_root}/aiarc/v1/get/${response.data.attachment_id}`,
+              )
               .then(response => {
                 let attachment = new window.Backbone.Model(response.data);
 
@@ -268,7 +270,7 @@ import { sprintf } from 'sprintf-js';
           };
 
           axios
-            .post('/wp-json/aiarc/v1/crop', data, options)
+            .post(`${window.aiarc.api_root}/aiarc/v1/crop`, data, options)
             .then(response => {
               self.cropComplete(response.data);
               $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
@@ -487,11 +489,13 @@ import { sprintf } from 'sprintf-js';
         .find('.acf-image-uploader-aspect-ratio-crop')
         .data('original-image-id');
 
-      axios.get(`/wp-json/aiarc/v1/get/${originalImageId}`).then(response => {
-        let attachment = new window.Backbone.Model(response.data);
-        let $field = this.$field;
-        this.openModal({ attachment: attachment, field: $field });
-      });
+      axios
+        .get(`${window.aiarc.api_root}/aiarc/v1/get/${originalImageId}`)
+        .then(response => {
+          let attachment = new window.Backbone.Model(response.data);
+          let $field = this.$field;
+          this.openModal({ attachment: attachment, field: $field });
+        });
     },
 
     /*
@@ -714,13 +718,15 @@ import { sprintf } from 'sprintf-js';
         .first()
         .val(data.id);
 
-      axios.get(`/wp-json/aiarc/v1/get/${data.id}`).then(response => {
-        let attachment = new window.Backbone.Model(response.data);
+      axios
+        .get(`${window.aiarc.api_root}/aiarc/v1/get/${data.id}`)
+        .then(response => {
+          let attachment = new window.Backbone.Model(response.data);
 
-        this.render(attachment);
-        this.isFirstCrop = false;
-        this.closeModal();
-      });
+          this.render(attachment);
+          this.isFirstCrop = false;
+          this.closeModal();
+        });
     },
 
     closeModal: function() {
