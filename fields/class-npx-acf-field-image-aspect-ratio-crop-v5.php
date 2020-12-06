@@ -316,6 +316,55 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'type' => 'text',
             'name' => 'mime_types',
         ]);
+
+        acf_render_field_setting($field, [
+            'label' => __('Thumbnails', 'acf-image-aspect-ratio-crop'),
+            'instructions' => __(
+                'Select which thumbnail sizes to generate for the image',
+                'acf-image-aspect-ratio-crop'
+            ),
+            'type' => 'select',
+            'name' => 'thumbnails',
+            'class' => '',
+            'default_value' => 'all',
+            'choices' => [
+                'all' => __('All', 'acf-image-aspect-ratio-crop'),
+                'custom' => __('Only Selected', 'acf-image-aspect-ratio-crop'),
+            ],
+        ]);
+
+        $default = ['thumbnail', 'medium', 'large'];
+
+        $subsizes = wp_get_registered_image_subsizes();
+        $subsizes = array_keys($subsizes);
+
+        $default = array_intersect($default, $subsizes);
+
+        $thumbnails = [];
+
+        foreach ($subsizes as $subsize) {
+            $thumbnails[$subsize] = $subsize;
+        }
+
+        acf_render_field_setting($field, [
+            'label' => __('Thumbnails', 'acf-image-aspect-ratio-crop'),
+            'type' => 'select',
+            'name' => 'thumbnails_custom',
+            'instructions' => __(
+                'Only selected thumbnail sizes will be generated',
+                'acf-image-aspect-ratio-crop'
+            ),
+            'multiple' => 1,
+            'ui' => 1,
+            'class' => '',
+            'choices' => $thumbnails,
+            'default_value' => $default,
+            'conditional_logic' => [
+                'field' => 'thumbnails',
+                'operator' => '==',
+                'value' => 'custom',
+            ],
+        ]);
     }
 
     /*
