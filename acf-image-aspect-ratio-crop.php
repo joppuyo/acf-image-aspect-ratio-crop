@@ -816,7 +816,10 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
         $allowed_mime_types = $this->extension_list_to_mime_array($mime_types);
 
-        if (!in_array($file_mime, $allowed_mime_types)) {
+        if (
+            !empty($allowed_mime_types) &&
+            !in_array($file_mime, $allowed_mime_types)
+        ) {
             return new WP_Error(
                 'invalid_mime_type',
                 __('Invalid file type.', 'acf-image-aspect-ratio-crop')
