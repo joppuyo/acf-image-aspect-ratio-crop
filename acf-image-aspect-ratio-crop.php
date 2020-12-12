@@ -738,7 +738,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
         register_rest_route('aiarc/v1', '/get/(?P<id>\d+)', [
             'methods' => 'GET',
             'callback' => [$this, 'rest_api_get_callback'],
-            'args' => ['id'],
+            'args' => ['id' => []],
             'permission_callback' => function () {
                 return true;
             },
