@@ -41,7 +41,6 @@ modules:
       host: '%CHROMEDRIVER_HOST%'
       port: '%CHROMEDRIVER_PORT%'
       browser: chrome
-      window_size: 1024x768
     WPFilesystem:
       wpRootFolder: '%WP_ROOT_FOLDER%'
     WPCLI:
