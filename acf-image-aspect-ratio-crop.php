@@ -943,8 +943,8 @@ class npx_acf_plugin_image_aspect_ratio_crop
             'post_status' => 'inherit',
         ];
 
-        $attachment_id = wp_insert_attachment($attachment, $upload['file']);
         require_once ABSPATH . 'wp-admin/includes/image.php';
+        $attachment_id = wp_insert_attachment($attachment, $upload['file']);
         $attachment_data = wp_generate_attachment_metadata(
             $attachment_id,
             $upload['file']
@@ -1135,6 +1135,9 @@ class npx_acf_plugin_image_aspect_ratio_crop
             'post_content' => '',
             'post_status' => 'publish',
         ];
+
+        // Polylang 2.9 Compat
+        require_once ABSPATH . 'wp-admin/includes/image.php';
 
         $attachment_id = wp_insert_attachment(
             $attachment,
