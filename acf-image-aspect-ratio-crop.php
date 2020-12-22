@@ -885,17 +885,15 @@ class npx_acf_plugin_image_aspect_ratio_crop
         ) {
             return new WP_Error(
                 'image_too_small',
-                __(
-                    sprintf(
-                        __(
-                            'Image too small. Minimum image dimensions are %d×%d pixels.',
-                            'acf-image-aspect-ratio-crop'
-                        ),
-                        $min_width,
-                        $min_height
+                sprintf(
+                    __(
+                        'Image too small. Minimum image dimensions are %d×%d pixels.',
+                        'acf-image-aspect-ratio-crop'
                     ),
-                    'acf-image-aspect-ratio-crop'
-                )
+                    $min_width,
+                    $min_height
+                ),
+                'acf-image-aspect-ratio-crop'
             );
         }
 
@@ -906,17 +904,15 @@ class npx_acf_plugin_image_aspect_ratio_crop
         ) {
             return new WP_Error(
                 'image_too_large',
-                __(
-                    sprintf(
-                        __(
-                            'Image too large. Maximum image dimensions are %d×%d pixels.',
-                            'acf-image-aspect-ratio-crop'
-                        ),
-                        $max_width,
-                        $max_height
+                sprintf(
+                    __(
+                        'Image too large. Maximum image dimensions are %d×%d pixels.',
+                        'acf-image-aspect-ratio-crop'
                     ),
-                    'acf-image-aspect-ratio-crop'
-                )
+                    $max_width,
+                    $max_height
+                ),
+                'acf-image-aspect-ratio-crop'
             );
         }
 
