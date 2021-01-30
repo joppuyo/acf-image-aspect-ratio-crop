@@ -183,6 +183,32 @@ class npx_acf_plugin_image_aspect_ratio_crop
             wp_die();
         });
 
+        add_action(
+            'wp_ajax_acf_image_aspect_ratio_crop_get_attachment',
+            function () {
+                // WTF WordPress
+                $post = array_map('stripslashes_deep', $_POST);
+
+                $data = json_decode($post['data'], true);
+                $attachment_id = $data['attachment_id'];
+                $attachment = get_post($attachment_id);
+                if (!$attachment) {
+                    wp_die(
+                        __(
+                            'Attachment not found',
+                            'acf-image-aspect-ratio-crop'
+                        ),
+                        [
+                            'response' => 404,
+                        ]
+                    );
+                }
+                $attachment = wp_prepare_attachment_for_js($attachment);
+                wp_send_json($attachment);
+                wp_die();
+            }
+        );
+
         // Old WPML 4.2.9 compat
         add_action(
             'wpml_media_create_duplicate_attachment',
