@@ -32,7 +32,7 @@ After selecting an image, user can select an area from the image they want, whic
 
 When crop button is pressed, the area is cropped from the original image. After the crop is complete, the image will be automatically scaled down to the pixel size. This means the final image will always be the specified size.
 
-## Free crop
+### Free crop
 
 Crop can be done freely, there are no aspect ratio limitations.
 
