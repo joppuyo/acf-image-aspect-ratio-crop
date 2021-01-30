@@ -539,7 +539,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
         echo '<tr>';
         echo '<td colspan="2" style="padding: 0">';
         echo __(
-            'When you enable the REST API compatibility mode, cropping in the WordPress administration interface will use admin-ajax.php instead of the REST API. Use this compatibility mode if you do not have REST API enabled. Please note that this is a temporary fix since the REST API is the way forward. The compatiblity mode will be removed in a future major release of the plugin.',
+            'When you enable the REST API compatibility mode, cropping in the WordPress administration interface will use admin-ajax.php instead of the REST API. Use this compatibility mode if you do not have REST API enabled. Please note that this is a temporary fix since the REST API is the way forward. The compatibility mode will be removed in a future major release of the plugin.',
             'acf-image-aspect-ratio-crop'
         );
         echo '</td>';
