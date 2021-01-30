@@ -7,8 +7,13 @@ class PolylangCest
     }
 
     // tests
-    public function activateAcf(AcceptanceTester $I)
+    public function activateAcf(AcceptanceTester $I, $scenario)
     {
+        global $wp_version;
+        if (version_compare($wp_version, '5.2', 'lt')) {
+            $scenario->skip('Polylang 2.9 only supports WordPress 5.2 and up');
+        }
+
         $I->cleanUploadsDir();
         $I->cli(['core', 'update-db']);
         $I->dontHavePostInDatabase([]);
