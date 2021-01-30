@@ -615,7 +615,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
         }
     }
 
-    private function log_error($description, $object)
+    private function log_error($description, $object = false)
     {
         error_log("ACF Image Aspect Ratio Crop: $description");
         if ($object) {
@@ -1003,6 +1003,13 @@ class npx_acf_plugin_image_aspect_ratio_crop
             wp_get_attachment_metadata($data['id']),
             $data['id']
         );
+
+        if ($image_data === false) {
+            $error_text =
+                'Failed to get image data. Maybe the original image was deleted?';
+            $this->log_error($error_text);
+            wp_send_json($error_text, 500);
+        }
 
         // If the difference between the images is less than half a percentage, use the original image
         // prettier-ignore
