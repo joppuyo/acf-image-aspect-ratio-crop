@@ -26,6 +26,7 @@
     "mini-css-extract-plugin": "^0.5.0",
     "node-sass": "^4.14.1",
     "postcss-loader": "^3.0.0",
+    "qs": "^6.9.6",
     "raw-loader": "^1.0.0",
     "sass-loader": "^7.1.0",
     "sprintf-js": "^1.1.2",

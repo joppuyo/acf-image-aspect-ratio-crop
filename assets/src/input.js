@@ -6,6 +6,7 @@
 
 import Cropper from 'cropperjs';
 import axios from 'axios';
+import qs from 'qs';
 import { sprintf } from 'sprintf-js';
 
 (function($) {
@@ -264,15 +265,28 @@ import { sprintf } from 'sprintf-js';
           );
           self.cropper.disable();
 
-          let options = {
-            headers: {
-              'X-Aiarc-Nonce': window.aiarc.nonce,
-              'X-WP-Nonce': window.aiarc.wp_rest_nonce,
-            },
-          };
+          let options = {};
+
+          let url = null;
+
+          if (window.aiarc_settings.rest_api_compat === '') {
+            url = `${window.aiarc.api_root}/aiarc/v1/crop`;
+            options = {
+              headers: {
+                'X-Aiarc-Nonce': window.aiarc.nonce,
+                'X-WP-Nonce': window.aiarc.wp_rest_nonce,
+              },
+            };
+          } else if (window.aiarc_settings.rest_api_compat === '1') {
+            url = ajaxurl;
+            data = qs.stringify({
+              action: 'acf_image_aspect_ratio_crop_crop',
+              data: JSON.stringify(data),
+            });
+          }
 
           axios
-            .post(`${window.aiarc.api_root}/aiarc/v1/crop`, data, options)
+            .post(url, data, options)
             .then(response => {
               self.cropComplete(response.data);
               $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
@@ -283,6 +297,7 @@ import { sprintf } from 'sprintf-js';
               $('.js-acf-image-aspect-ratio-crop-modal-footer-status').empty();
             })
             .catch(response => {
+              console.error(response);
               self.cropper.enable();
               $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
               $('.js-acf-image-aspect-ratio-crop-reset').prop(

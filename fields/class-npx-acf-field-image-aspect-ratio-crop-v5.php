@@ -578,6 +578,8 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         ];
         $settings_array = [
             'modal_type' => $this->settings['user_settings']['modal_type'],
+            'rest_api_compat' =>
+                $this->settings['user_settings']['rest_api_compat'],
         ];
 
         $data_array = [
