@@ -107,7 +107,7 @@ The other plugin is not actively maintained and does not work well with latest A
 == Changelog ==
 
 = 5.1.0 (2021-01-30) =
-* Feature: Added REST API compatibility mode. This enables you to crop images in the WordPress administration interface with admin-ajax.php instead of the REST API. You can enable this by going to Plugins -> ACF Image Aspect Ratio Crop -> Settings. Please note that this is a temporary fix for site that don't have REST API enabled. The compatibility mode will be removed in a future major release of the plugin.
+* Feature: Added REST API compatibility mode. This enables you to crop images in the WordPress administration interface with admin-ajax.php instead of the REST API. You can enable this by going to Plugins -> ACF Image Aspect Ratio Crop -> Settings. Please note that this is a temporary fix for sites that don't have REST API enabled. The compatibility mode will be removed in a future major release of the plugin.
 * Fix: Improved error logging
 
 = 5.0.6 (2021-01-28) =
