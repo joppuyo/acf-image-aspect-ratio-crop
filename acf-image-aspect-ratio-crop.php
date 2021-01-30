@@ -411,11 +411,19 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 );
             }
 
+            if (!empty($_POST['rest_api_compat'])) {
+                $settings['rest_api_compat'] = filter_var(
+                    $_POST['rest_api_compat'],
+                    FILTER_VALIDATE_BOOLEAN
+                );
+            }
+
             update_option('acf-image-aspect-ratio-crop-settings', $settings);
             $updated = true;
         }
         $modal_type = $settings['modal_type'];
         $delete_unused = $settings['delete_unused'];
+        $rest_api_compat = $settings['rest_api_compat'];
 
         echo '<div class="wrap">';
         echo '<h1>' .
@@ -475,14 +483,43 @@ class npx_acf_plugin_image_aspect_ratio_crop
             '</label></p>';
         echo '</td>';
         echo '</tr>';
+        echo '<tr>';
+        echo '<td colspan="2" style="padding: 0">';
+        echo __(
+            'Please note that "Delete unused cropped images" feature is a beta feature because it requires more testing. Please do not enable the option without first backing up your database and uploads in order to prevent potential data loss.',
+            'acf-image-aspect-ratio-crop'
+        );
+        echo '</td>';
+        echo '</tr>';
+        echo '<tr>';
+        echo '<th scope="row">';
+        echo '<label for="modal_type">' .
+            __('REST API compatibility mode', 'acf-image-aspect-ratio-crop') .
+            '</label>';
+        echo '</th>';
+        echo '<td>';
+        echo '<p><input type="radio" id="rest_api_compat_true" name="rest_api_compat" value="true" ' .
+            checked($rest_api_compat, true, false) .
+            '><label for="rest_api_compat_true"> ' .
+            __('Enabled', 'acf-image-aspect-ratio-crop') .
+            '</label></p>';
+        echo '<p><input type="radio" id="rest_api_compat_false" name="rest_api_compat" value="false" ' .
+            checked($rest_api_compat, false, false) .
+            '><label for="rest_api_compat_false"> ' .
+            __('Disabled', 'acf-image-aspect-ratio-crop') .
+            '</label></p>';
+        echo '</td>';
+        echo '</tr>';
+        echo '<tr>';
+        echo '<td colspan="2" style="padding: 0">';
+        echo __(
+            'When you enable the REST API compatibility mode, cropping in the WordPress administration interface will use admin-ajax.php instead of the REST API. Use this compatibility mode if you do not have REST API enabled. Please note that this is a temporary fix since the REST API is the way forward. The compatiblity mode will be removed in a future major release of the plugin.',
+            'acf-image-aspect-ratio-crop'
+        );
+        echo '</td>';
+        echo '</tr>';
         echo '</tbody>';
         echo '</table>';
-        echo '<p>' .
-            __(
-                'Please note that "Delete unused cropped images" feature is a beta feature because it requires more testing. Please do not enable the option without first backing up your database and uploads in order to prevent potential data loss.',
-                'acf-image-aspect-ratio-crop'
-            ) .
-            '</p>';
         echo '<p class="submit">';
         echo '<input class="button-primary js-finnish-base-forms-submit-button" type="submit" name="submit-button" value="Save">';
         echo '</p>';
@@ -524,6 +561,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
         $default_user_settings = [
             'modal_type' => 'cropped',
             'delete_unused' => false,
+            'rest_api_compat' => false,
         ];
 
         $this->user_settings = array_merge($default_user_settings, $settings);
