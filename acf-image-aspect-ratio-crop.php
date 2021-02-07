@@ -395,6 +395,20 @@ class npx_acf_plugin_image_aspect_ratio_crop
             10,
             3
         );
+
+        add_filter(
+            'acf/upload_prefilter/type=image_aspect_ratio_crop',
+            [$this, 'acf_upload_prefilter'],
+            10,
+            3
+        );
+
+        add_filter(
+            'acf/validate_attachment/type=image_aspect_ratio_crop',
+            [$this, 'acf_upload_prefilter'],
+            10,
+            3
+        );
     }
 
     /*
@@ -1155,6 +1169,21 @@ class npx_acf_plugin_image_aspect_ratio_crop
             );
         }
 
+        $field_object = get_field_object($data['key']);
+
+        $max_width = $field_object['max_width'];
+        $max_height = $field_object['max_height'];
+
+        if (
+            $data['cropType'] === 'aspect_ratio' &&
+            !empty($max_width) &&
+            !empty($max_height) &&
+            $data['width'] > $max_width &&
+            $data['height'] > $max_height
+        ) {
+            $image->resize($max_width, $max_height, true);
+        }
+
         // Retrieve original filename and seperate it from its file extension
         $original_file_name = explode('.', basename($image_data['file']));
 
@@ -1340,6 +1369,18 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
         $allowed_mime_types = array_unique($allowed_mime_types);
         return $allowed_mime_types;
+    }
+
+    public function acf_upload_prefilter($errors, $file, $field)
+    {
+        // Suppress error about maximum height and width
+        if (!empty($errors['max_width'])) {
+            unset($errors['max_width']);
+        }
+        if (!empty($errors['max_height'])) {
+            unset($errors['max_height']);
+        }
+        return $errors;
     }
 }
 

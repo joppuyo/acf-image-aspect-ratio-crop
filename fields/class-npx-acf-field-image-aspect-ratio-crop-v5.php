@@ -286,6 +286,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'name' => 'max_width',
             'prepend' => __('Width', 'acf'),
             'append' => 'px',
+            'class' => 'js-max-width',
         ]);
 
         acf_render_field_setting($field, [
@@ -295,6 +296,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
             'prepend' => __('Height', 'acf'),
             'append' => 'px',
             '_append' => 'max_width',
+            'class' => 'js-max-height',
         ]);
 
         acf_render_field_setting($field, [
@@ -377,6 +379,12 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                 $field
             )
                 ? $field['aspect_ratio_height']
+                : 0,
+            'data-min_width' => array_key_exists('min_width', $field)
+                ? $field['min_width']
+                : 0,
+            'data-min_height' => array_key_exists('min_height', $field)
+                ? $field['min_height']
                 : 0,
         ];
 

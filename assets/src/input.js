@@ -218,6 +218,10 @@ import { sprintf } from 'sprintf-js';
             .find('.acf-image-uploader-aspect-ratio-crop')
             .data('crop_type');
 
+          let acfKey = $(field)
+            .find('.acf-image-uploader-aspect-ratio-crop')
+            .data('key');
+
           var data = {
             id: $(this).data('id'),
             aspectRatioHeight: $(this).data('aspect-ratio-height'),
@@ -228,6 +232,7 @@ import { sprintf } from 'sprintf-js';
             width: cropData.width,
             height: cropData.height,
             temp_post_id: aiarc.temp_post_id,
+            key: acfKey,
           };
 
           $('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', true);
@@ -638,6 +643,12 @@ import { sprintf } from 'sprintf-js';
       var cropType = $(field)
         .find('.acf-image-uploader-aspect-ratio-crop')
         .data('crop_type');
+      var minWidth = $(field)
+        .find('.acf-image-uploader-aspect-ratio-crop')
+        .data('min_width');
+      var minHeight = $(field)
+        .find('.acf-image-uploader-aspect-ratio-crop')
+        .data('min_height');
 
       var options = {
         aspectRatio: aspectRatioWidth / aspectRatioHeight,
@@ -657,6 +668,19 @@ import { sprintf } from 'sprintf-js';
             this.cropper.setData({
               width: aspectRatioWidth,
               height: aspectRatioHeight,
+            });
+          }
+        };
+      }
+
+      if (cropType === 'aspect_ratio' && minHeight !== 0 && minWidth !== 0) {
+        options.crop = function(event) {
+          let width = event.detail.width;
+          let height = event.detail.height;
+          if (width < minWidth || height < minHeight) {
+            this.cropper.setData({
+              width: minWidth,
+              height: minHeight,
             });
           }
         };
@@ -756,8 +780,6 @@ import { sprintf } from 'sprintf-js';
         this.isFirstCrop = false;
         this.closeModal();
       };
-
-      console.log(data);
 
       if (window.aiarc_settings.rest_api_compat === '') {
         axios
