@@ -106,6 +106,14 @@ The other plugin is not actively maintained and does not work well with latest A
 
 == Changelog ==
 
+= 6.0.0-beta (2021-02-07) =
+* Breaking change: Changed how minimum and maximum image pixel sizes work
+  * Minimum image size previously only affected the uploaded file in aspect ratio mode. Now crop area must be larger than minimum dimensions.
+  * Maximum image size previously only affected the uploaded file in aspect ratio mode. Now if cropped area is larger than maximum dimensions, final image will be scaled down to maximum dimensions
+  * These changes do not apply to front end image crop at the moment.
+  * These changes do not apply to free crop mode, free crop minimum and maximum dimensions are disabled at the moment
+  * Pixel size mode has always had minimum dimensions. Maximum dimensions are now disabled for pixel size mode since the image is always scaled down to pixel size.
+
 = 5.1.0 (2021-01-30) =
 * Feature: Added REST API compatibility mode. This enables you to crop images in the WordPress administration interface with admin-ajax.php instead of the REST API. You can enable this by going to Plugins -> ACF Image Aspect Ratio Crop -> Settings. Please note that this is a temporary fix for sites that don't have REST API enabled. The compatibility mode will be removed in a future major release of the plugin.
 * Fix: Improved error logging
