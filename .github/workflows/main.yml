@@ -24,6 +24,13 @@ jobs:
         SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
         SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
 
+    - name: WordPress Plugin Readme/Assets Update
+      uses: 10up/action-wordpress-plugin-asset-update@1.4.1
+      env:
+        SLUG: acf-image-aspect-ratio-crop
+        SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
+        SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
+        
     - name: Release
       run: |
         rm -fr .github node_modules .travis.yml .editorconfig .gitignore .prettierrc.js deploy.sh deploy-github.sh tests codeception.dist.yml
