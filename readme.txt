@@ -2,7 +2,7 @@
 Contributors: joppuyo
 Tags: acf, field, image, crop
 Requires at least: 4.9
-Tested up to: 5.6
+Tested up to: 5.7
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -105,6 +105,9 @@ The other plugin is not actively maintained and does not work well with latest A
 3. Option to re-crop the image after upload
 
 == Changelog ==
+
+= 5.1.1 (2021-03-11) =
+* Fix: Bump compatiblity to WP 5.7
 
 = 5.1.0 (2021-01-30) =
 * Feature: Added REST API compatibility mode. This enables you to crop images in the WordPress administration interface with admin-ajax.php instead of the REST API. You can enable this by going to Plugins -> ACF Image Aspect Ratio Crop -> Settings. Please note that this is a temporary fix for sites that don't have REST API enabled. The compatibility mode will be removed in a future major release of the plugin.
