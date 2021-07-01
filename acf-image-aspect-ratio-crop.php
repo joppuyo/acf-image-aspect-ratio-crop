@@ -395,6 +395,22 @@ class npx_acf_plugin_image_aspect_ratio_crop
             10,
             3
         );
+
+        // If no alt-text is found for our cropped image, check to see if it exists in the original
+        add_filter(
+            'wp_get_attachment_image_attributes',
+            function ($attr, $attachment) {
+                if (!isset($attr['alt']) || empty($attr['alt'])) {
+                    $original_id = get_post_meta($attachment->ID, 'acf_image_aspect_ratio_crop_original_image_id', true);
+                    $original_alt = get_post_meta($original_id, '_wp_attachment_image_alt', true);
+                    $attr['alt'] = $original_alt;
+                }
+                return $attr;
+            },
+            10,
+            2
+        );
+        
     }
 
     /*
