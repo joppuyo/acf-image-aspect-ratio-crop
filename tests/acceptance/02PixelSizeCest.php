@@ -140,6 +140,6 @@ class PixelSizeCest
             $I->waitForElementVisible('.editor-post-publish-button', 60);
             $I->click('.editor-post-publish-button');
         }
-        $I->waitForText('Post published.');
+        $I->waitForText('Post published.', 60);
     }
 }
