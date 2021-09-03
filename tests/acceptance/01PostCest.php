@@ -57,7 +57,7 @@ class PostCest
         );
         $I->fillField('Field Label', 'Crop Image');
         $I->selectOption('Field Type', 'Image Aspect Ratio Crop');
-        $I->waitForText('Width');
+        $I->waitForText('Width', 30);
         $I->fillField('Width', '16');
         $I->fillField('Height', '9');
         $I->scrollTo('#submitdiv');
@@ -91,7 +91,7 @@ class PostCest
         $I->click('.js-acf-image-aspect-ratio-crop-crop');
         $I->waitForElementNotVisible(
             '.js-acf-image-aspect-ratio-crop-modal',
-            10
+            30
         );
         $I->verifyImage(
             $I,
@@ -115,7 +115,7 @@ class PostCest
             $I->click('.editor-post-publish-button');
         }
 
-        $I->waitForText('Post published.');
+        $I->waitForText('Post published.', 30);
         $I->amOnAdminPage('edit.php');
         $I->see('Test Post');
     }
@@ -216,7 +216,7 @@ class PostCest
         $I->attachFile('.moxie-shim input', $image_path);
         $I->waitForElementClickable(
             'div.media-toolbar-primary.search-form > button',
-            10
+            30
         ); // secs
         $I->click('div.media-toolbar-primary.search-form > button');
         $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 30);
@@ -224,7 +224,7 @@ class PostCest
         $I->click('.js-acf-image-aspect-ratio-crop-crop');
         $I->waitForElementNotVisible(
             '.js-acf-image-aspect-ratio-crop-modal',
-            10
+            30
         );
         $I->verifyImage($I, $verify_path, 16, 9);
         $I->click('Update');
@@ -233,6 +233,6 @@ class PostCest
             $I->waitForElementVisible('.editor-post-publish-button', 30);
             $I->click('.editor-post-publish-button');
         }
-        $I->waitForText('Post updated.');
+        $I->waitForText('Post updated.', 30);
     }
 }
