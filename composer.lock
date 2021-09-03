@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e3ddb3f7f620f4b06a8c1f230c8f2f77",
+    "content-hash": "cd244d259b95258e634e09bebb36680a",
     "packages": [],
     "packages-dev": [
         {
@@ -117,6 +117,63 @@
                 "source": "https://github.com/Behat/Gherkin/tree/master"
             },
             "time": "2020-03-17T14:03:26+00:00"
+        },
+        {
+            "name": "codeception/c3",
+            "version": "2.6.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Codeception/c3.git",
+                "reference": "625318168ecdeedc5162e74435c26320128c4434"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Codeception/c3/zipball/625318168ecdeedc5162e74435c26320128c4434",
+                "reference": "625318168ecdeedc5162e74435c26320128c4434",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.0 || ^2.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "composer/composer": "^1.0 || ^2.0"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "Codeception\\c3\\Installer"
+            },
+            "autoload": {
+                "psr-4": {
+                    "Codeception\\c3\\": "."
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tiger Seo",
+                    "email": "tiger.seo@gmail.com"
+                },
+                {
+                    "name": "Michael Bodnarchuk",
+                    "email": "davert.php@codegyre.com",
+                    "homepage": "http://codegyre.com"
+                }
+            ],
+            "description": "CodeCoverage collector for Codeception",
+            "homepage": "http://codeception.com/",
+            "keywords": [
+                "code coverage",
+                "codecoverage"
+            ],
+            "support": {
+                "issues": "https://github.com/Codeception/c3/issues",
+                "source": "https://github.com/Codeception/c3/tree/2.6.4"
+            },
+            "time": "2021-05-18T16:41:09+00:00"
         },
         {
             "name": "codeception/codeception",
@@ -7349,5 +7406,5 @@
     "platform-overrides": {
         "php": "5.6.0"
     },
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
