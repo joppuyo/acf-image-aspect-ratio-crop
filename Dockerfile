@@ -7,8 +7,6 @@ RUN apt-get update && apt-get install -y sudo less mysql-client
 
 RUN pecl install xdebug-2.5.5 && docker-php-ext-enable xdebug
 
-RUN mv "$PHP_INI_DIR/conf.d/xdebug.ini" "$PHP_INI_DIR/conf.d/xdebug.ini.disabled"
-
 # Add WP-CLI
 RUN curl -o /bin/wp-cli.phar https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 COPY wp-su.sh /bin/wp
