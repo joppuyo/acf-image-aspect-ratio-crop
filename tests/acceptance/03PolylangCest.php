@@ -82,7 +82,7 @@ class PolylangCest
         );
         $I->fillField('Field Label', 'Crop Image');
         $I->selectOption('Field Type', 'Image Aspect Ratio Crop');
-        $I->waitForText('Width');
+        $I->waitForText('Width', 60);
         $I->fillField('Width', '16');
         $I->fillField('Height', '9');
         $I->scrollTo('#submitdiv');

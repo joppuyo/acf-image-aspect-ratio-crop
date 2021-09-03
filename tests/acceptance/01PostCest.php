@@ -57,7 +57,7 @@ class PostCest
         );
         $I->fillField('Field Label', 'Crop Image');
         $I->selectOption('Field Type', 'Image Aspect Ratio Crop');
-        $I->waitForText('Width', 30);
+        $I->waitForText('Width', 60);
         $I->fillField('Width', '16');
         $I->fillField('Height', '9');
         $I->scrollTo('#submitdiv');
@@ -83,15 +83,15 @@ class PostCest
         );
         $I->waitForElementClickable(
             'div.media-toolbar-primary.search-form > button',
-            30
+            60
         ); // secs
         $I->click('div.media-toolbar-primary.search-form > button');
-        $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 30);
-        $I->waitForElementVisible('.cropper-crop-box', 30);
+        $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 60);
+        $I->waitForElementVisible('.cropper-crop-box', 60);
         $I->click('.js-acf-image-aspect-ratio-crop-crop');
         $I->waitForElementNotVisible(
             '.js-acf-image-aspect-ratio-crop-modal',
-            30
+            60
         );
         $I->verifyImage(
             $I,
@@ -111,11 +111,11 @@ class PostCest
         $I->click($publish_text);
 
         if (version_compare($wp_version, '5', 'ge')) {
-            $I->waitForElementVisible('.editor-post-publish-button', 30);
+            $I->waitForElementVisible('.editor-post-publish-button', 60);
             $I->click('.editor-post-publish-button');
         }
 
-        $I->waitForText('Post published.', 30);
+        $I->waitForText('Post published.', 60);
         $I->amOnAdminPage('edit.php');
         $I->see('Test Post');
     }
@@ -216,23 +216,23 @@ class PostCest
         $I->attachFile('.moxie-shim input', $image_path);
         $I->waitForElementClickable(
             'div.media-toolbar-primary.search-form > button',
-            30
+            60
         ); // secs
         $I->click('div.media-toolbar-primary.search-form > button');
-        $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 30);
-        $I->waitForElementVisible('.cropper-crop-box', 30);
+        $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 60);
+        $I->waitForElementVisible('.cropper-crop-box', 60);
         $I->click('.js-acf-image-aspect-ratio-crop-crop');
         $I->waitForElementNotVisible(
             '.js-acf-image-aspect-ratio-crop-modal',
-            30
+            60
         );
         $I->verifyImage($I, $verify_path, 16, 9);
         $I->click('Update');
         global $wp_version;
         if (version_compare($wp_version, '5', 'ge')) {
-            $I->waitForElementVisible('.editor-post-publish-button', 30);
+            $I->waitForElementVisible('.editor-post-publish-button', 60);
             $I->click('.editor-post-publish-button');
         }
-        $I->waitForText('Post updated.', 30);
+        $I->waitForText('Post updated.', 60);
     }
 }

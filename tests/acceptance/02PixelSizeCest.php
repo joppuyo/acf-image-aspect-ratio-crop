@@ -43,7 +43,7 @@ class PixelSizeCest
         );
         $I->fillField('Field Label', 'Crop Image');
         $I->selectOption('Field Type', 'Image Aspect Ratio Crop');
-        $I->waitForText('Width');
+        $I->waitForText('Width', 60);
         $I->selectOption('Crop type', 'Pixel size');
         $I->fillField('Width', '640');
         $I->fillField('Height', '480');
@@ -70,15 +70,15 @@ class PixelSizeCest
         );
         $I->waitForElementClickable(
             'div.media-toolbar-primary.search-form > button',
-            30
+            60
         ); // secs
         $I->click('div.media-toolbar-primary.search-form > button');
-        $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 10);
-        $I->waitForElementVisible('.cropper-crop-box', 10);
+        $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 60);
+        $I->waitForElementVisible('.cropper-crop-box', 60);
         $I->click('.js-acf-image-aspect-ratio-crop-crop');
         $I->waitForElementNotVisible(
             '.js-acf-image-aspect-ratio-crop-modal',
-            10
+            60
         );
         $I->verifyImage($I, 'cropped-pixel.jpg', 640, 480);
         $publish_text = 'Publish';
@@ -91,11 +91,11 @@ class PixelSizeCest
         $I->click($publish_text);
 
         if (version_compare($wp_version, '5', 'ge')) {
-            $I->waitForElementVisible('.editor-post-publish-button', 10);
+            $I->waitForElementVisible('.editor-post-publish-button', 60);
             $I->click('.editor-post-publish-button');
         }
 
-        $I->waitForText('Post published.');
+        $I->waitForText('Post published.', 60);
         $I->amOnAdminPage('edit.php');
         $I->see('Test Post');
     }
@@ -123,7 +123,7 @@ class PixelSizeCest
         $I->scrollTo('.acf-field-image-aspect-ratio-crop');
         $I->click('Add Image');
         $I->attachFile('.moxie-shim input', 'small.jpg');
-        $I->waitForText('Image width must be at least 640px.');
+        $I->waitForText('Image width must be at least 640px.', 60);
         $I->see('Image height must be at least 480px.');
         $I->click('.media-modal-close');
         $publish_text = 'Publish';
@@ -137,7 +137,7 @@ class PixelSizeCest
         $I->click($publish_text);
 
         if (version_compare($wp_version, '5', 'ge')) {
-            $I->waitForElementVisible('.editor-post-publish-button', 10);
+            $I->waitForElementVisible('.editor-post-publish-button', 60);
             $I->click('.editor-post-publish-button');
         }
         $I->waitForText('Post published.');
