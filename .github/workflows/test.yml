@@ -90,7 +90,10 @@ jobs:
           CHROMEDRIVER_HOST: chromedriver
           CHROMEDRIVER_PORT: 9515
           C3_URL: http://wordpress/wp-content/plugins/acf-image-aspect-ratio-crop/acf-image-aspect-ratio-crop.php?
-
+      - uses: codecov/codecov-action@v2
+        with:
+          files: ./tests/_output/coverage.xml
+          verbose: true
       - name: Upload artifact
         if: failure()
         uses: actions/upload-artifact@v1.0.0
