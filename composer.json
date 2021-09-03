@@ -18,7 +18,8 @@
     "codeception/module-phpbrowser": "^1.0",
     "codeception/module-cli": "^1.0",
     "codeception/util-universalframework": "^1.0",
-    "codeception/c3": "^2.6"
+    "codeception/c3": "^2.6",
+    "php-webdriver/webdriver": "1.7.1"
   },
   "scripts": {
     "test-host": "chromedriver --whitelisted-ips='' --url-base=/wd/hub",
