@@ -12,8 +12,7 @@ RUN pecl install xdebug-2.5.5 && docker-php-ext-enable xdebug
 #COPY wp-su.sh /bin/wp
 #RUN chmod +x /bin/wp-cli.phar /bin/wp
 
-RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
-COPY wp-cli.phar /bin/wp
+RUN curl -o /bin/wp https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 RUN chmod +x /bin/wp
 
 RUN docker-php-ext-install \
