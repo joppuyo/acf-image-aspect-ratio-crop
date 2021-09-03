@@ -53,8 +53,13 @@ jobs:
       - name: Build
         run: npx webpack -p
 
+      - run: docker-compose pull
+
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        continue-on-error: true
+
       - name: Setup docker
-        run: docker-compose up -d
+        run: docker-compose up -d --build
 
       - name: Create config file
         run: touch .env.testing
