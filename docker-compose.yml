@@ -30,6 +30,7 @@ services:
       - wordpress:/var/www/html
       # - ./wp-content:/var/www/html/wp-content
       - ./:/var/www/html/wp-content/plugins/acf-image-aspect-ratio-crop
+      - ./wordpress.ini:/usr/local/etc/php/conf.d/wordpress.ini 
 
   db:
     image: mysql:5.7
