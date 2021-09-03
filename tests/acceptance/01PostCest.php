@@ -9,6 +9,8 @@ class PostCest
     // tests
     public function activateAcf(AcceptanceTester $I)
     {
+        // https://github.com/Codeception/Codeception/issues/4765
+        $I->amOnPage('/');
         $I->cleanUploadsDir();
         $I->cli(['core', 'update-db']);
         $I->cli(['rewrite', 'flush']);
