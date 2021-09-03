@@ -89,6 +89,9 @@ jobs:
 
       - name: Check running containers
         run: docker ps -a
+        
+      - name: Test
+        run: docker exec -w /var/www/html acf-image-aspect-ratio-crop_wordpress_1 bash -c "php -i"
 
       - name: Run test suite
         run: |
