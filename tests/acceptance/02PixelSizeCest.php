@@ -95,7 +95,7 @@ class PixelSizeCest
             $I->click('.editor-post-publish-button');
         }
 
-        $I->waitForText('Post published.', 60);
+        $I->waitForText('Post published.', 120);
         $I->amOnAdminPage('edit.php');
         $I->see('Test Post');
     }
@@ -140,6 +140,6 @@ class PixelSizeCest
             $I->waitForElementVisible('.editor-post-publish-button', 60);
             $I->click('.editor-post-publish-button');
         }
-        $I->waitForText('Post published.', 60);
+        $I->waitForText('Post published.', 120);
     }
 }
