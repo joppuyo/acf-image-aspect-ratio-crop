@@ -115,7 +115,7 @@ class PostCest
             $I->click('.editor-post-publish-button');
         }
 
-        $I->waitForText('Post published.', 60);
+        $I->waitForText('Post published.', 120);
         $I->amOnAdminPage('edit.php');
         $I->see('Test Post');
     }
