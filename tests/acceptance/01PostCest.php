@@ -233,6 +233,6 @@ class PostCest
             $I->waitForElementVisible('.editor-post-publish-button', 60);
             $I->click('.editor-post-publish-button');
         }
-        $I->waitForText('Post updated.', 60);
+        $I->waitForText('Post updated.', 120);
     }
 }
