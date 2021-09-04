@@ -3,7 +3,7 @@
 FROM wordpress:php7.4-apache
 
 # Add sudo in order to run wp-cli as the www-data user
-RUN apt-get update && apt-get install -y sudo less mysql-client
+RUN apt-get update && apt-get install -y sudo less default-mysql-client
 
 # RUN pecl install xdebug-2.5.5 && docker-php-ext-enable xdebug
 
