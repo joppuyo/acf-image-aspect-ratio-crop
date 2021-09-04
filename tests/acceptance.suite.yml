@@ -19,7 +19,7 @@ modules:
       dsn: 'mysql:host=%TEST_SITE_DB_HOST%;dbname=%TEST_SITE_DB_NAME%'
       user: '%TEST_SITE_DB_USER%'
       password: '%TEST_SITE_DB_PASSWORD%'
-      dump: 'tests/_data/dump.sql'
+      dump: null
       #import the dump before the tests; this means the test site database will be repopulated before the tests.
       populate: false
       # re-import the dump between tests; this means the test site database will be repopulated between the tests.
@@ -48,6 +48,7 @@ modules:
       path: '%WP_ROOT_FOLDER%'
       allow-root: true
     WPLoader:
+      loadOnly: true
       wpRootFolder: '%WP_ROOT_FOLDER%'
       dbName: '%TEST_SITE_DB_NAME%'
       dbHost: '%TEST_SITE_DB_HOST%'
