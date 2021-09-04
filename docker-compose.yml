@@ -32,7 +32,7 @@ services:
       #- ./wordpress.ini:/usr/local/etc/php/conf.d/wordpress.ini
 
   db:
-    image: mysql:5.7
+    image: mariadb:10.6.4-focal
     restart: always
     environment:
       MYSQL_DATABASE: exampledb

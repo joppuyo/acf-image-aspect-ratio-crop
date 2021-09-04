@@ -1,9 +1,9 @@
 # https://github.com/conetix/docker-wordpress-wp-cli/blob/master/Dockerfile
 
-FROM wordpress:php7.2-apache
+FROM wordpress:php7.4-apache
 
 # Add sudo in order to run wp-cli as the www-data user
-RUN apt-get update && apt-get install -y sudo less default-mysql-client
+RUN apt-get update && apt-get install -y sudo less mariadb-client
 
 # RUN pecl install xdebug-2.5.5 && docker-php-ext-enable xdebug
 

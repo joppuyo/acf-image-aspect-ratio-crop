@@ -22,7 +22,7 @@ params:
 coverage:
   enabled: true
   remote: false
-  c3_url: %C3_URL%
+  c3_url: '%C3_URL%'
   include:
     - /acf-image-aspect-ratio-crop.php
     - /fields/class-npx-acf-field-image-aspect-ratio-crop-v5.php
