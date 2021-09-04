@@ -21,7 +21,7 @@ modules:
       password: '%TEST_SITE_DB_PASSWORD%'
       dump: 'tests/_data/dump.sql'
       #import the dump before the tests; this means the test site database will be repopulated before the tests.
-      populate: false
+      populate: true
       # re-import the dump between tests; this means the test site database will be repopulated between the tests.
       cleanup: false
       waitlock: 20
@@ -55,7 +55,7 @@ modules:
       dbHost: '%TEST_SITE_DB_HOST%'
       dbUser: '%TEST_SITE_DB_USER%'
       dbPassword: '%TEST_SITE_DB_PASSWORD%'
-      #tablePrefix: '%TEST_SITE_TABLE_PREFIX%'
+      tablePrefix: '%TEST_SITE_TABLE_PREFIX%'
       domain: '%TEST_SITE_WP_DOMAIN%'
-      #adminEmail: '%TEST_SITE_ADMIN_EMAIL%'
-      #title: 'Test site'
+      adminEmail: '%TEST_SITE_ADMIN_EMAIL%'
+      title: 'Test site'
