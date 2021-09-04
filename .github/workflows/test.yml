@@ -126,3 +126,6 @@ jobs:
         with:
           name: Test output ${{ matrix.wp_version }} ${{ matrix.acf_version }}
           path: tests/_output/
+      - name: Dump docker logs on failure
+        if: failure()
+        uses: jwalton/gh-docker-logs@v1
