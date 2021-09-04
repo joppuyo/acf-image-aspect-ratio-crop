@@ -33,7 +33,7 @@ services:
       - wordpress:/var/www/html
       # - ./wp-content:/var/www/html/wp-content
       - ./:/var/www/html/wp-content/plugins/acf-image-aspect-ratio-crop
-      #- ./wordpress.ini:/usr/local/etc/php/conf.d/wordpress.ini
+      - ./wordpress.ini:/usr/local/etc/php/conf.d/wordpress.ini
 
   db:
     image: mariadb:10.6.4-focal

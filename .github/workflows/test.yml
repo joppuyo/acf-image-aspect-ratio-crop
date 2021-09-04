@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         wp_version:
-          - '4.9'
+          #- '4.9'
           - '5.0'
           - '5.1'
           - '5.2'
