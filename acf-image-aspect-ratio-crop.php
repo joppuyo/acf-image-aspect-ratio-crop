@@ -52,7 +52,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
         }
 
         $this->settings = [
-            'version' => get_plugin_data(__FILE__)['Version'],
+            'version' => get_plugin_data(__FILE__, false, false)['Version'],
             'url' => plugin_dir_url(__FILE__),
             'path' => plugin_dir_path(__FILE__),
         ];
