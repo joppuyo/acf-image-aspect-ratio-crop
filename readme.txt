@@ -7,7 +7,7 @@ Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://github.com/sponsors/joppuyo
-Stable Tag: 5.1.3
+Stable Tag: 5.1.4
 
 ACF field that allows user to crop image to a specific aspect ratio or pixel size
 
@@ -106,8 +106,10 @@ The other plugin is not actively maintained and does not work well with latest A
 
 == Changelog ==
 
-= 5.1.3 (2021-09-18) =
+= 5.1.4 (2021-09-18) =
 * Fix: Bump compatibility to WP 5.8
+
+= 5.1.3 (2021-09-18) =
 * Fix: Fix potential issue with translations, see [this thread](https://wordpress.org/support/topic/get_plugin_data-called-too-early-breaks-translations-2/) for more information
 
 = 5.1.2 (2021-03-11) =
