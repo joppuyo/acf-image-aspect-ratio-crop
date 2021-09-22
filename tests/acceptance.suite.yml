@@ -42,8 +42,8 @@ modules:
       port: '%CHROMEDRIVER_PORT%'
       browser: chrome
         capabilities:
-        chromeOptions:
-          args: [ "--no-sandbox", "--headless", "--disable-gpu" ]
+          chromeOptions:
+            args: [ "--no-sandbox", "--headless", "--disable-gpu" ]
       window_size: 1280x1024
     WPFilesystem:
       wpRootFolder: '%WP_ROOT_FOLDER%'
