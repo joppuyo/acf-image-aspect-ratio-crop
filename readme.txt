@@ -2,12 +2,12 @@
 Contributors: joppuyo
 Tags: acf, field, image, crop
 Requires at least: 4.9
-Tested up to: 5.6
+Tested up to: 5.8
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://github.com/sponsors/joppuyo
-Stable Tag: 5.1.0
+Stable Tag: 5.1.4
 
 ACF field that allows user to crop image to a specific aspect ratio or pixel size
 
@@ -113,6 +113,18 @@ The other plugin is not actively maintained and does not work well with latest A
   * These changes do not apply to front end image crop at the moment.
   * These changes do not apply to free crop mode, free crop minimum and maximum dimensions are disabled at the moment
   * Pixel size mode has always had minimum dimensions. Maximum dimensions are now disabled for pixel size mode since the image is always scaled down to pixel size.
+
+= 5.1.4 (2021-09-18) =
+* Fix: Bump compatibility to WP 5.8
+
+= 5.1.3 (2021-09-18) =
+* Fix: Fix potential issue with translations, see [this thread](https://wordpress.org/support/topic/get_plugin_data-called-too-early-breaks-translations-2/) for more information
+
+= 5.1.2 (2021-03-11) =
+* Fix: Bump stable tag
+
+= 5.1.1 (2021-03-11) =
+* Fix: Bump compatiblity to WP 5.7
 
 = 5.1.0 (2021-01-30) =
 * Feature: Added REST API compatibility mode. This enables you to crop images in the WordPress administration interface with admin-ajax.php instead of the REST API. You can enable this by going to Plugins -> ACF Image Aspect Ratio Crop -> Settings. Please note that this is a temporary fix for sites that don't have REST API enabled. The compatibility mode will be removed in a future major release of the plugin.

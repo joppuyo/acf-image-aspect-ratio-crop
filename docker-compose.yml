@@ -1,9 +1,12 @@
 version: '3.1'
 
 services:
-
   wordpress:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        wp_version: '$WP_VERSION'
     restart: always
     ports:
       - 80:80
@@ -30,9 +33,10 @@ services:
       - wordpress:/var/www/html
       # - ./wp-content:/var/www/html/wp-content
       - ./:/var/www/html/wp-content/plugins/acf-image-aspect-ratio-crop
+      - ./wordpress.ini:/usr/local/etc/php/conf.d/wordpress.ini
 
   db:
-    image: mysql:5.7
+    image: mariadb:10.6.4-focal
     restart: always
     environment:
       MYSQL_DATABASE: exampledb
@@ -45,10 +49,10 @@ services:
     image: robcherry/docker-chromedriver
     environment:
       CHROMEDRIVER_PORT: 9515
-      CHROMEDRIVER_WHITELISTED_IPS: ""
+      CHROMEDRIVER_WHITELISTED_IPS: ''
       CHROMEDRIVER_URL_BASE: /wd/hub
     expose:
-      - "9515"
+      - '9515'
     privileged: true
     shm_size: 1G
 

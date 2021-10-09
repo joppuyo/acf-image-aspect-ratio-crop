@@ -1,34 +1,33 @@
 {
-    "name": "joppuyo/acf-image-aspect-ratio-crop",
-    "description": "ACF field that allows user to crop image to a specific aspect ratio",
-    "type": "wordpress-plugin",
-    "license": "GPL-2.0-or-later",
-    "authors": [
-        {
-            "name": "Johannes Siipola",
-            "email": "johannes@siipo.la"
-        }
-    ],
-    "require": {
-    },
-    "require-dev": {
-        "lucatume/wp-browser": "^2.4",
-        "codeception/module-db": "^1.0",
-        "codeception/module-webdriver": "^1.0",
-        "codeception/module-filesystem": "^1.0",
-        "codeception/module-asserts": "^1.0",
-        "codeception/module-phpbrowser": "^1.0",
-        "codeception/module-cli": "^1.0",
-        "codeception/util-universalframework": "^1.0"
-    },
-    "scripts": {
-        "test-host": "chromedriver --whitelisted-ips='' --url-base=/wd/hub",
-        "test": "vendor/bin/codecept run acceptance --fail-fast"
-    },
-    "config": {
-        "process-timeout": 0,
-        "platform": {
-            "php": "5.6.0"
-        }
+  "name": "joppuyo/acf-image-aspect-ratio-crop",
+  "description": "ACF field that allows user to crop image to a specific aspect ratio",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "authors": [
+    {
+      "name": "Johannes Siipola",
+      "email": "johannes@siipo.la"
     }
+  ],
+  "require-dev": {
+    "codeception/module-db": "^1.0",
+    "codeception/module-webdriver": "^1.0",
+    "codeception/module-filesystem": "^1.0",
+    "codeception/module-asserts": "^1.0",
+    "codeception/module-phpbrowser": "^1.0",
+    "codeception/module-cli": "^1.0",
+    "codeception/util-universalframework": "^1.0",
+    "lucatume/wp-browser": "^3.0",
+    "wp-cli/wp-cli-bundle": "^2.5"
+  },
+  "scripts": {
+    "test-host": "chromedriver --whitelisted-ips='' --url-base=/wd/hub",
+    "test": "vendor/bin/codecept run acceptance --fail-fast"
+  },
+  "config": {
+    "process-timeout": 0,
+    "platform": {
+      "php": "7.2.34"
+    }
+  }
 }

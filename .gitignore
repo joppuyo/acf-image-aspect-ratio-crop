@@ -2,3 +2,6 @@
 /assets/dist
 /vendor
 /.env.testing
+/c3.php
+tests/_output/*
+!tests/_output/.gitkeep
