@@ -7,6 +7,31 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        acf_version:
+          - 5.10.2
+          - 5.10.1
+          - 5.9.9
+          - 5.9.8
+          - 5.9.7
+          - 5.9.6
+          - 5.9.5
+          - 5.9.4
+          - 5.9.3
+          - 5.9.2
+          - 5.9.1
+          - 5.9.0
+          - 5.8.13
+        wp_docker_tag:
+          - 5.0-php7.0-apache
+          - 5.1-php7.1-apache
+          - 5.2-php7.1-apache
+          - 5.3-php7.1-apache
+          - 5.4-php7.2-apache
+          - 5.5-php7.2-apache
+          - 5.6-php7.2-apache
+          - 5.7-php7.3-apache
+          - 5.8-php7.3-apache
+          - 5.8-php7.4-apache
         include:
           - wp_docker_tag: 5.0-php7.0-apache
             xdebug_version: xdebug-2.7.2
@@ -38,20 +63,6 @@ jobs:
           - wp_docker_tag: 5.8-php7.4-apache
             xdebug_version: xdebug-3.0.4
             php_version: 7.4
-        acf_version:
-          - 5.10.2
-          - 5.10.1
-          - 5.9.9
-          - 5.9.8
-          - 5.9.7
-          - 5.9.6
-          - 5.9.5
-          - 5.9.4
-          - 5.9.3
-          - 5.9.2
-          - 5.9.1
-          - 5.9.0
-          - 5.8.13
       fail-fast: false
     env:
       ACF_VERSION: ${{ matrix.acf_version }}
