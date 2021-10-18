@@ -36,7 +36,7 @@ class MaxSizeCest
     {
         $I->loadSessionSnapshot('login');
         $I->amOnAdminPage('edit.php?post_type=acf-field-group');
-        $I->wait(1);
+        //$I->wait(1);
         $I->click('a.page-title-action');
         $I->fillField('#title', 'Post');
         $I->click(

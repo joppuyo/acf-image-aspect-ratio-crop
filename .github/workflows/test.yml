@@ -77,7 +77,7 @@ jobs:
       - uses: actions/checkout@v1
 
       - name: Install PHP
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@verbose
         with:
           php-version: ${{ matrix.php_version }}
           extensions: zip
@@ -153,7 +153,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v1.0.0
         with:
-          name: Test output ${{ matrix.wp_version }} ${{ matrix.acf_version }}
+          name: Test output ${{ matrix.wp_docker_tag }} ${{ matrix.acf_version }}
           path: tests/_output/
       - name: Dump docker logs on failure
         if: failure()

@@ -49,7 +49,7 @@ class PostCest
     {
         $I->loadSessionSnapshot('login');
         $I->amOnAdminPage('edit.php?post_type=acf-field-group');
-        $I->wait(1);
+        //$I->wait(1);
         $I->click('a.page-title-action');
         $I->fillField('#title', 'Post');
         $I->click(
@@ -147,7 +147,7 @@ class PostCest
                 ? 'cropped-2-scaled.jpg'
                 : 'cropped-2.jpg'
         );
-        $I->wait(10);
+        //$I->wait(10);
         $I->amOnAdminPage('upload.php?mode=list');
 
         $extra = version_compare($wp_version, '5.3', 'ge') ? '-scaled' : '';
@@ -185,7 +185,7 @@ class PostCest
                 ? 'cropped-3-scaled.jpg'
                 : 'cropped-3.jpg'
         );
-        $I->wait(10);
+        //$I->wait(10);
         $I->amOnAdminPage('upload.php?mode=list');
 
         $extra = version_compare($wp_version, '5.3', 'ge') ? '-scaled' : '';
