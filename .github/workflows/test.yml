@@ -22,8 +22,8 @@ jobs:
           - 5.9.0
           - 5.8.13
         wp_docker_tag:
-          - 4.9-php5.6-apache
-          - 5.0-php7.0-apache
+          #- 4.9-php5.6-apache
+          #- 5.0-php7.0-apache
           - 5.1-php7.1-apache
           - 5.2-php7.1-apache
           - 5.3-php7.1-apache
