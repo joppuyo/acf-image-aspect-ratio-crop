@@ -25,9 +25,6 @@
     "test": "vendor/bin/codecept run acceptance --fail-fast"
   },
   "config": {
-    "process-timeout": 0,
-    "platform": {
-      "php": "7.2.34"
-    }
+    "process-timeout": 0
   }
 }
