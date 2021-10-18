@@ -1,8 +1,10 @@
 # https://github.com/conetix/docker-wordpress-wp-cli/blob/master/Dockerfile
 
-ARG wp_version
+ARG wp_docker_tag
 
-FROM wordpress:$wp_version-php7.3-apache
+FROM wordpress:$wp_docker_tag
+
+ARG xdebug_version
 
 # Add sudo in order to run wp-cli as the www-data user
 RUN apt-get update && apt-get install -y sudo less mariadb-client

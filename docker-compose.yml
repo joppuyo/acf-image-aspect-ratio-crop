@@ -1,12 +1,13 @@
 version: '3.1'
 
 services:
-  wordpress:
+  wordpress.test:
     build:
       context: .
       dockerfile: Dockerfile
       args:
-        wp_version: '$WP_VERSION'
+        wp_docker_tag: '$WP_DOCKER_TAG'
+        xdebug_version: '$XDEBUG_VERSION'
     restart: always
     ports:
       - 80:80
