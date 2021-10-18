@@ -6,7 +6,6 @@
   "license": "GPL-2.0-or-later",
   "private": false,
   "devDependencies": {
-    "@prettier/plugin-php": "github:prettier/plugin-php",
     "husky": "^4.2.5",
     "prettier": "^1.19.1",
     "pretty-quick": "^3.0.0"
@@ -15,6 +14,7 @@
     "@babel/core": "^7.4.5",
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
+    "@prettier/plugin-php": "^0.17.5",
     "autoprefixer": "^9.6.0",
     "axios": "^0.20.0",
     "babel-loader": "^8.0.6",
