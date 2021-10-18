@@ -484,7 +484,7 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                        title="<?php _e(
                            'Edit',
                            'acf'
-                       ); ?>"></a><?php endif; ?><a class="acf-icon -cancel dark" data-name="remove" href="#"
+                       ); ?>"></a><?php endif; ?><a class="acf-icon -cancel-custom dark" data-name="remove" href="#"
                          title="<?php _e('Remove', 'acf'); ?>"></a>
                 </div>
             </div>
