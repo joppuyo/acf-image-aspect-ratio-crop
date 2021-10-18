@@ -104,7 +104,7 @@ class FrontEndCropMaxSizeCest
         );
         //$I->wait(10);
         $I->click('Update');
-        $I->waitForElement('#message');
+        $I->waitForElement('#message', 60);
         //$I->wait(10);
     }
 
