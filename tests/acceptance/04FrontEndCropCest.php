@@ -102,7 +102,7 @@ class FrontEndCropCest
         );
         //$I->wait(10);
         $I->click('Update');
-        $I->waitForElement('.acf-spinner.is-active', 60);
+        $I->waitForElement('.acf-spinner.is-active', 120);
         $I->waitForElementNotVisible('.acf-spinner.is-active', 60);
         //$I->wait(10);
     }
