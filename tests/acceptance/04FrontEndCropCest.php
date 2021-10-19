@@ -96,15 +96,30 @@ class FrontEndCropCest
         $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 60);
         $I->waitForElementVisible('.cropper-crop-box', 60);
         $I->click('.js-acf-image-aspect-ratio-crop-crop');
+        $I->makeScreenshot();
         $I->waitForElementNotVisible(
             '.js-acf-image-aspect-ratio-crop-modal',
             60
         );
+        $I->makeScreenshot();
         $I->executeJS(
             'document.querySelector(".acf-button").scrollIntoView({block: "center", inline: "center"});'
         );
+        $I->makeScreenshot();
         $I->wait(1);
         $I->click('Update');
+        $I->makeScreenshot();
+        $I->wait(10);
+        $I->makeScreenshot();
+        $I->wait(10);
+        $I->makeScreenshot();
+        $I->wait(10);
+        $I->makeScreenshot();
+        $I->wait(10);
+        $I->makeScreenshot();
+        $I->wait(10);
+        $I->makeScreenshot();
+        $I->wait(10);
         $I->waitForText('Post updated', 60);
     }
 
