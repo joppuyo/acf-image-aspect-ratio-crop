@@ -19,6 +19,7 @@ class FrontEndCropMaxSizeCest
             '--force',
             '--activate',
         ]);
+        $I->cli(['theme', 'install', 'twentytwenty', '--force', '--activate']);
         $I->dontHavePostInDatabase([]);
         $I->loginAsAdmin();
         $I->amOnPluginsPage();
@@ -93,24 +94,20 @@ class FrontEndCropMaxSizeCest
     public function addImage(AcceptanceTester $I)
     {
         $I->amOnPage('test-post');
-        $I->makeScreenshot();
         $I->attachFile('.js-aiarc-upload', 'zoltan-kovacs-285132-unsplash.jpg');
-        $I->makeScreenshot();
         $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 60);
-        $I->makeScreenshot();
         $I->waitForElementVisible('.cropper-crop-box', 60);
-        $I->makeScreenshot();
         $I->click('.js-acf-image-aspect-ratio-crop-crop');
-        $I->makeScreenshot();
         $I->waitForElementNotVisible(
             '.js-acf-image-aspect-ratio-crop-modal',
             60
         );
+        $I->executeJS(
+            'document.querySelector(".acf-button").scrollIntoView({block: "center", inline: "center"});'
+        );
+        $I->wait(1);
         $I->click('Update');
-        $I->makeScreenshot();
-        $I->waitForElement('.acf-spinner.is-active', 60);
-        $I->makeScreenshot();
-        $I->waitForElementNotVisible('.acf-spinner.is-active', 60);
+        $I->waitForText('Post updated');
     }
 
     public function checkImage(AcceptanceTester $I)
