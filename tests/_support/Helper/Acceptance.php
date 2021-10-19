@@ -5,14 +5,9 @@ namespace Helper;
 // all public methods declared in helper class will be available in $I
 
 use AcceptanceTester;
-use Yoast\PHPUnitPolyfills\Polyfills\AssertStringContains;
-use Yoast\PHPUnitPolyfills\Polyfills\AssertEqualsSpecializations;
 
 class Acceptance extends \Codeception\Module
 {
-    use AssertStringContains;
-    use AssertEqualsSpecializations;
-
     function verifyImage(
         AcceptanceTester $I,
         $comparison_image,
@@ -47,15 +42,40 @@ class Acceptance extends \Codeception\Module
         $url = implode('/', $url);
 
         codecept_debug($filename);
-        $this->assertStringContainsString("-aspect-ratio-$width-$height", $url);
+        if (version_compare(PHP_VERSION, '7.1.0', '>=')) {
+            $this->assertStringContainsString(
+                "-aspect-ratio-$width-$height",
+                $url
+            );
+        } else {
+            $this->assertTrue(
+                strpos($url, "-aspect-ratio-$width-$height") !== false
+            );
+        }
 
         $image_1_size = getimagesize(
             __DIR__ . "../../../_data/$comparison_image"
         );
         $image_2_size = getimagesize($url);
 
-        $this->assertEqualsWithDelta($image_1_size[0], $image_2_size[0], 2);
-        $this->assertEqualsWithDelta($image_1_size[1], $image_2_size[1], 2);
+        if (version_compare(PHP_VERSION, '7.1.0', '>=')) {
+            $this->assertEqualsWithDelta($image_1_size[0], $image_2_size[0], 2);
+            $this->assertEqualsWithDelta($image_1_size[1], $image_2_size[1], 2);
+        } else {
+            \PHPUnit_Framework_Assert::assertEquals(
+                $image_1_size[0],
+                $image_2_size[0],
+                '',
+                2
+            );
+            \PHPUnit_Framework_Assert::assertEquals(
+                $image_1_size[1],
+                $image_2_size[1],
+                '',
+                2
+            );
+        }
+
         $I->click('button.media-modal-close');
     }
 }
