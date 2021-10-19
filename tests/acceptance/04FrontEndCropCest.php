@@ -91,20 +91,25 @@ class FrontEndCropCest
     public function addImage(AcceptanceTester $I)
     {
         $I->amOnPage('test-post');
-        //$I->click('Add Image');
+        $I->makeScreenshot();
         $I->attachFile('.js-aiarc-upload', 'zoltan-kovacs-285132-unsplash.jpg');
+        $I->makeScreenshot();
         $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 60);
+        $I->makeScreenshot();
         $I->waitForElementVisible('.cropper-crop-box', 60);
+        $I->makeScreenshot();
         $I->click('.js-acf-image-aspect-ratio-crop-crop');
+        $I->makeScreenshot();
         $I->waitForElementNotVisible(
             '.js-acf-image-aspect-ratio-crop-modal',
             60
         );
-        //$I->wait(10);
+        $I->makeScreenshot();
         $I->click('Update');
-        $I->waitForElement('.acf-spinner.is-active', 120);
+        $I->makeScreenshot();
+        $I->waitForElement('.acf-spinner.is-active', 60);
+        $I->makeScreenshot();
         $I->waitForElementNotVisible('.acf-spinner.is-active', 60);
-        //$I->wait(10);
     }
 
     public function checkImage(AcceptanceTester $I)
