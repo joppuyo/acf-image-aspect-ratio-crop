@@ -9,3 +9,11 @@ add_filter('the_content', function () {
         acf_form();
     }
 });
+
+add_action(
+    'wp_head',
+    function () {
+        echo '<style>html{ scroll-behavior: auto !important; }</style>';
+    },
+    100
+);

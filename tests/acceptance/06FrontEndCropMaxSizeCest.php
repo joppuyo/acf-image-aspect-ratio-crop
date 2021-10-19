@@ -105,7 +105,7 @@ class FrontEndCropMaxSizeCest
         $I->executeJS(
             'document.querySelector(".acf-button").scrollIntoView({block: "center", inline: "center"});'
         );
-        $I->wait(1);
+        $I->waitForElementClickable('.acf-button');
         $I->click('Update');
         $I->waitForText('Post updated', 60);
     }

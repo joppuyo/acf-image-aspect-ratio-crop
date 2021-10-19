@@ -5,10 +5,14 @@ namespace Helper;
 // all public methods declared in helper class will be available in $I
 
 use AcceptanceTester;
-use PHPUnit\Framework\Assert;
+use Yoast\PHPUnitPolyfills\Polyfills\AssertStringContains;
+use Yoast\PHPUnitPolyfills\Polyfills\AssertEqualsSpecializations;
 
 class Acceptance extends \Codeception\Module
 {
+    use AssertStringContains;
+    use AssertEqualsSpecializations;
+
     function verifyImage(
         AcceptanceTester $I,
         $comparison_image,
@@ -43,18 +47,15 @@ class Acceptance extends \Codeception\Module
         $url = implode('/', $url);
 
         codecept_debug($filename);
-        Assert::assertStringContainsString(
-            "-aspect-ratio-$width-$height",
-            $url
-        );
+        $this->assertStringContainsString("-aspect-ratio-$width-$height", $url);
 
         $image_1_size = getimagesize(
             __DIR__ . "../../../_data/$comparison_image"
         );
         $image_2_size = getimagesize($url);
 
-        Assert::assertEqualsWithDelta($image_1_size[0], $image_2_size[0], 2);
-        Assert::assertEqualsWithDelta($image_1_size[1], $image_2_size[1], 2);
+        $this->assertEqualsWithDelta($image_1_size[0], $image_2_size[0], 2);
+        $this->assertEqualsWithDelta($image_1_size[1], $image_2_size[1], 2);
         $I->click('button.media-modal-close');
     }
 }

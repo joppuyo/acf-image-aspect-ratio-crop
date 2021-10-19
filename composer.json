@@ -18,7 +18,8 @@
     "codeception/module-cli": "^1.0",
     "codeception/util-universalframework": "^1.0",
     "lucatume/wp-browser": "^3.0",
-    "wp-cli/wp-cli-bundle": "^2.5"
+    "wp-cli/wp-cli-bundle": "^2.5",
+    "yoast/phpunit-polyfills": "^1.0"
   },
   "scripts": {
     "test-host": "chromedriver --whitelisted-ips='' --url-base=/wd/hub",
