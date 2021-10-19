@@ -47,15 +47,15 @@ class Acceptance extends \Codeception\Module
         $url = implode('/', $url);
 
         codecept_debug($filename);
-        $this->assertStringContainsString("-aspect-ratio-$width-$height", $url);
+        self::assertStringContainsString("-aspect-ratio-$width-$height", $url);
 
         $image_1_size = getimagesize(
             __DIR__ . "../../../_data/$comparison_image"
         );
         $image_2_size = getimagesize($url);
 
-        $this->assertEqualsWithDelta($image_1_size[0], $image_2_size[0], 2);
-        $this->assertEqualsWithDelta($image_1_size[1], $image_2_size[1], 2);
+        self::assertEqualsWithDelta($image_1_size[0], $image_2_size[0], 2);
+        self::assertEqualsWithDelta($image_1_size[1], $image_2_size[1], 2);
         $I->click('button.media-modal-close');
     }
 }
