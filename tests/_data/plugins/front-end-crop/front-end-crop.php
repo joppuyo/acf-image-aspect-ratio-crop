@@ -2,18 +2,10 @@
 
 // Plugin name: Front end crop
 
-add_filter(
-    'wp_head',
-    function () {
-        if (!is_admin() && !defined('REST_REQUEST')) {
-            acf_form_head();
-        }
-    },
-    1
-);
+add_action('get_header', 'acf_form_head');
 
 add_filter('the_content', function () {
-    if (!is_admin() && !defined('REST_REQUEST')) {
+    if (!is_admin() && is_singular()) {
         acf_form();
     }
 });
