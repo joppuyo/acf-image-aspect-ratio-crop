@@ -105,7 +105,7 @@ class FrontEndCropCest
         );
         $I->wait(1);
         $I->click('Update');
-        $I->waitForText('Post updated');
+        $I->waitForText('Post updated', 60);
     }
 
     public function checkImage(AcceptanceTester $I)
