@@ -94,7 +94,7 @@ class FrontEndCropCest
     {
         $I->amOnPage('test-post');
         $I->attachFile('.js-aiarc-upload', 'zoltan-kovacs-285132-unsplash.jpg');
-        $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 60);
+        $I->waitForElementVisible('.js-acf-image-aspect-ratio-crop-modal', 120);
         $I->waitForElementVisible('.cropper-crop-box', 60);
         $I->click('.js-acf-image-aspect-ratio-crop-crop');
         $I->waitForElementNotVisible(
