@@ -113,8 +113,6 @@ class Admin
             $updated = true;
         }
         $modal_type = $settings['modal_type'];
-        $delete_unused = $settings['delete_unused'];
-        $rest_api_compat = $settings['rest_api_compat'];
 
         echo '<div class="wrap">';
         echo '<h1>' .

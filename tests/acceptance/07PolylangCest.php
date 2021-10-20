@@ -15,6 +15,7 @@ class PolylangCest
         }
 
         $I->cleanUploadsDir();
+        $I->importSqlDumpFile();
         $I->cli(['core', 'update-db']);
         $I->dontHavePostInDatabase([]);
         $I->loginAsAdmin();

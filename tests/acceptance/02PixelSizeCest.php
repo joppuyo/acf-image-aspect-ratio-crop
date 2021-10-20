@@ -10,6 +10,7 @@ class PixelSizeCest
     public function activateAcf(AcceptanceTester $I)
     {
         $I->cleanUploadsDir();
+        $I->importSqlDumpFile();
         $I->cli(['core', 'update-db']);
         $I->dontHavePostInDatabase([]);
         $I->loginAsAdmin();

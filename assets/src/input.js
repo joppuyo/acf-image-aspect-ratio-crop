@@ -274,23 +274,13 @@ import { sprintf } from 'sprintf-js';
 
           let url = null;
 
-          if (window.aiarc_settings.rest_api_compat === '') {
-            url = `${window.aiarc.api_root}/aiarc/v1/crop`;
-            options = {
-              headers: {
-                'X-Aiarc-Nonce': window.aiarc.nonce,
-                'X-WP-Nonce': window.aiarc.wp_rest_nonce,
-              },
-            };
-          }
-
-          if (window.aiarc_settings.rest_api_compat === '1') {
-            url = ajaxurl;
-            data = qs.stringify({
-              action: 'acf_image_aspect_ratio_crop_crop',
-              data: JSON.stringify(data),
-            });
-          }
+          url = `${window.aiarc.api_root}/aiarc/v1/crop`;
+          options = {
+            headers: {
+              'X-Aiarc-Nonce': window.aiarc.nonce,
+              'X-WP-Nonce': window.aiarc.wp_rest_nonce,
+            },
+          };
 
           axios
             .post(url, data, options)
@@ -519,19 +509,9 @@ import { sprintf } from 'sprintf-js';
         this.openModal({ attachment: attachment, field: $field });
       };
 
-      if (window.aiarc_settings.rest_api_compat === '') {
-        axios
-          .get(`${window.aiarc.api_root}/aiarc/v1/get/${originalImageId}`)
-          .then(response => callback(response));
-      }
-
-      if (window.aiarc_settings.rest_api_compat === '1') {
-        let data = qs.stringify({
-          action: 'acf_image_aspect_ratio_crop_get_attachment',
-          data: JSON.stringify({ attachment_id: originalImageId }),
-        });
-        axios.post(ajaxurl, data).then(response => callback(response));
-      }
+      axios
+        .get(`${window.aiarc.api_root}/aiarc/v1/get/${originalImageId}`)
+        .then(response => callback(response));
     },
 
     /*
@@ -781,19 +761,9 @@ import { sprintf } from 'sprintf-js';
         this.closeModal();
       };
 
-      if (window.aiarc_settings.rest_api_compat === '') {
-        axios
-          .get(`${window.aiarc.api_root}/aiarc/v1/get/${data.id}`)
-          .then(response => callback(response));
-      }
-
-      if (window.aiarc_settings.rest_api_compat === '1') {
-        let postData = qs.stringify({
-          action: 'acf_image_aspect_ratio_crop_get_attachment',
-          data: JSON.stringify({ attachment_id: data.id }),
-        });
-        axios.post(ajaxurl, postData).then(response => callback(response));
-      }
+      axios
+        .get(`${window.aiarc.api_root}/aiarc/v1/get/${data.id}`)
+        .then(response => callback(response));
     },
 
     closeModal: function() {

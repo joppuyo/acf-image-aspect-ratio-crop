@@ -11,6 +11,7 @@ class MaxSizeCest
         global $wp_version;
 
         $I->cleanUploadsDir();
+        $I->importSqlDumpFile();
         $I->cli(['core', 'update-db']);
         $I->dontHavePostInDatabase([]);
         $I->loginAsAdmin();

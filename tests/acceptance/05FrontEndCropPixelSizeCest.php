@@ -11,6 +11,7 @@ class FrontEndCropPixelSizeCest
         global $wp_version;
 
         $I->cleanUploadsDir();
+        $I->importSqlDumpFile();
         $I->cli(['core', 'update-db']);
         $I->cli([
             'plugin',
