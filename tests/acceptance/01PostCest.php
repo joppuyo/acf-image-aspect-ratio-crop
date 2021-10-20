@@ -162,48 +162,6 @@ class PostCest
         );
     }
 
-    public function enableUnusedImageDeletion(AcceptanceTester $I)
-    {
-        $I->loadSessionSnapshot('login');
-        $I->amOnPluginsPage();
-        $I->click(
-            'a[href="options-general.php?page=acf-image-aspect-ratio-crop"]'
-        );
-        $I->see('Delete unused cropped images');
-        $I->click('#delete_unused_true');
-        $I->click('Save');
-    }
-
-    public function updateImageSecond(AcceptanceTester $I)
-    {
-        global $wp_version;
-        $I->loadSessionSnapshot('login');
-        $this->updateImage(
-            $I,
-            'jonas-morgner-sNoWQv4ts3I-unsplash.jpg',
-            version_compare($wp_version, '5.3', 'ge')
-                ? 'cropped-3-scaled.jpg'
-                : 'cropped-3.jpg'
-        );
-        //$I->wait(10);
-        $I->amOnAdminPage('upload.php?mode=list');
-
-        $extra = version_compare($wp_version, '5.3', 'ge') ? '-scaled' : '';
-
-        $I->see("jonas-morgner-sNoWQv4ts3I-unsplash$extra.jpg");
-        $I->see(
-            "jonas-morgner-sNoWQv4ts3I-unsplash$extra-aspect-ratio-16-9$extra.jpg"
-        );
-        $I->see("zoltan-kovacs-285132-unsplash$extra.jpg");
-        $I->dontSee(
-            "zoltan-kovacs-285132-unsplash$extra-aspect-ratio-16-9$extra.jpg"
-        );
-        $I->see("sylwia-pietruszka-nPCiBaK8WPk-unsplash$extra.jpg");
-        $I->dontSee(
-            "sylwia-pietruszka-nPCiBaK8WPk-unsplash$extra-aspect-ratio-16-9$extra.jpg"
-        );
-    }
-
     private function updateImage(AcceptanceTester $I, $image_path, $verify_path)
     {
         $I->amOnAdminPage('edit.php');

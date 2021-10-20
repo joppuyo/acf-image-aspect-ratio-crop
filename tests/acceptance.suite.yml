@@ -40,6 +40,7 @@ modules:
       adminPath: '%TEST_SITE_WP_ADMIN_PATH%'
       host: '%CHROMEDRIVER_HOST%'
       port: '%CHROMEDRIVER_PORT%'
+      wait: 10
       browser: chrome
       capabilities:
         unexpectedAlertBehaviour: 'accept'
