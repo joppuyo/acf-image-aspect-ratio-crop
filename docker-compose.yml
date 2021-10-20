@@ -9,8 +9,8 @@ services:
         wp_docker_tag: '$WP_DOCKER_TAG'
         xdebug_version: '$XDEBUG_VERSION'
       cache_from:
-        - joppuyo/acf-image-aspect-ratio-crop:latest
-    image: joppuyo/acf-image-aspect-ratio-crop:latest
+        - joppuyo/acf-image-aspect-ratio-crop:$WP_DOCKER_TAG
+    image: joppuyo/acf-image-aspect-ratio-crop:$WP_DOCKER_TAG
     restart: always
     ports:
       - 80:80
