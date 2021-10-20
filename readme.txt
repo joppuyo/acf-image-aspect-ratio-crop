@@ -7,7 +7,7 @@ Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://github.com/sponsors/joppuyo
-Stable Tag: 5.1.4
+Stable Tag: 6.0.0
 
 ACF field that allows user to crop image to a specific aspect ratio or pixel size
 
@@ -106,13 +106,12 @@ The other plugin is not actively maintained and does not work well with latest A
 
 == Changelog ==
 
-= 6.0.0-beta (2021-02-07) =
+= 6.0.0 (2021-10-20) =
 * Breaking change: Changed how minimum and maximum image pixel sizes work
-* Minimum image size previously only affected the uploaded file in aspect ratio mode. Now crop area must be larger than minimum dimensions.
-* Maximum image size previously only affected the uploaded file in aspect ratio mode. Now if cropped area is larger than maximum dimensions, final image will be scaled down to maximum dimensions
-* These changes do not apply to front end image crop at the moment.
-* These changes do not apply to free crop mode, free crop minimum and maximum dimensions are disabled at the moment
-* Pixel size mode has always had minimum dimensions. Maximum dimensions are now disabled for pixel size mode since the image is always scaled down to pixel size.
+* Minimum image size previously only affected the original uploaded file in aspect ratio mode. Now crop area must be larger than minimum dimensions.
+* Maximum image size previously only affected the original uploaded file in aspect ratio mode. Now if cropped area is larger than maximum dimensions, final image will be scaled down to maximum dimensions.
+* These changes do not apply to free crop mode, free crop minimum and maximum dimensions are disabled.
+* Pixel size mode has always had minimum dimensions. Enforcing maximum dimensions are now disabled for pixel size mode since the image is always scaled down to pixel size.
 
 = 5.1.4 (2021-09-18) =
 * Fix: Bump compatibility to WP 5.8
