@@ -20,7 +20,6 @@ jobs:
           - 5.9.2
           - 5.9.1
           - 5.9.0
-          - 5.8.13
         wp_docker_tag:
           #- 4.9-php5.6-apache
           - 5.0-php7.0-apache
@@ -31,7 +30,6 @@ jobs:
           - 5.5-php7.2-apache
           - 5.6-php7.2-apache
           - 5.7-php7.3-apache
-          - 5.8-php7.3-apache
           - 5.8-php7.4-apache
         include:
           #- wp_docker_tag: 4.9-php5.6-apache
@@ -59,9 +57,6 @@ jobs:
             xdebug_version: xdebug-2.7.2
             php_version: '7.2'
           - wp_docker_tag: 5.7-php7.3-apache
-            xdebug_version: xdebug-2.7.2
-            php_version: '7.3'
-          - wp_docker_tag: 5.8-php7.3-apache
             xdebug_version: xdebug-2.7.2
             php_version: '7.3'
           - wp_docker_tag: 5.8-php7.4-apache
@@ -109,8 +104,8 @@ jobs:
 
       - run: docker-compose pull
 
-      #- uses: satackey/action-docker-layer-caching@v0.0.11
-      #  continue-on-error: true
+      - uses: satackey/action-docker-layer-caching@v0.0.11
+        continue-on-error: true
 
       - name: Setup docker
         run: docker-compose up -d --build
