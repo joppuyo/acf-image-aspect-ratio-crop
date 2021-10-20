@@ -110,8 +110,11 @@ jobs:
 
       - run: docker-compose pull
 
-      - name: Setup docker
-        run: docker-compose up -d --build --build-arg BUILDKIT_INLINE_CACHE=1
+      - name: Docker build
+        run: docker-compose build --build-arg BUILDKIT_INLINE_CACHE=1
+
+      - name: Docker up
+        run: docker-compose up -d
 
       - name: Create config file
         run: touch .env.testing
