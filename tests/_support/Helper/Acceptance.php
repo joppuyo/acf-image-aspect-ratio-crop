@@ -58,24 +58,40 @@ class Acceptance extends \Codeception\Module
         );
         $image_2_size = getimagesize($url);
 
+        $this->assertEqualsWithDeltaCompat(
+            $image_1_size[0],
+            $image_2_size[0],
+            2
+        );
+        $this->assertEqualsWithDeltaCompat(
+            $image_1_size[1],
+            $image_2_size[1],
+            2
+        );
+        $I->click('button.media-modal-close');
+    }
+
+    public function assertEqualsWithDeltaCompat($expected, $actual, $delta)
+    {
         if (version_compare(PHP_VERSION, '7.1.0', '>=')) {
-            $this->assertEqualsWithDelta($image_1_size[0], $image_2_size[0], 2);
-            $this->assertEqualsWithDelta($image_1_size[1], $image_2_size[1], 2);
+            $this->assertEqualsWithDelta($expected, $actual, $delta);
+        } elseif (
+            version_compare(PHP_VERSION, '7.0.0', '>=') &&
+            version_compare(PHP_VERSION, '7.1.0', '<')
+        ) {
+            \PHPUnit\Framework\Assert::assertEquals(
+                $expected,
+                $actual,
+                '',
+                $delta
+            );
         } else {
             \PHPUnit_Framework_Assert::assertEquals(
-                $image_1_size[0],
-                $image_2_size[0],
+                $expected,
+                $actual,
                 '',
-                2
-            );
-            \PHPUnit_Framework_Assert::assertEquals(
-                $image_1_size[1],
-                $image_2_size[1],
-                '',
-                2
+                $delta
             );
         }
-
-        $I->click('button.media-modal-close');
     }
 }
