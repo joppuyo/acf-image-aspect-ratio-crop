@@ -119,4 +119,17 @@ class FrontEndCropPixelSizeCest
         $I->click('Test Post');
         $I->verifyImage($I, 'cropped-pixel.jpg', 640, 480);
     }
+
+    public function uploadTooSmallImage(AcceptanceTester $I)
+    {
+        $I->amOnPage('test-post');
+        $I->moveMouseOver(
+            '.acf-field.acf-field-image-aspect-ratio-crop div img'
+        );
+        $I->click('.acf-icon.-cancel-custom ');
+        $I->attachFile('.js-aiarc-upload', 'small.jpg');
+        $I->retry(10, 1000);
+        $I->retrySeeInPopup('Image too small');
+        $I->acceptPopup();
+    }
 }
