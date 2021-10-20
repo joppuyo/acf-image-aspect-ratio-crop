@@ -161,4 +161,4 @@ jobs:
         if: failure()
         uses: jwalton/gh-docker-logs@v1
       - name: Push to docker hub
-        run: docker push $CACHE_IMAGE:latest
+        run: docker push $CACHE_IMAGE:$WP_DOCKER_TAG
