@@ -68,8 +68,14 @@ jobs:
       WP_DOCKER_TAG: ${{ matrix.wp_docker_tag }}
       XDEBUG_VERSION: ${{ matrix.xdebug_version }}
       PHP_VERSION: ${{ matrix.php_version }}
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1
+      CACHE_IMAGE: joppuyo/acf-image-aspect-ratio-crop
     steps:
       - uses: actions/checkout@v1
+
+      - name: Log in to docker hub
+        run: docker login -u ${{ secrets.REGISTRY_USER }} -p ${{ secrets.REGISTRY_PASS }}
 
       - name: Install PHP
         uses: shivammathur/setup-php@verbose
@@ -104,11 +110,8 @@ jobs:
 
       - run: docker-compose pull
 
-      - uses: satackey/action-docker-layer-caching@v0.0.11
-        continue-on-error: true
-
       - name: Setup docker
-        run: docker-compose up -d --build
+        run: docker-compose up -d --build --build-arg BUILDKIT_INLINE_CACHE=1
 
       - name: Create config file
         run: touch .env.testing
@@ -154,3 +157,5 @@ jobs:
       - name: Dump docker logs on failure
         if: failure()
         uses: jwalton/gh-docker-logs@v1
+      - name: Push to docker hub
+        run: docker push $CACHE_IMAGE:latest

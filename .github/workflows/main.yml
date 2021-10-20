@@ -12,7 +12,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '5.6'
+          php-version: '7.0'
           extensions: zip
 
       - name: Install dependencies
