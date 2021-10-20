@@ -43,6 +43,7 @@ modules:
       browser: chrome
       capabilities:
         unexpectedAlertBehaviour: 'accept'
+        unhandledPromptBehavior: 'accept'
         chromeOptions:
           #args: ['--no-sandbox', '--headless', '--disable-gpu']
       window_size: 1280x1024
