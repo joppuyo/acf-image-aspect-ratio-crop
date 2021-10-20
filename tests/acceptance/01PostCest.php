@@ -152,6 +152,8 @@ class PostCest
 
         $extra = version_compare($wp_version, '5.3', 'ge') ? '-scaled' : '';
 
+        $I->waitForJS('return document.readyState == "complete"', 60);
+
         $I->see("zoltan-kovacs-285132-unsplash$extra.jpg");
         $I->see(
             "zoltan-kovacs-285132-unsplash$extra-aspect-ratio-16-9$extra.jpg"
