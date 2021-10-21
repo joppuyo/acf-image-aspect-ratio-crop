@@ -37,6 +37,8 @@ When crop button is pressed, the area is cropped from the original image. After 
 
 Crop can be done freely, there are no aspect ratio limitations.
 
+This project adheres to the [Semantic Versioning](https://semver.org/spec/v2.0.0.html) standard.
+
 ## Screenshots
 
 ### Cropping an image to 16:9 aspect ratio
@@ -59,13 +61,18 @@ You can download the plugin from the [WordPress plugin directory](https://wordpr
 
 - WordPress 4.9 or later
 - PHP 5.6 or later
-- Advanced Custom Fields 5.8 or later (Pro or Free)
+- Advanced Custom Fields 5.9 or later (Pro or Free)
 
-## Compatiblity
+## Compatibility
 
-- Polylang Pro
+- Polylang Pro 2.9 or later
 - Enable Media Replace
 - WP Offload Media, Media Cloud and other plugins that move media files to remote location
+- WPML 4.3 or later
+
+## ACF version support policy
+
+ACF Image Aspect Ratio Crop will support the latest two minor versions of ACF, for example ACF 5.10.X and ACF 5.9.X. Bugfix releases of this plugin releases will be exempt from this policy.
 
 ## Frequently Asked Questions
 
