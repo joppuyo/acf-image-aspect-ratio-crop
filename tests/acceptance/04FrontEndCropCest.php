@@ -13,6 +13,7 @@ class FrontEndCropCest
         $I->cleanUploadsDir();
         $I->importSqlDumpFile();
         $I->cli(['core', 'update-db']);
+        $I->runShellCommand('which zip');
         $I->runShellCommand(
             'cd ' .
                 __DIR__ .
