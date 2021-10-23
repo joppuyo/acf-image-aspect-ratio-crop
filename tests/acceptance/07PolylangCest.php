@@ -25,6 +25,10 @@ class PolylangCest
             '--force',
         ]);
 
+        $I->cli(['option', 'update', 'siteurl', 'http://wordpress.test']);
+
+        $I->cli(['option', 'update', 'home', 'http://wordpress.test']);
+
         $I->cli(['core', 'update-db']);
         $I->dontHavePostInDatabase([]);
         $I->loginAsAdmin();
