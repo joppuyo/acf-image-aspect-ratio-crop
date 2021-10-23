@@ -14,7 +14,9 @@ class FrontEndCropCest
         $I->importSqlDumpFile();
         $I->cli(['core', 'update-db']);
         $I->runShellCommand(
-            'cd tests/_data/plugins/front-end-crop && zip -r front-end-crop.zip . -x "*.DS_Store"'
+            'cd ' .
+                __DIR__ .
+                '/../_data/plugins/front-end-crop && zip -r front-end-crop.zip . -x "*.DS_Store"'
         );
         $I->cli([
             'plugin',

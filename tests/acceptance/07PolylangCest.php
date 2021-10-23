@@ -133,6 +133,6 @@ class PolylangCest
     {
         $I->loadSessionSnapshot('login');
         $I->createField($I, 'aspect_ratio', 16, 9);
-        $I->wait(10);
+        //$I->wait(10);
     }
 }
