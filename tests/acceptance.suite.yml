@@ -14,6 +14,7 @@ modules:
     - WPFilesystem
     - WPCLI
     - WPLoader
+    - CLI
   config:
     WPDb:
       dsn: 'mysql:host=%TEST_SITE_DB_HOST%;dbname=%TEST_SITE_DB_NAME%'

@@ -13,6 +13,9 @@ class FrontEndCropMaxSizeCest
         $I->cleanUploadsDir();
         $I->importSqlDumpFile();
         $I->cli(['core', 'update-db']);
+        $I->runShellCommand(
+            'cd tests/_data/plugins/front-end-crop && zip -r front-end-crop.zip . -x "*.DS_Store"'
+        );
         $I->cli([
             'plugin',
             'install',
@@ -20,10 +23,20 @@ class FrontEndCropMaxSizeCest
             '--force',
             '--activate',
         ]);
+
+        $I->cli([
+            'plugin',
+            'install',
+            __DIR__ .
+            '/../_data/plugins/disable-welcome-messages-and-tips/disable-welcome-messages-and-tips.1.0.8.zip',
+            '--force',
+        ]);
+
         $I->cli(['theme', 'install', 'twentytwenty', '--force', '--activate']);
         $I->dontHavePostInDatabase([]);
         $I->loginAsAdmin();
         $I->amOnPluginsPage();
+        $I->activatePlugin('disable-welcome-messages-and-tips');
         $I->activatePlugin('advanced-custom-fields-pro');
         $I->saveSessionSnapshot('login');
     }
@@ -44,22 +57,7 @@ class FrontEndCropMaxSizeCest
     public function createNewField(AcceptanceTester $I)
     {
         $I->loadSessionSnapshot('login');
-        $I->amOnAdminPage('edit.php?post_type=acf-field-group');
-        //$I->wait(1);
-        $I->click('a.page-title-action');
-        $I->fillField('#title', 'Post');
-        $I->click(
-            '#acf-field-group-fields > div > div > ul.acf-hl.acf-tfoot > li > a'
-        );
-        $I->fillField('Field Label', 'Crop Image');
-        $I->selectOption('Field Type', 'Image Aspect Ratio Crop');
-        $I->waitForText('Width', 60);
-        $I->fillField('Width', '16');
-        $I->fillField('Height', '9');
-        //$I->seeElement(['class' => 'js-min-width']);
-        $I->fillField(['class' => 'js-max-width'], '640');
-        $I->scrollTo('#submitdiv');
-        $I->click('Publish');
+        $I->createField($I, 'aspect_ratio', 16, 9, 640);
     }
 
     public function createPost(AcceptanceTester $I)

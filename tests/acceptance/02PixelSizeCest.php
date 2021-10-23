@@ -13,8 +13,18 @@ class PixelSizeCest
         $I->importSqlDumpFile();
         $I->cli(['core', 'update-db']);
         $I->dontHavePostInDatabase([]);
+
+        $I->cli([
+            'plugin',
+            'install',
+            __DIR__ .
+            '/../_data/plugins/disable-welcome-messages-and-tips/disable-welcome-messages-and-tips.1.0.8.zip',
+            '--force',
+        ]);
+
         $I->loginAsAdmin();
         $I->amOnPluginsPage();
+        $I->activatePlugin('disable-welcome-messages-and-tips');
         $I->activatePlugin('advanced-custom-fields-pro');
         $I->saveSessionSnapshot('login');
     }
@@ -35,21 +45,7 @@ class PixelSizeCest
     public function createNewField(AcceptanceTester $I)
     {
         $I->loadSessionSnapshot('login');
-        $I->amOnAdminPage('edit.php?post_type=acf-field-group');
-        //$I->wait(1);
-        $I->click('a.page-title-action');
-        $I->fillField('#title', 'Post');
-        $I->click(
-            '#acf-field-group-fields > div > div > ul.acf-hl.acf-tfoot > li > a'
-        );
-        $I->fillField('Field Label', 'Crop Image');
-        $I->selectOption('Field Type', 'Image Aspect Ratio Crop');
-        $I->waitForText('Width', 60);
-        $I->selectOption('Crop type', 'Pixel size');
-        $I->fillField('Width', '640');
-        $I->fillField('Height', '480');
-        $I->scrollTo('#submitdiv');
-        $I->click('Publish');
+        $I->createField($I, 'pixel_size', 640, 480);
     }
 
     public function createPost(AcceptanceTester $I)

@@ -3,6 +3,7 @@
 namespace Joppuyo\AcfImageAspectRatioCrop;
 
 use DateTime;
+use Exception;
 use Joppuyo\AcfImageAspectRatioCrop\Compatibility\EnableMediaReplace;
 use Joppuyo\AcfImageAspectRatioCrop\Compatibility\Polylang;
 use Joppuyo\AcfImageAspectRatioCrop\Compatibility\WpGraphQl;
@@ -169,11 +170,7 @@ class Plugin
 
         do_action('aiarc_after_customize_upload_dir');
 
-        // WP Smush compat: use original image if it exists
         $file = $media_dir['basedir'] . '/' . $image_data['file'];
-        $parts = explode('.', $file);
-        $extension = array_pop($parts);
-        $backup_file = implode('.', $parts) . '.bak.' . $extension;
 
         add_filter('jpeg_quality', [$this, 'jpeg_quality']);
 
@@ -222,8 +219,6 @@ class Plugin
             $scaled_data['y'] = floor($data['y'] * $scale);
             $scaled_data['width'] = floor($data['width'] * $scale);
             $scaled_data['height'] = floor($data['height'] * $scale);
-        } elseif (file_exists($backup_file)) {
-            $image = wp_get_image_editor($backup_file);
         } elseif (file_exists($file)) {
             $image = wp_get_image_editor($file);
         } else {

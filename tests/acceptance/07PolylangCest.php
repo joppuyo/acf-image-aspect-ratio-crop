@@ -1,5 +1,7 @@
 <?php
 
+use Facebook\WebDriver\WebDriverKeys;
+
 class PolylangCest
 {
     public function _before(AcceptanceTester $I)
@@ -15,7 +17,14 @@ class PolylangCest
         }
 
         $I->cleanUploadsDir();
-        $I->importSqlDumpFile();
+
+        $I->cli([
+            'db',
+            'import',
+            __DIR__ . '/../_data/dump-polylang.sql',
+            '--force',
+        ]);
+
         $I->cli(['core', 'update-db']);
         $I->dontHavePostInDatabase([]);
         $I->loginAsAdmin();
@@ -23,9 +32,17 @@ class PolylangCest
         $I->cli([
             'plugin',
             'install',
+            __DIR__ .
+            '/../_data/plugins/disable-welcome-messages-and-tips/disable-welcome-messages-and-tips.1.0.8.zip',
+            '--force',
+        ]);
+        $I->cli([
+            'plugin',
+            'install',
             __DIR__ . '/../_data/polylang-pro.2.9.1.zip',
             '--force',
         ]);
+        $I->activatePlugin('disable-welcome-messages-and-tips');
         $I->activatePlugin('advanced-custom-fields-pro');
         $I->activatePlugin('polylang-pro');
         $I->saveSessionSnapshot('login');
@@ -44,49 +61,78 @@ class PolylangCest
     /**
      * @depends activatePlugin
      */
-    /*public function setUpPolylang(AcceptanceTester $I)
+    public function enableTranslation(AcceptanceTester $I)
     {
         $I->loadSessionSnapshot('login');
-        $I->amOnPluginsPage();
-        $I->click('Run the Setup Wizard');
-        $I->click('Continue');
-        $I->click('.ui-selectmenu-button');
-        $I->pressKey('.ui-selectmenu-button', 'e');
-        $I->click('#ui-id-27');
-        $I->click('Add new language');
-        $I->wait(1);
-        $I->click('.ui-selectmenu-button');
-        $I->wait(1);
-        $I->pressKey('.ui-selectmenu-button', 's');
-        $I->wait(1);
-        $I->click('#ui-id-172');
-        $I->click('Add new language');
-        $I->click('Continue');
-        $I->click('.pll-wizard-service-toggle');
-        $I->click('Continue');
-        $I->click('Return to the Dashboard');
-        $I->wait(1);
-    }*/
+        $I->amOnAdminPage('admin.php?page=mlang_settings');
+        //$I->waitForElementVisible('#pll-module-advanced_media .configure a');
+        $I->click('#pll-module-advanced_media .configure a');
+        $I->click('#duplicate-media');
+        $I->click('#pll-configure-advanced_media .button.button-primary.save');
+        $I->waitForText('Settings saved');
+    }
 
     /**
-     * @depends setUpPolylang
+     * @depends enableTranslation
      */
-    /*public function createNewField(AcceptanceTester $I)
+    public function createAttachment(AcceptanceTester $I)
     {
         $I->loadSessionSnapshot('login');
-        $I->amOnAdminPage('edit.php?post_type=acf-field-group');
-        $I->wait(1);
-        $I->click('a.page-title-action');
-        $I->fillField('#title', 'Post');
-        $I->click(
-            '#acf-field-group-fields > div > div > ul.acf-hl.acf-tfoot > li > a'
+        $I->amOnAdminPage('media-new.php?lang=en');
+        $I->click('browser uploader');
+        $I->attachFile('#async-upload', 'zoltan-kovacs-285132-unsplash.jpg');
+        $I->click('Upload');
+        $I->waitForText('Media Library', 60);
+
+        // EN
+        $I->waitForElementVisible('.attachment-preview', 30);
+        $I->click('.attachment-preview');
+        $I->waitForElementVisible('label[data-setting="caption"] textarea', 30);
+        $I->fillField(
+            'label[data-setting="caption"] textarea',
+            'Caption English'
         );
-        $I->fillField('Field Label', 'Crop Image');
-        $I->selectOption('Field Type', 'Image Aspect Ratio Crop');
-        $I->waitForText('Width', 60);
-        $I->fillField('Width', '16');
-        $I->fillField('Height', '9');
-        $I->scrollTo('#submitdiv');
-        $I->click('Publish');
-    }*/
+        $I->pressKey(
+            'label[data-setting="caption"] textarea',
+            WebDriverKeys::TAB
+        );
+        $I->waitForText('Saved');
+
+        //FI
+        $I->amOnAdminPage('upload.php?lang=fi');
+        $I->waitForElementVisible('.attachment-preview', 30);
+        $I->click('.attachment-preview');
+        $I->waitForElementVisible('label[data-setting="caption"] textarea', 30);
+        $I->fillField(
+            'label[data-setting="caption"] textarea',
+            'Caption Finnish'
+        );
+        $I->pressKey(
+            'label[data-setting="caption"] textarea',
+            WebDriverKeys::TAB
+        );
+        $I->waitForText('Saved');
+
+        //SV
+        $I->amOnAdminPage('upload.php?lang=sv');
+        $I->waitForElementVisible('.attachment-preview', 30);
+        $I->click('.attachment-preview');
+        $I->waitForElementVisible('label[data-setting="caption"] textarea', 30);
+        $I->fillField(
+            'label[data-setting="caption"] textarea',
+            'Caption Swedish'
+        );
+        $I->pressKey(
+            'label[data-setting="caption"] textarea',
+            WebDriverKeys::TAB
+        );
+        $I->waitForText('Saved');
+    }
+
+    public function createField(AcceptanceTester $I)
+    {
+        $I->loadSessionSnapshot('login');
+        $I->createField($I, 'aspect_ratio', 16, 9);
+        $I->wait(10);
+    }
 }

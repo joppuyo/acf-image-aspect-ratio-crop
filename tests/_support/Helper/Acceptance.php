@@ -71,6 +71,46 @@ class Acceptance extends \Codeception\Module
         $I->click('button.media-modal-close');
     }
 
+    public function createField(
+        AcceptanceTester $I,
+        string $type,
+        int $width,
+        int $height,
+        int $max_width = null,
+        string $post_type = 'Post'
+    ) {
+        $I->amOnAdminPage('edit.php?post_type=acf-field-group');
+        $I->click('a.page-title-action');
+        $I->fillField('#title', $post_type);
+        $I->click(
+            '#acf-field-group-fields > div > div > ul.acf-hl.acf-tfoot > li > a'
+        );
+        if ($post_type !== 'Post') {
+            $I->selectOption(
+                '.acf_field_group[location][group_0][rule_0][value]',
+                $post_type
+            );
+        }
+        $I->fillField('Field Label', 'Crop Image');
+        $I->selectOption('Field Type', 'Image Aspect Ratio Crop');
+        $I->waitForText('Width', 30);
+        if ($type === 'aspect_ratio') {
+            $I->fillField('Width', $width);
+            $I->fillField('Height', $height);
+        }
+        if ($type === 'pixel_size') {
+            $I->selectOption('Crop type', 'Pixel size');
+            $I->fillField('Width', $width);
+            $I->fillField('Height', $height);
+        }
+        if ($max_width) {
+            $I->fillField(['class' => 'js-max-width'], '640');
+        }
+
+        $I->scrollTo('#submitdiv');
+        $I->click('Publish');
+    }
+
     public function assertEqualsWithDeltaCompat($expected, $actual, $delta)
     {
         if (version_compare(PHP_VERSION, '7.1.0', '>=')) {
