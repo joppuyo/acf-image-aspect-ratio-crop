@@ -70,7 +70,7 @@ class ClassicEditorCest
         $I->loadSessionSnapshot('login');
         $I->amOnAdminPage('post-new.php');
         $I->fillField(
-            version_compare($wp_version, '5.4', 'ge')
+            version_compare($wp_version, '5.2', 'ge')
                 ? 'Add title'
                 : 'Enter title here',
             'Test Post'

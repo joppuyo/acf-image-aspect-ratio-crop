@@ -134,4 +134,9 @@ class Acceptance extends \Codeception\Module
             );
         }
     }
+
+    public function getConfigUrl()
+    {
+        return $this->getModule('WPWebDriver')->_getConfig('url');
+    }
 }
