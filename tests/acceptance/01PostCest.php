@@ -71,7 +71,7 @@ class PostCest
         $I->amOnAdminPage('post-new.php');
         $I->fillField(
             version_compare($wp_version, '5.0', 'ge')
-                ? 'Add title'
+                ? '.editor-post-title__input'
                 : 'Enter title here',
             'Test Post'
         );
