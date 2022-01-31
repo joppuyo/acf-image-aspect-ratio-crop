@@ -58,7 +58,7 @@ Crop can be done freely, there are no aspect ratio limitations.
 
 ### ACF version support policy
 
-ACF Image Aspect Ratio Crop will support the latest two minor versions of ACF, for example ACF 5.10.X and ACF 5.9.X. Bugfix releases of this plugin releases will be exempt from this policy.
+ACF Image Aspect Ratio Crop will support the latest three minor versions of ACF, for example ACF 5.10.X, 5.9.X and ACF 5.8.X. Bugfix releases of this plugin releases will be exempt from this policy.
 
 ### Thanks
 
