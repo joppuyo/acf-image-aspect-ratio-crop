@@ -33,6 +33,7 @@ jobs:
           - 5.7-php7.3-apache
           #- 5.8-php7.3-apache
           - 5.8-php7.4-apache
+          - 5.9-php7.4-apache
         include:
           #- wp_docker_tag: 4.9-php5.6-apache
           #  xdebug_version: xdebug-2.7.2
@@ -67,6 +68,9 @@ jobs:
           - wp_docker_tag: 5.8-php7.4-apache
             xdebug_version: xdebug-3.0.4
             php_version: '7.4'
+          - wp_docker_tag: 5.9-php7.4-apache
+            xdebug_version: xdebug-3.0.4
+            php_version: '7.4'
       fail-fast: false
     env:
       ACF_VERSION: ${{ matrix.acf_version }}
@@ -81,7 +85,12 @@ jobs:
         with:
           php-version: ${{ matrix.php_version }}
           extensions: zip
-
+          
+      - name: Set Node Version
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: '.nvmrc'
+          
       - name: Validate composer.json and composer.lock
         run: composer validate
 
