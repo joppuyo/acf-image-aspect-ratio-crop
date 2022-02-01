@@ -2,12 +2,12 @@
 Contributors: joppuyo
 Tags: acf, field, image, crop
 Requires at least: 4.9
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://github.com/sponsors/joppuyo
-Stable Tag: 6.0.0
+Stable Tag: 6.0.1
 
 ACF field that allows user to crop image to a specific aspect ratio or pixel size
 
@@ -105,6 +105,11 @@ The other plugin is not actively maintained and does not work well with latest A
 3. Option to re-crop the image after upload
 
 == Changelog ==
+
+= 6.0.1 (2022-02-01) =
+* Fix: Bump compatibility to WP 5.9
+
+Note: I'm currently working on version 7.0.0 of the plugin. This release will retain all the core functionality of the plugin, but it will feature a much improved code structure. This will make it easier to extend and to add more features to the plugin. Until 7.0.0 is released, I will not be adding any more features in the 6.x.x branch of the plugin. But bug fixes are of course provided. I have a lot of ideas for new features and improvements once 7.0.0 is release so stay tuned!
 
 = 6.0.0 (2021-10-20) =
 * Breaking change: Changed how minimum and maximum image pixel sizes work
