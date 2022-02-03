@@ -48,7 +48,7 @@ class PolylangCest
         ]);
         $I->activatePlugin('disable-welcome-messages-and-tips');
         $I->activatePlugin('advanced-custom-fields-pro');
-        $I->activatePlugin('polylang-pro');
+        $I->activatePlugin('polylang');
         $I->saveSessionSnapshot('login');
     }
 
