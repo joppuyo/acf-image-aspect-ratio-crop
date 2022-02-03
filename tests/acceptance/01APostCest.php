@@ -21,7 +21,7 @@ class PostCest
                 'plugin',
                 'install',
                 __DIR__ .
-                "/../_data/advanced-custom-fields-pro.$acf_version.zip",
+                "/../_data/plugins/acf/advanced-custom-fields-pro.$acf_version.zip",
                 '--force',
             ]);
         }
