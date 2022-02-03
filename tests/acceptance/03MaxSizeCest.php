@@ -22,7 +22,7 @@ class MaxSizeCest
         $I->importSqlDumpFile();
         $I->cli(['core', 'update-db']);
         $I->dontHavePostInDatabase([]);
-        $I->loginAsAdmin();
+        $I->loginAsAdmin(20, 10);
         $I->amOnPluginsPage();
         $I->activatePlugin('disable-welcome-messages-and-tips');
         $I->activatePlugin('advanced-custom-fields-pro');

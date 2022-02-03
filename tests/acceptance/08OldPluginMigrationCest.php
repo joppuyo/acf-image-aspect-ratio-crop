@@ -71,7 +71,7 @@ class OldPluginMigrationCest
 
         $I->cli(['core', 'update-db']);
 
-        $I->loginAsAdmin();
+        $I->loginAsAdmin(20, 10);
         $I->amOnPluginsPage();
         $I->cli([
             'plugin',

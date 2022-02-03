@@ -37,7 +37,7 @@ class FrontEndCropCest
 
         $I->cli(['theme', 'install', 'twentytwenty', '--force', '--activate']);
         $I->dontHavePostInDatabase([]);
-        $I->loginAsAdmin();
+        $I->loginAsAdmin(20, 10);
         $I->amOnPluginsPage();
         $I->activatePlugin('disable-welcome-messages-and-tips');
         $I->activatePlugin('advanced-custom-fields-pro');

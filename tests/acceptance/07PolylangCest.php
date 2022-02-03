@@ -46,7 +46,7 @@ class PolylangCest
             __DIR__ . '/../_data/polylang-pro.2.9.1.zip',
             '--force',
         ]);
-        $I->loginAsAdmin();
+        $I->loginAsAdmin(20, 10);
         $I->amOnPluginsPage();
         $I->activatePlugin('disable-welcome-messages-and-tips');
         $I->activatePlugin('advanced-custom-fields-pro');
