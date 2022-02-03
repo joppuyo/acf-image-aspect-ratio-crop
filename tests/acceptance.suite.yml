@@ -56,7 +56,7 @@ modules:
       allow-root: true
     WPLoader:
       loadOnly: true
-      #isolatedInstall: false
+      isolatedInstall: false
       wpRootFolder: '%WP_ROOT_FOLDER%'
       dbName: '%TEST_SITE_DB_NAME%'
       dbHost: '%TEST_SITE_DB_HOST%'
