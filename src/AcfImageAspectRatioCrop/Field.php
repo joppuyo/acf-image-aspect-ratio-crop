@@ -871,15 +871,15 @@ class Field extends acf_field
             $output = acf_get_attachment($image_id);
             if ($output) {
                 $output['original_image'] = null;
-                // TODO: use singular
+
                 $original = get_post_meta(
                     $image_id,
-                    'acf_image_aspect_ratio_crop_original_image_id'
+                    'acf_image_aspect_ratio_crop_original_image_id',
+                    true
                 );
-                if (count($original)) {
-                    $output['original_image'] = acf_get_attachment(
-                        $original[0]
-                    );
+
+                if ($original) {
+                    $output['original_image'] = acf_get_attachment($original);
                 }
             }
 
