@@ -31,8 +31,6 @@ class PolylangCest
 
         $I->cli(['core', 'update-db']);
         $I->dontHavePostInDatabase([]);
-        $I->loginAsAdmin();
-        $I->amOnPluginsPage();
         $I->cli([
             'plugin',
             'install',
@@ -46,6 +44,8 @@ class PolylangCest
             __DIR__ . '/../_data/polylang-pro.2.9.1.zip',
             '--force',
         ]);
+        $I->loginAsAdmin();
+        $I->amOnPluginsPage();
         $I->activatePlugin('disable-welcome-messages-and-tips');
         $I->activatePlugin('advanced-custom-fields-pro');
         $I->activatePlugin('polylang');
