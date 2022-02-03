@@ -394,42 +394,16 @@ class Field extends acf_field
         $image_id = null;
         $original = null;
 
+        $field = apply_filters('aiarc/pre_render_field', $field);
+
         // has value?
         if ($field['value']) {
-            if (is_numeric($field['value'])) {
-                $image_id = $field['value'];
-                $original = get_post_meta(
-                    $image_id,
-                    'acf_image_aspect_ratio_crop_original_image_id',
-                    true
-                );
-            } else {
-                // For migration compatibility with acf-image-crop plugin.
-                // Retrieves the image from that plugin which it has saved inside JSON encoded value.
-                // Thanks to https://github.com/carlblock
-                $backwards_compatible_json = json_decode($field['value']);
-                if (
-                    $backwards_compatible_json !== null &&
-                    isset($backwards_compatible_json->original_image) &&
-                    isset($backwards_compatible_json->cropped_image)
-                ) {
-                    $image_id = $backwards_compatible_json->cropped_image;
-                    $original = $backwards_compatible_json->original_image;
-                }
-                $preserved_original = get_post_meta(
-                    $image_id,
-                    'acf_image_aspect_ratio_crop_original_image_id',
-                    true
-                );
-                if (!$preserved_original) {
-                    // Because JSON is changed to id on save, we need to preserve the original image id in new format
-                    update_post_meta(
-                        $image_id,
-                        'acf_image_aspect_ratio_crop_original_image_id',
-                        $original
-                    );
-                }
-            }
+            $image_id = $field['value'];
+            $original = get_post_meta(
+                $image_id,
+                'acf_image_aspect_ratio_crop_original_image_id',
+                true
+            );
 
             // update vars
             $url = wp_get_attachment_image_src(
@@ -880,18 +854,7 @@ class Field extends acf_field
             return false;
         }
 
-        $image_id = null;
-
-        // For migration compatibility with acf-image-crop plugin.
-        // Retrieves the image from that plugin which it has saved inside JSON encoded value.
-        if (is_numeric($value)) {
-            $image_id = $value;
-        } elseif (
-            json_decode($value) !== false &&
-            !empty(json_decode($value)->cropped_image)
-        ) {
-            $image_id = json_decode($value)->cropped_image;
-        }
+        $image_id = apply_filters('aiarc/pre_format_value', $value);
 
         // bail early if not numeric (error message)
         if (!is_numeric($image_id)) {

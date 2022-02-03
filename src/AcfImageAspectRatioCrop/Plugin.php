@@ -4,6 +4,7 @@ namespace Joppuyo\AcfImageAspectRatioCrop;
 
 use DateTime;
 use Exception;
+use Joppuyo\AcfImageAspectRatioCrop\Compatibility\ACFImageCropAddon;
 use Joppuyo\AcfImageAspectRatioCrop\Compatibility\EnableMediaReplace;
 use Joppuyo\AcfImageAspectRatioCrop\Compatibility\Polylang;
 use Joppuyo\AcfImageAspectRatioCrop\Compatibility\WpGraphQl;
@@ -31,7 +32,6 @@ class Plugin
         add_action('init', [$this, 'init']);
         add_action('plugins_loaded', [$this, 'initialize_settings']);
         add_action('acf/include_field_types', [$this, 'include_field_types']); // v5
-        //add_action('rest_api_init', [$this, 'rest_api_init']);
 
         add_filter(
             'acf/upload_prefilter/type=image_aspect_ratio_crop',
@@ -53,6 +53,7 @@ class Plugin
         WpGraphQl::get_instance();
         WPML::get_instance();
         Admin::get_instance();
+        ACFImageCropAddon::get_instance();
     }
 
     public function init()
