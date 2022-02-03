@@ -135,6 +135,15 @@ class Acceptance extends \Codeception\Module
         }
     }
 
+    public function assertIsArrayCompat($actual)
+    {
+        if (version_compare(PHP_VERSION, '7.1.0', '>=')) {
+            \PHPUnit\Framework\Assert::assertIsArray($actual);
+        } else {
+            \PHPUnit\Framework\Assert::assertTrue(is_array($actual));
+        }
+    }
+
     public function getConfigUrl()
     {
         return $this->getModule('WPWebDriver')->_getConfig('url');

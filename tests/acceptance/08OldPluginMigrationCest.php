@@ -119,7 +119,7 @@ class OldPluginMigrationCest
         $json_data = $I->grabValueFrom('#jsondata');
         $json_data = json_decode($json_data, true);
 
-        \PHPUnit\Framework\Assert::assertIsArray($json_data['image_crop']);
+        $I->assertIsArrayCompat($json_data['image_crop']);
 
         \PHPUnit\Framework\Assert::assertEquals(
             $json_data['image_crop']['id'],
@@ -154,7 +154,7 @@ class OldPluginMigrationCest
         $json_data = $I->grabValueFrom('#jsondata');
         $json_data = json_decode($json_data, true);
 
-        \PHPUnit\Framework\Assert::assertIsArray($json_data['image_crop']);
+        $I->assertIsArrayCompat($json_data['image_crop']);
 
         \PHPUnit\Framework\Assert::assertEquals(
             $json_data['image_crop']['id'],
@@ -173,9 +173,7 @@ class OldPluginMigrationCest
             480
         );
 
-        \PHPUnit\Framework\Assert::assertIsArray(
-            $json_data['image_crop']['original_image']
-        );
+        $I->assertIsArrayCompat($json_data['image_crop']['original_image']);
 
         \PHPUnit\Framework\Assert::assertEquals(
             $json_data['image_crop']['original_image']['id'],
@@ -227,7 +225,7 @@ class OldPluginMigrationCest
         $json_data = $I->grabValueFrom('#jsondata');
         $json_data = json_decode($json_data, true);
 
-        \PHPUnit\Framework\Assert::assertIsArray($json_data['image_crop']);
+        $I->assertIsArrayCompat($json_data['image_crop']);
 
         // Check cropped image
 
@@ -258,9 +256,7 @@ class OldPluginMigrationCest
 
         // Check original image
 
-        \PHPUnit\Framework\Assert::assertIsArray(
-            $json_data['image_crop']['original_image']
-        );
+        $I->assertIsArrayCompat($json_data['image_crop']['original_image']);
 
         \PHPUnit\Framework\Assert::assertEquals(
             $json_data['image_crop']['original_image']['id'],
