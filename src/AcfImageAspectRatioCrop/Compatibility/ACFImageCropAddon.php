@@ -19,10 +19,12 @@ class ACFImageCropAddon
         add_filter('aiarc/pre_format_value', [
             $this,
             'get_image_id_from_old_format',
+            9,
         ]);
         add_filter('aiarc/pre_render_field', [
             $this,
             'modify_field_value_and_preserve_old_original_image_id',
+            9,
         ]);
     }
 
