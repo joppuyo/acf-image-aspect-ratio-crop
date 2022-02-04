@@ -428,7 +428,9 @@ class Plugin
 
     public function jpeg_quality($jpeg_quality)
     {
-        return apply_filters('aiarc_jpeg_quality', $jpeg_quality);
+        $jpeg_quality = apply_filters('aiarc_jpeg_quality', $jpeg_quality);
+        $jpeg_quality = apply_filters('aiarc/jpeg_quality', $jpeg_quality);
+        return $jpeg_quality;
     }
 
     private function crop(WP_Image_Editor $image, $data)
