@@ -5,6 +5,7 @@
         <div
           v-bind:class="$style['modal']"
           class="js-acf-image-aspect-ratio-crop-modal"
+          v-bind:style="{ width: modalWidth }"
         >
           <div v-bind:class="$style['header']">
             <div v-bind:class="$style['header-start']">
@@ -19,20 +20,51 @@
             </div>
           </div>
           <div
-            v-bind:class="$style['image-area-outer']"
-            v-bind:style="{ width: maxWidth }"
+            v-bind:class="$style['image-wrapper']"
+            v-bind:style="{ width: modalWidth }"
           >
             <div
-              v-bind:class="$style['image-area']"
-              v-bind:style="{ paddingBottom: paddingBottom }"
+              v-bind:class="$style['image-area-outer']"
+              v-bind:style="{ width: maxWidth }"
             >
-              <img
-                v-bind:class="$style['image-area-inner']"
-                v-bind:src="originalImageData.url"
-              />
+              <div
+                v-bind:class="$style['image-area']"
+                v-bind:style="{ paddingBottom: paddingBottom }"
+              >
+                <img
+                  v-bind:class="$style['image-area-inner']"
+                  v-bind:src="originalImageData.url"
+                />
+              </div>
             </div>
           </div>
-          <div v-bind:class="$style['footer']">footer</div>
+          <div v-bind:class="$style['footer']">
+            <div v-bind:class="$style['footer-info']">
+              <div>
+                Lorem Ipsum has been the industry's standard dummy text ever
+                since the 1500s, when an unknown printer took a galley of type
+                and scrambled it to make a type specimen book. It has survived
+                not only five centuries, but also the leap into electronic
+                typesetting, remaining essentially unchanged.
+              </div>
+            </div>
+            <div v-bind:class="$style['footer-controls']">
+              <button v-bind:class="$style['footer-button']">
+                {{ i18n.reset }}
+              </button>
+              <button v-bind:class="$style['footer-button']">
+                {{ i18n.cancel }}
+              </button>
+              <button
+                v-bind:class="[
+                  $style['footer-button'],
+                  $style['footer-button--primary'],
+                ]"
+              >
+                {{ i18n.crop }}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -44,6 +76,7 @@ export default {
   props: ['cropperOpen', 'originalImageData', 'i18n'],
   data: function() {
     return {
+      modalWidth: 0,
       maxWidth: 0,
       maxHeight: 0,
       paddingBottom: 0,
@@ -71,6 +104,12 @@ export default {
       const width = window.innerWidth - (isDesktop ? padding : 0);
 
       this.maxWidth = Math.min(height, width) + 'px';
+
+      if (window.innerWidth >= 600) {
+        this.modalWidth = Math.max(Math.min(height, width), 600) + 'px';
+      } else {
+        this.modalWidth = '100%';
+      }
 
       this.paddingBottom =
         (this.originalImageData.height / this.originalImageData.width) * 100 +
@@ -115,12 +154,19 @@ export default {
 
 .modal {
   background-color: white;
+  border-radius: 2px;
+}
+
+.image-wrapper {
+  display: flex;
+  flex-shrink: 1;
+  justify-content: center;
+  background-color: #f0f0f1;
 }
 
 .image-area-outer {
   position: relative;
   width: 100%;
-  background-color: orange;
   //max-height: calc(100vh - 40px);
   //max-width: calc(100vh - 40px);
 }
@@ -153,18 +199,19 @@ export default {
 }
 
 .header-start div {
+  all: unset;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
-  font-weight: bold;
-  font-size: 20px;
+  font-weight: 600;
+  font-size: 16px;
   color: #24282d;
-  margin-left: 16px;
-  margin-right: 16px;
+  margin-left: 25px;
+  margin-right: 25px;
 }
 
 .header-end {
-  height: 60px;
-  width: 60px;
+  //height: 60px;
+  //width: 60px;
 }
 
 .header-end button {
@@ -179,5 +226,58 @@ export default {
 
 .footer {
   height: 60px;
+  display: flex;
+}
+
+.footer-controls {
+  display: flex;
+  align-items: center;
+  margin-right: 25px;
+  margin-left: 25px;
+  flex-shrink: 0;
+}
+
+.footer-button {
+  display: inline-flex;
+  text-decoration: none;
+  font-weight: normal;
+  font-size: 13px;
+  margin: 0px;
+  border: 0px;
+  cursor: pointer;
+  appearance: none;
+  background: none;
+  transition: box-shadow 0.1s linear 0s;
+  height: 36px;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 6px 12px;
+  border-radius: 2px;
+  color: rgb(30, 30, 30);
+}
+
+.footer-button--primary {
+  white-space: nowrap;
+  background: var(--wp-admin-theme-color);
+  color: #fff;
+  text-decoration: none;
+  text-shadow: none;
+  outline: 1px solid transparent;
+}
+
+.footer-info {
+  flex-grow: 1;
+  display: flex;
+  //margin-right: 32px;
+  margin-left: 25px;
+  align-items: center;
+  flex-shrink: 1;
+  min-width: 0;
+
+  div {
+    overflow: auto;
+    min-width: 0;
+    white-space: nowrap;
+  }
 }
 </style>

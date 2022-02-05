@@ -47,5 +47,8 @@
       "pre-commit": "pretty-quick --staged"
     }
   },
-  "browserslist": "> 0.5%, last 2 versions, not dead"
+  "browserslist": "> 0.5%, last 2 versions, not dead",
+  "scripts": {
+    "watch": "parcel watch ./assets-v7/src/main.js --dist-dir=./assets-v7/dist"
+  }
 }

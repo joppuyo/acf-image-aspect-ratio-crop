@@ -477,6 +477,11 @@ class Field extends acf_field
                     'Failed to get image data.',
                     'acf-image-aspect-ratio-crop'
                 ),
+                'edit_image' => __('Edit Image', 'acf-image-aspect-ratio-crop'),
+                'update_image' => __(
+                    'Update Image',
+                    'acf-image-aspect-ratio-crop'
+                ),
             ];
 
             $v7_context = [

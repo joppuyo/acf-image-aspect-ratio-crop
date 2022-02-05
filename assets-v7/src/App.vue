@@ -7,6 +7,7 @@
       v-bind:imageData="imageData"
       v-if="imageData && !loading"
       v-bind:previewSize="context.preview_size"
+      v-bind:i18n="i18n"
     />
     <ErrorComponent
       v-if="error"
@@ -26,7 +27,7 @@
 </template>
 
 <script>
-import Preview from './Preview';
+import Preview from './preview/Preview';
 import axios from 'axios';
 import Loader from './Loader';
 import Cropper from './Cropper';
@@ -56,6 +57,11 @@ export default {
   mounted() {
     this.emitter.on('close-cropper', () => {
       this.cropperOpen = false;
+    });
+
+    this.emitter.on('delete-image', () => {
+      this.imageData = null;
+      this.updateACFFieldValue(null);
     });
 
     // If we have initial image data from the server, use it
@@ -130,6 +136,16 @@ export default {
         },
       });
 
+      document.dispatchEvent(event);
+    },
+    updateACFFieldValue(value) {
+      // Fire event so ACF can update field value
+      const event = new CustomEvent('aiarc-update-field-value', {
+        detail: {
+          id: this.context.field_name,
+          value: value,
+        },
+      });
       document.dispatchEvent(event);
     },
     openMediaModal: function() {
