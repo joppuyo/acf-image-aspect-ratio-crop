@@ -120,9 +120,13 @@ PHP 7.0 was released on 2015-12-06 (over 5 years ago), WordPress 5.0 was release
 * Breaking change: minimum required PHP version is 7.0
 * Breaking change: minimum required WordPress version is 5.0
 * Breaking change: minimum required ACF version is 1.9.0
-* Breaking change: automatic image deletion functionality has been disabled since it does not work reliably with Gutenberg blocks. It will be added back once it's been re-implemented so it works correctly in all cases. The functionality was labeled "beta" so it was always subject to change. Follow [this GitHub issue](https://github.com/joppuyo/acf-image-aspect-ratio-crop/issues/55) for updates on this feature.
+* Breaking change: automatic image deletion functionality has been disabled since it does not work reliably with Gutenberg blocks. It will be added back once it's been re-implemented so it works correctly in all cases. The functionality was labeled "beta" so it was always subject to change. Follow [GitHub issue 55](https://github.com/joppuyo/acf-image-aspect-ratio-crop/issues/55) for updates on this feature.
 * Breaking change: Smush Pro backup compatibility support removed. If you have a Smush Pro license, feel free to contribute a PR
-* Feature: improved plugin structure
+* Feature: Improved plugin structure
+* Feature: TODO: You can now disable generation of certain thumbnail sizes when cropping an image
+* Fix: TODO: Improved behaviour when using minimum pixel size with with an image that exceeds big image threshold (Issue [93](https://github.com/joppuyo/acf-image-aspect-ratio-crop/issues/93))
+* Fix: Refreshed new styles for cropper, based on Gutenberg block editor style, rather than the media modal styles
+* Fix: Improved cropper size behavior when the browser window is resized
 
 ### 6.0.0 (2021-10-20)
 
