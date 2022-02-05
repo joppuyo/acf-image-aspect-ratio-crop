@@ -6,6 +6,8 @@
   "license": "GPL-2.0-or-later",
   "private": false,
   "devDependencies": {
+    "@parcel/transformer-inline-string": "^2.2.1",
+    "@parcel/transformer-vue": "^2.2.1",
     "husky": "^4.2.5",
     "prettier": "^1.19.1",
     "pretty-quick": "^3.0.0"
@@ -14,7 +16,9 @@
     "@babel/core": "^7.4.5",
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
+    "@parcel/transformer-sass": "^2.2.1",
     "@prettier/plugin-php": "^0.17.5",
+    "@vue/compiler-sfc": "^3.2.29",
     "autoprefixer": "^9.6.0",
     "axios": "^0.20.0",
     "babel-loader": "^8.0.6",
@@ -24,12 +28,15 @@
     "file-loader": "^3.0.1",
     "jquery": "^3.5.1",
     "mini-css-extract-plugin": "^0.5.0",
+    "mitt": "^3.0.0",
     "node-sass": "^4.14.1",
+    "parcel": "^2.2.1",
     "postcss-loader": "^3.0.0",
     "qs": "^6.9.6",
     "raw-loader": "^1.0.0",
     "sass-loader": "^7.1.0",
     "sprintf-js": "^1.1.2",
+    "vue": "^3.2.29",
     "wait-on": "^5.2.0",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
@@ -39,5 +46,6 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
-  }
+  },
+  "browserslist": "> 0.5%, last 2 versions, not dead"
 }

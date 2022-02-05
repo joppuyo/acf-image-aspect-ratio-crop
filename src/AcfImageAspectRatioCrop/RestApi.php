@@ -233,6 +233,19 @@ class RestApi
 
         $attachment = wp_prepare_attachment_for_js($attachment);
 
+        if (empty($attachment['width']) || empty($attachment['height'])) {
+            wp_send_json_error(
+                new WP_Error(
+                    'malformed_image',
+                    __(
+                        'Malformed image. Height or width data missing.',
+                        'acf-image-aspect-ratio-crop'
+                    )
+                ),
+                500
+            );
+        }
+
         return new WP_REST_Response($attachment);
     }
 

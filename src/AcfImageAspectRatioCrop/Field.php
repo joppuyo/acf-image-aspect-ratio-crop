@@ -441,11 +441,59 @@ class Field extends acf_field
         // get size of preview value
         $size = acf_get_image_size($field['preview_size']);
         ?>
+
         <div <?php acf_esc_attr_e($div); ?>>
             <?php acf_hidden_input([
                 'name' => $field['name'],
                 'value' => $image_id,
             ]); ?>
+
+            <?php
+            $v7_i18n = [
+                'cropping_in_progress' => __(
+                    'Cropping image...',
+                    'acf-image-aspect-ratio-crop'
+                ),
+                'cropping_failed' => __(
+                    'Failed to crop image',
+                    'acf-image-aspect-ratio-crop'
+                ),
+                'crop' => __('Crop', 'acf-image-aspect-ratio-crop'),
+                'cancel' => __('Cancel', 'acf-image-aspect-ratio-crop'),
+                'modal_title' => __(
+                    'Crop image',
+                    'acf-image-aspect-ratio-crop'
+                ),
+                'reset' => __('Reset crop', 'acf-image-aspect-ratio-crop'),
+                'upload_progress' => __(
+                    'Uploading image. Progress %d%%.',
+                    'acf-image-aspect-ratio-crop'
+                ),
+                'upload_failed' => __(
+                    'Upload failed.',
+                    'acf-image-aspect-ratio-crop'
+                ),
+                'get_data_error' => __(
+                    'Failed to get image data.',
+                    'acf-image-aspect-ratio-crop'
+                ),
+            ];
+
+            $v7_context = [
+                'initial_image_data' =>
+                    wp_prepare_attachment_for_js($image_id) ?? null,
+                'preview_size' => acf_get_image_size($field['preview_size']),
+                'wp_rest_nonce' => wp_create_nonce('wp_rest'),
+                'api_root' => untrailingslashit(get_rest_url()),
+                'i18n' => $v7_i18n,
+            ];
+            $v7_context = htmlspecialchars(json_encode($v7_context));
+            ?>
+
+            <div class="js-aiarc-field-root" data-context="<?php echo $v7_context; ?>">
+                <aiarc-cropper></aiarc-cropper>
+            </div>
+
             <div class="show-if-value image-wrap"
                  <?php if ($size['width']): ?>style="<?php echo esc_attr(
     'max-width: ' . $size['width'] . 'px'
@@ -542,6 +590,7 @@ class Field extends acf_field
                 )
                 : $version
         );
+
         $translation_array = [
             'cropping_in_progress' => __(
                 'Cropping image...',
@@ -601,6 +650,45 @@ class Field extends acf_field
                 : $version
         );
         wp_enqueue_style('acf-image-aspect-ratio-crop');
+
+        // v7 stuff
+
+        wp_register_script(
+            'aiarc-script-v7',
+            "{$url}assets-v7/dist/main.js",
+            ['acf-input', 'backbone'],
+            WP_DEBUG
+                ? md5_file($this->settings['path'] . '/assets-v7/dist/main.js')
+                : $version
+        );
+
+        add_filter(
+            'script_loader_tag',
+            function ($tag, $handle, $src) {
+                if ('aiarc-script-v7' !== $handle) {
+                    return $tag;
+                }
+                $tag =
+                    '<script type="module" src="' .
+                    esc_url($src) .
+                    '"></script>';
+                return $tag;
+            },
+            10,
+            3
+        );
+
+        wp_enqueue_script('aiarc-script-v7');
+
+        wp_register_style(
+            'aiarc-style-v7',
+            "{$url}assets-v7/dist/main.css",
+            ['acf-input'],
+            WP_DEBUG
+                ? md5_file($this->settings['path'] . '/assets-v7/dist/main.css')
+                : $version
+        );
+        wp_enqueue_style('aiarc-style-v7');
     }
 
     /*

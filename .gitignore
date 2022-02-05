@@ -6,3 +6,5 @@
 tests/_output/*
 !tests/_output/.gitkeep
 composer.lock
+/assets-v7/dist
+/.parcel-cache

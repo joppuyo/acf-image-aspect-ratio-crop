@@ -19,7 +19,7 @@ class Plugin
 
     protected static $instance = null;
 
-    public static function get_instance()
+    public static function get_instance(): Plugin
     {
         if (!isset(static::$instance)) {
             static::$instance = new static();
