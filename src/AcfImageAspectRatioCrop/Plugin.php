@@ -414,22 +414,6 @@ class Plugin
             true
         );
 
-        /* Timestamp so we can purge unattached crop attachments periodically after specific time
-         (like a week or so) */
-        add_post_meta(
-            $attachment_id,
-            'acf_image_aspect_ratio_crop_timestamp',
-            (new DateTime())->format('U'),
-            true
-        );
-
-        add_post_meta(
-            $attachment_id,
-            'acf_image_aspect_ratio_crop_temp_post_id',
-            $data['temp_post_id'],
-            true
-        );
-
         require_once ABSPATH . 'wp-admin' . '/includes/image.php';
         $attachment_data = wp_generate_attachment_metadata(
             $attachment_id,

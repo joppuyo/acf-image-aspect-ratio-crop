@@ -16,9 +16,6 @@ class Field extends acf_field
         return static::$instance;
     }
 
-    /** @var string */
-    public $temp_post_id;
-
     /*
      *  __construct
      *
@@ -80,20 +77,6 @@ class Field extends acf_field
             'uploadedTo' => __('Uploaded to this post', 'acf'),
             'all' => __('All images', 'acf'),
         ];
-
-        // We need to generate temporary id for the post because we don't have id when creating new post
-        // Also options pages, taxonomies etc have ACF generated special post id that we don't know before save hook
-        $this->temp_post_id = wp_generate_uuid4();
-
-        // Store temporary post id in a hidden field
-        add_action(
-            'acf/input/form_data',
-            function () {
-                echo "<input type='hidden' name='aiarc_temp_post_id' value='$this->temp_post_id'>";
-            },
-            10,
-            1
-        );
 
         // filters
         add_filter('get_media_item_args', [$this, 'get_media_item_args']);
@@ -623,7 +606,6 @@ class Field extends acf_field
         ];
 
         $data_array = [
-            'temp_post_id' => $this->temp_post_id,
             'nonce' => wp_create_nonce('aiarc'),
             // This thing is required because WordPress is weird and not having this makes
             // verify_nonce always return false when the API is called on the admin side
