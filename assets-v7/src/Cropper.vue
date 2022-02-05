@@ -1,6 +1,10 @@
 <template>
   <teleport to="body">
-    <div v-if="cropperOpen" v-bind:class="$style['modal-background']">
+    <div
+      v-if="cropperOpen"
+      class="aiarc-modal"
+      v-bind:class="$style['modal-background']"
+    >
       <div v-bind:class="$style['modal-outer']">
         <div
           v-bind:class="$style['modal']"
@@ -31,9 +35,18 @@
                 v-bind:class="$style['image-area']"
                 v-bind:style="{ paddingBottom: paddingBottom }"
               >
-                <img
+                <vue-cropper
+                  ref="cropper"
                   v-bind:class="$style['image-area-inner']"
                   v-bind:src="originalImageData.url"
+                  v-bind:aspectRatio="16 / 9"
+                  v-bind:viewMode="1"
+                  v-bind:autoCropArea="1"
+                  v-bind:zoomable="false"
+                  v-bind:checkCrossOrigin="false"
+                  v-bind:checkOrientation="false"
+                  v-bind:responsive="false"
+                  v-bind:key="cropJsKey"
                 />
               </div>
             </div>
@@ -72,14 +85,20 @@
 </template>
 
 <script>
+import VueCropper from 'vue-cropperjs';
+
 export default {
   props: ['cropperOpen', 'originalImageData', 'i18n'],
+  components: {
+    VueCropper,
+  },
   data: function() {
     return {
       modalWidth: 0,
       maxWidth: 0,
       maxHeight: 0,
       paddingBottom: 0,
+      cropJsKey: Math.round(Math.random() * 1000),
     };
   },
   methods: {
@@ -114,6 +133,11 @@ export default {
       this.paddingBottom =
         (this.originalImageData.height / this.originalImageData.width) * 100 +
         '%';
+
+      this.$nextTick(() => {
+        // Kludge to refresh cropper instace so it re-initializes when browser size changes.
+        this.cropJsKey = Math.round(Math.random() * 1000);
+      });
     },
   },
   beforeDestroy() {
@@ -279,5 +303,29 @@ export default {
     min-width: 0;
     white-space: nowrap;
   }
+}
+
+.cropper-view-box {
+  outline: 2px solid white;
+}
+
+.cropper-line {
+  outline-color: white;
+}
+
+.cropper-point {
+  background-color: white;
+  border-radius: 50%;
+  opacity: 1;
+  transform: scale(2);
+}
+
+.cropper-dashed {
+  border-style: solid;
+}
+
+.cropper-line {
+  outline: transparent;
+  background-color: transparent;
 }
 </style>

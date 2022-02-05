@@ -173,4 +173,60 @@ export default {
 };
 </script>
 
-<style module></style>
+<style lang="scss">
+.aiarc-modal {
+  @import '../../node_modules/cropperjs/dist/cropper';
+
+  .cropper-point.point-se {
+    cursor: nwse-resize;
+    height: 5px;
+    width: 5px;
+  }
+
+  @media (min-width: 768px) {
+    .cropper-point.point-se {
+      height: 5px;
+      width: 5px;
+    }
+  }
+
+  @media (min-width: 992px) {
+    .cropper-point.point-se {
+      height: 5px;
+      width: 5px;
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .cropper-point.point-se {
+      height: 5px;
+      opacity: 0.75;
+      width: 5px;
+    }
+  }
+
+  .cropper-view-box {
+    outline: 2px solid white;
+  }
+
+  .cropper-line {
+    outline-color: white;
+  }
+
+  .cropper-point {
+    background-color: white;
+    border-radius: 50%;
+    opacity: 1;
+    transform: scale(2);
+  }
+
+  .cropper-dashed {
+    border-style: solid;
+  }
+
+  .cropper-line {
+    outline: transparent;
+    background-color: transparent;
+  }
+}
+</style>
