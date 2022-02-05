@@ -117,7 +117,36 @@ class Plugin
 
     public function include_field_types()
     {
+        $acf_version = get_option('acf_version');
+        if (!$acf_version) {
+            return;
+        }
+        if (version_compare($acf_version, '5.9.0', 'lt')) {
+            add_action('admin_notices', [$this, 'acf_update_notice']);
+            return;
+        }
         Field::get_instance();
+    }
+
+    public function acf_update_notice()
+    {
+        $class = 'notice notice-warning';
+        $message =
+            __('ACF Image Aspect Ratio Crop', 'acf-image-aspect-ratio-crop') .
+            ': ' .
+            sprintf(
+                __(
+                    'ACF version requirements are not met. This plugin requires at least ACF %s. The field has been disabled.',
+                    'acf-image-aspect-ratio-crop'
+                ),
+                '5.9.0'
+            );
+
+        printf(
+            '<div class="%1$s"><p>%2$s</p></div>',
+            esc_attr($class),
+            esc_html($message)
+        );
     }
 
     public function acf_upload_prefilter($errors, $file, $field)
