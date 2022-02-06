@@ -124,7 +124,7 @@ class FrontEndCropPixelSizeCest
         $I->moveMouseOver(
             '.acf-field.acf-field-image-aspect-ratio-crop div img'
         );
-        $I->click('.acf-icon.-cancel-custom ');
+        $I->click('.js-aiarc-actions-delete');
         $I->attachFile('.js-aiarc-upload', 'small.jpg');
         $I->retry(10, 1000);
         $I->retrySeeInPopup('Image too small');

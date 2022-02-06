@@ -205,7 +205,7 @@ class OldPluginMigrationCest
         $I->moveMouseOver(
             '.acf-field.acf-field-image-aspect-ratio-crop div img'
         );
-        $I->click('.acf-icon.-crop.dark');
+        $I->click('.js-aiarc-actions-crop');
         $I->waitForText('Crop image', 30);
         $I->executeJS(
             'window._acf_image_aspect_ratio_cropper.setData({x:0,y:0});'

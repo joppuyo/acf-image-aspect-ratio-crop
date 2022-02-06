@@ -3,34 +3,45 @@
     v-bind:class="$style['image-wrapper']"
     v-bind:style="{ maxWidth: this.previewWidth }"
   >
+    <div
+        v-bind:class="$style['preview-image-outer']"
+    >
+      <div
+          v-bind:class="$style['preview-image']"
+          v-bind:style="{ paddingBottom: paddingBottom }"
+      >
     <img
       ref="preview"
       loading="lazy"
       src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"
-      v-bind:class="$style['preview-image']"
+      v-bind:class="$style['preview-image-inner']"
       v-bind:srcset="srcset"
       alt=""
       v-bind:style="{ maxWidth: this.previewWidth }"
       v-bind:sizes="imageWidth"
-      v-bind:height="imageData.height"
-      v-bind:width="imageData.width"
     />
     <div v-bind:class="$style['actions']">
       <button
+          class="js-aiarc-actions-crop"
         v-bind:class="[$style['action'], $style['action--crop']]"
         v-html="require('bundle-text:./crop.svg')"
+        v-on:click.prevent="reCrop"
       ></button>
       <button
+          class="js-aiarc-actions-edit"
         v-bind:class="$style['action']"
         v-html="require('bundle-text:./pencil.svg')"
-        v-on:click="openEditModal"
+        v-on:click.prevent="openEditModal"
       ></button>
       <button
+          class="js-aiarc-actions-delete"
         v-bind:class="[$style['action'], $style['action--delete']]"
         v-html="require('bundle-text:./close.svg')"
-        v-on:click="deleteImage"
+        v-on:click.prevent="deleteImage"
       ></button>
     </div>
+  </div>
+  </div>
   </div>
 </template>
 
@@ -61,6 +72,13 @@ export default {
         return this.previewSize.width + 'px';
       }
       return 'auto';
+    },
+    paddingBottom() {
+      if (this.imageData && this.imageData.width && this.imageData.width) {
+        return (this.imageData.height / this.imageData.width) * 100 +
+            '%';
+      }
+      return (3 / 4) * 100 + '%';
     },
   },
   methods: {
@@ -103,15 +121,40 @@ export default {
       }
       this.srcset = srcset.join(', ');
     },
+    reCrop() {
+      this.emitter.emit('re-crop');
+    }
   },
 };
 </script>
 
 <style lang="scss" module>
-.preview-image {
-  width: 100% !important;
-  height: auto !important;
+
+.preview-image-outer {
+  position: relative;
+  width: 100%;
 }
+
+.preview-image {
+  position: relative;
+  padding-bottom: calc(100% * 9 / 16);
+}
+
+.preview-image-inner {
+  all: revert;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+}
+
+//.preview-image {
+//  width: 100% !important;
+//  height: auto !important;
+//}
 
 .image-wrapper {
   position: relative;
@@ -143,6 +186,10 @@ export default {
     fill: #eee;
     width: 20px;
     height: auto;
+  }
+
+  &:hover {
+    background-color: #191E23;
   }
 
   &:hover svg,

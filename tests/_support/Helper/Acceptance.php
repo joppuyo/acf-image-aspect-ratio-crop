@@ -22,7 +22,7 @@ class Acceptance extends \Codeception\Module
         $I->moveMouseOver(
             '.acf-field.acf-field-image-aspect-ratio-crop div img'
         );
-        $I->click('.acf-icon.-pencil.dark');
+        $I->click('.js-aiarc-actions-edit');
         $I->waitForJqueryAjax();
         $url = null;
         if (version_compare($wp_version, '5.3', 'ge')) {

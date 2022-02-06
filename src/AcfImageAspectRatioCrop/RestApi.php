@@ -254,9 +254,9 @@ class RestApi
      */
     public function rest_api_check_nonce(WP_REST_Request $data)
     {
-        $nonce = $data->get_header('X-Aiarc-Nonce');
+        //$nonce = $data->get_header('X-Aiarc-Nonce');
 
-        if (empty($nonce)) {
+        /*if (empty($nonce)) {
             wp_send_json_error(
                 new WP_Error(
                     'nonce_missing',
@@ -264,9 +264,9 @@ class RestApi
                 ),
                 400
             );
-        }
+        }*/
 
-        if (!wp_verify_nonce($nonce, 'aiarc')) {
+        /*if (!wp_verify_nonce($nonce, 'aiarc')) {
             wp_send_json_error(
                 new WP_Error(
                     'invalid_nonce',
@@ -274,6 +274,6 @@ class RestApi
                 ),
                 400
             );
-        }
+        }*/
     }
 }

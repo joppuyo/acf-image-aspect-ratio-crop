@@ -47,6 +47,7 @@
                   v-bind:checkOrientation="false"
                   v-bind:responsive="false"
                   v-bind:key="cropJsKey"
+                  v-bind:crop="cropChanged"
                 />
               </div>
             </div>
@@ -54,11 +55,7 @@
           <div v-bind:class="$style['footer']">
             <div v-bind:class="$style['footer-info']">
               <div>
-                Lorem Ipsum has been the industry's standard dummy text ever
-                since the 1500s, when an unknown printer took a galley of type
-                and scrambled it to make a type specimen book. It has survived
-                not only five centuries, but also the leap into electronic
-                typesetting, remaining essentially unchanged.
+                {{text}}
               </div>
             </div>
             <div v-bind:class="$style['footer-controls']">
@@ -69,10 +66,12 @@
                 {{ i18n.cancel }}
               </button>
               <button
+                  class="js-acf-image-aspect-ratio-crop-crop"
                 v-bind:class="[
                   $style['footer-button'],
                   $style['footer-button--primary'],
                 ]"
+                v-on:click="executeCrop"
               >
                 {{ i18n.crop }}
               </button>
@@ -86,9 +85,10 @@
 
 <script>
 import VueCropper from 'vue-cropperjs';
+import axios from "axios";
 
 export default {
-  props: ['cropperOpen', 'originalImageData', 'i18n'],
+  props: ['cropperOpen', 'originalImageData', 'i18n', 'context'],
   components: {
     VueCropper,
   },
@@ -99,9 +99,74 @@ export default {
       maxHeight: 0,
       paddingBottom: 0,
       cropJsKey: Math.round(Math.random() * 1000),
+      text: '',
     };
   },
   methods: {
+    cropChanged(event) {
+      console.log(event);
+    },
+    executeCrop() {
+
+      this.text = this.i18n.cropping_in_progress;
+
+      let cropData = this.$refs.cropper.getData()
+
+      var data = {
+        id: this.originalImageData.id,
+        aspectRatioHeight: this.context.aspect_ratio_height,
+        aspectRatioWidth: this.context.aspect_ratio_width,
+        cropType: this.context.crop_type,
+        x: cropData.x,
+        y: cropData.y,
+        width: cropData.width,
+        height: cropData.height,
+        key: this.context.key,
+      };
+
+      this.$refs.cropper.disable();
+
+      let options = {};
+
+      let url = null;
+
+      url = `${this.context.api_root}/aiarc/v1/crop`;
+      options = {
+        headers: {
+          'X-WP-Nonce': this.context.wp_rest_nonce,
+        },
+      };
+
+      axios
+          .post(url, data, options)
+          .then(response => {
+            console.log(response.data);
+            this.emitter.emit('update-image-by-id', response.data.id);
+            this.emitter.emit('close-cropper');
+            //self.cropComplete(response.data);
+            /*$('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
+            $('.js-acf-image-aspect-ratio-crop-reset').prop(
+                'disabled',
+                false,
+            );
+            $('.js-acf-image-aspect-ratio-crop-modal-footer-status').empty();
+            */
+          })
+          .catch(response => {
+            console.error(response);
+            this.$refs.cropper.enable();
+            this.text = this.i18n.cropping_failed;
+            /*$('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
+            $('.js-acf-image-aspect-ratio-crop-reset').prop(
+                'disabled',
+                false,
+            );
+            $('.js-acf-image-aspect-ratio-crop-modal-footer-status').empty();
+            $('.js-acf-image-aspect-ratio-crop-modal-footer-status').html(
+                error,
+            );*/
+          });
+    },
     closeCropper() {
       this.emitter.emit('close-cropper');
     },
@@ -144,6 +209,7 @@ export default {
     window.removeEventListener('resize', this.calculateElementSizes);
   },
   mounted() {
+    window._acf_image_aspect_ratio_cropper = this.$refs.cropper;
     this.$nextTick(function() {
       window.addEventListener('resize', this.calculateElementSizes);
       this.calculateElementSizes();

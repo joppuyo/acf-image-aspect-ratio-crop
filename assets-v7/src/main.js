@@ -1,6 +1,9 @@
-import { createApp } from 'vue/dist/vue.esm-bundler';
+//import { createApp } from 'vue/dist/vue.esm-bundler';
+import { createApp } from 'vue';
 import App from './App.vue';
 import mitt from 'mitt';
+
+import('./field-group-admin');
 
 (function($) {
   /**

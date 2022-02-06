@@ -374,6 +374,24 @@ class Field extends acf_field
                 : 0,
         ];
 
+        // v7 start
+        $aspect_ratio_width = array_key_exists(
+            'aspect_ratio_width',
+            $field
+        )
+            ? $field['aspect_ratio_width']
+            : 0;
+
+        $aspect_ratio_height = array_key_exists(
+            'aspect_ratio_height',
+            $field
+        )
+            ? $field['aspect_ratio_height']
+            : 0;
+        $min_width = !empty($field['min_width']) ? $field['min_width'] : null;
+        $min_height = !empty($field['min_height']) ? $field['min_height'] : null;
+        // v7 end
+
         $image_id = null;
         $original = null;
 
@@ -467,13 +485,31 @@ class Field extends acf_field
                 ),
             ];
 
+            $original_image_data = null;
+
+            $original_image_id = get_post_meta(
+                $image_id,
+                'acf_image_aspect_ratio_crop_original_image_id',
+                true
+            );
+
+            if ($original_image_id) {
+                $original_image_data = wp_prepare_attachment_for_js($original_image_id) ?? null;
+            }
+
             $v7_context = [
                 'initial_image_data' =>
                     wp_prepare_attachment_for_js($image_id) ?? null,
+                'initial_original_image_data' => $original_image_data,
                 'preview_size' => acf_get_image_size($field['preview_size']),
                 'wp_rest_nonce' => wp_create_nonce('wp_rest'),
                 'api_root' => untrailingslashit(get_rest_url()),
                 'i18n' => $v7_i18n,
+                'aspect_ratio_width' => $aspect_ratio_width,
+                'crop_type' => $field['crop_type'],
+                'aspect_ratio_height' => $aspect_ratio_height,
+                'min_width' => $min_width,
+                'min_height' => $min_height,
             ];
             $v7_context = htmlspecialchars(json_encode($v7_context));
             ?>
@@ -482,69 +518,6 @@ class Field extends acf_field
                 <aiarc-cropper></aiarc-cropper>
             </div>
 
-            <div class="show-if-value image-wrap"
-                 <?php if ($size['width']): ?>style="<?php echo esc_attr(
-    'max-width: ' . $size['width'] . 'px'
-); ?>"<?php endif; ?>>
-                <img data-name="image" src="<?php echo esc_url(
-                    $url
-                ); ?>" alt="<?php echo esc_attr($alt); ?>"/>
-                <div class="acf-actions -hover">
-                    <a class="acf-icon -crop dark" data-name="crop" href="#"
-                       title="<?php _e('Crop', 'acf'); ?>"></a>
-                    <?php if ($uploader != 'basic'): ?>
-                    <a class="acf-icon -pencil dark" data-name="edit" href="#"
-                       title="<?php _e(
-                           'Edit',
-                           'acf'
-                       ); ?>"></a><?php endif; ?><a class="acf-icon -cancel-custom dark" data-name="remove" href="#"
-                                                    title="<?php _e(
-                                                        'Remove',
-                                                        'acf'
-                                                    ); ?>"></a>
-                </div>
-            </div>
-            <div class="hide-if-value">
-                <?php if ($uploader == 'basic'): ?>
-
-                    <!-- basic uploader start -->
-
-                    <?php $mime_array = Helper::extension_list_to_mime_array(
-                        $field['mime_types']
-                    ); ?>
-
-                    <div class="js-aiarc-upload-progress" style="display: none"></div>
-
-                    <input type="file" class="aiarc-upload js-aiarc-upload" data-id="<?php echo $field[
-                        'name'
-                    ]; ?>" accept="<?php echo implode(',', $mime_array); ?>">
-
-                    <?php if ($image_id && !is_numeric($image_id)): ?>
-                        <div class="acf-error-message"><p><?php echo acf_esc_html(
-                            $image_id
-                        ); ?></p></div>
-                    <?php endif; ?>
-
-                    <!-- basic uploader end -->
-
-                <?php else: ?>
-
-                    <!-- advanced uploader start -->
-
-                    <p><?php _e(
-                        'No image selected',
-                        'acf'
-                    ); ?> <a data-name="add" class="acf-button button"
-                                 href="#"><?php _e(
-                                     'Add Image',
-                                     'acf'
-                                 ); ?></a></p>
-
-                    <!-- advanced uploader end -->
-
-                <?php endif; ?>
-            </div>
-        </div>
         <?php
     }
 
@@ -567,76 +540,6 @@ class Field extends acf_field
         global $post;
         $url = $this->settings['url'];
         $version = $this->settings['version'];
-
-        wp_register_script(
-            'acf-image-aspect-ratio-crop',
-            "{$url}assets/dist/input-script.js",
-            ['acf-input', 'backbone'],
-            WP_DEBUG
-                ? md5_file(
-                    $this->settings['path'] . '/assets/dist/input-script.js'
-                )
-                : $version
-        );
-
-        $translation_array = [
-            'cropping_in_progress' => __(
-                'Cropping image...',
-                'acf-image-aspect-ratio-crop'
-            ),
-            'cropping_failed' => __(
-                'Failed to crop image',
-                'acf-image-aspect-ratio-crop'
-            ),
-            'crop' => __('Crop', 'acf-image-aspect-ratio-crop'),
-            'cancel' => __('Cancel', 'acf-image-aspect-ratio-crop'),
-            'modal_title' => __('Crop image', 'acf-image-aspect-ratio-crop'),
-            'reset' => __('Reset crop', 'acf-image-aspect-ratio-crop'),
-            'upload_progress' => __(
-                'Uploading image. Progress %d%%.',
-                'acf-image-aspect-ratio-crop'
-            ),
-            'upload_failed' => __(
-                'Upload failed.',
-                'acf-image-aspect-ratio-crop'
-            ),
-        ];
-        $settings_array = [
-            'modal_type' => $this->settings['user_settings']['modal_type'],
-        ];
-
-        $data_array = [
-            'nonce' => wp_create_nonce('aiarc'),
-            // This thing is required because WordPress is weird and not having this makes
-            // verify_nonce always return false when the API is called on the admin side
-            // https://stackoverflow.com/questions/41878315/wp-ajax-nonce-works-when-logged-out-but-not-when-logged-in
-            'wp_rest_nonce' => wp_create_nonce('wp_rest'),
-            'api_root' => untrailingslashit(get_rest_url()),
-        ];
-        wp_localize_script(
-            'acf-image-aspect-ratio-crop',
-            'aiarc_settings',
-            $settings_array
-        );
-        wp_localize_script(
-            'acf-image-aspect-ratio-crop',
-            'aiarc_translations',
-            $translation_array
-        );
-        wp_localize_script('acf-image-aspect-ratio-crop', 'aiarc', $data_array);
-
-        wp_enqueue_script('acf-image-aspect-ratio-crop');
-        wp_register_style(
-            'acf-image-aspect-ratio-crop',
-            "{$url}assets/dist/input-style.css",
-            ['acf-input'],
-            WP_DEBUG
-                ? md5_file(
-                    $this->settings['path'] . '/assets/dist/input-style.css'
-                )
-                : $version
-        );
-        wp_enqueue_style('acf-image-aspect-ratio-crop');
 
         // v7 stuff
 

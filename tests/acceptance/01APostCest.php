@@ -166,7 +166,7 @@ class PostCest
         $I->moveMouseOver(
             '.acf-field.acf-field-image-aspect-ratio-crop div img'
         );
-        $I->click('.acf-icon.-cancel-custom');
+        $I->click('.js-aiarc-actions-delete');
         $I->click('Add Image');
         $I->attachFile('.moxie-shim input', $image_path);
         $I->waitForElementClickable(
