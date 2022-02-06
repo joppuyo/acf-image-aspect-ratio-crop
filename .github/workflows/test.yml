@@ -107,7 +107,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npx webpack -p
+        run: npm run build
 
       - run: docker-compose pull
 

@@ -14,17 +14,17 @@ jobs:
         with:
           php-version: '7.0'
           extensions: zip
-          
+
       - name: Set Node Version
         uses: actions/setup-node@v2
         with:
           node-version-file: '.nvmrc'
-        
+
       - name: Install dependencies
         run: npm install
 
       - name: Build
-        run: npx webpack -p
+        run: npm run build
 
       - name: WordPress Plugin Deploy
         if: startsWith(github.ref, 'refs/tags/')
