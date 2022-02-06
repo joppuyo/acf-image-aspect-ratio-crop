@@ -4,29 +4,29 @@
       <button v-on:click.prevent="openMediaModal">Add Image</button>
     </div>
     <Preview
-        v-bind:imageData="imageData"
-        v-if="imageData && !loading"
-        v-bind:previewSize="context.preview_size"
-        v-bind:i18n="i18n"
+      v-bind:imageData="imageData"
+      v-if="imageData"
+      v-bind:previewSize="context.preview_size"
+      v-bind:i18n="i18n"
+      v-bind:loading="loading"
     />
     <ErrorComponent
-        v-if="error"
-        v-bind:errorMessage="errorMessage"
-        v-bind:errorDetails="errorDetails"
+      v-if="error"
+      v-bind:errorMessage="errorMessage"
+      v-bind:errorDetails="errorDetails"
     ></ErrorComponent>
-    <div v-if="loading">
-      <Loader
-          v-bind:previewSize="context.preview_size"
-          v-bind:context="context"
-          v-bind:imageData="imageData"
-      />
-    </div>
+    <Loader
+      v-if="loading && !imageData"
+      v-bind:previewSize="context.preview_size"
+      v-bind:context="context"
+      v-bind:imageData="imageData"
+    />
     <Cropper
-        v-bind:i18n="context.i18n"
-        v-if="cropperOpen"
-        v-bind:cropperOpen="cropperOpen"
-        v-bind:originalImageData="originalImageData"
-        v-bind:context="context"
+      v-bind:i18n="context.i18n"
+      v-if="cropperOpen"
+      v-bind:cropperOpen="cropperOpen"
+      v-bind:originalImageData="originalImageData"
+      v-bind:context="context"
     />
   </div>
 </template>
@@ -60,7 +60,6 @@ export default {
     };
   },
   mounted() {
-
     // If we have initial image data from the server, use it
     if (this.context.initial_image_data) {
       this.imageData = this.context.initial_image_data;
@@ -83,12 +82,11 @@ export default {
     });
 
     this.emitter.on('re-crop', () => {
-      this.startCrop(this.originalImageData.id)
+      this.startCrop(this.originalImageData.id);
       //this.updateImageById(id);
     });
   },
-  beforeDestroy() {
-  },
+  beforeDestroy() {},
   computed: {},
   methods: {
     startCrop(id) {
@@ -103,49 +101,49 @@ export default {
       };
 
       axios
-          .get(`${this.context.api_root}/aiarc/v1/get/${id}`, options)
-          .then(response => {
-            this.loading = false;
-            this.error = false;
-            this.errorDetails = null;
-            this.errorMessage = null;
-            this.originalImageData = response.data;
-            console.log(response.data);
+        .get(`${this.context.api_root}/aiarc/v1/get/${id}`, options)
+        .then((response) => {
+          this.loading = false;
+          this.error = false;
+          this.errorDetails = null;
+          this.errorMessage = null;
+          this.originalImageData = response.data;
+          console.log(response.data);
 
-            if (!response.data.width || !response.data.height) {
-              throw new Error('Malformed image. Height or width data missing.');
-            }
+          if (!response.data.width || !response.data.height) {
+            throw new Error('Malformed image. Height or width data missing.');
+          }
 
-            //TODO handle error
+          //TODO handle error
 
-            this.cropperOpen = true;
+          this.cropperOpen = true;
 
-            //let attachment = new window.Backbone.Model(response.data);
-            //this.render(attachment);
-          })
-          .catch(error => {
-            this.loading = false;
-            this.error = true;
-            this.errorMessage = this.i18n.get_data_error + ' ' + error.message;
+          //let attachment = new window.Backbone.Model(response.data);
+          //this.render(attachment);
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.error = true;
+          this.errorMessage = this.i18n.get_data_error + ' ' + error.message;
 
-            if (
-                error.response &&
-                error.response.data &&
-                error.response.data.data.length &&
-                error.response.data.data[0].message
-            ) {
-              this.errorMessage =
-                  this.i18n.get_data_error +
-                  ' ' +
-                  error.response.data.data[0].message;
-            }
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.data.length &&
+            error.response.data.data[0].message
+          ) {
+            this.errorMessage =
+              this.i18n.get_data_error +
+              ' ' +
+              error.response.data.data[0].message;
+          }
 
-            if (error.response) {
-              this.errorDetails = JSON.stringify(error.response, null, 4);
-            } else if (JSON.stringify(error) !== '{}') {
-              this.errorDetails = JSON.stringify(error, null, 4);
-            }
-          });
+          if (error.response) {
+            this.errorDetails = JSON.stringify(error.response, null, 4);
+          } else if (JSON.stringify(error) !== '{}') {
+            this.errorDetails = JSON.stringify(error, null, 4);
+          }
+        });
 
       // Fire event so ACF can update field value
       //const event = new CustomEvent('aiarc-update-field-value', {
@@ -180,9 +178,9 @@ export default {
         select: (attachment, i) => {
           console.log('Got following data from media modal', attachment, i);
           console.log(
-              'Convert backbone to normal object',
-              attachment.toJSON(),
-              i,
+            'Convert backbone to normal object',
+            attachment.toJSON(),
+            i,
           );
           this.startCrop(attachment.toJSON().id);
         },
@@ -198,49 +196,57 @@ export default {
       };
 
       axios
-          .get(`${this.context.api_root}/aiarc/v1/get/${id}`, options)
-          .then(response => {
-            this.loading = false;
-            this.error = false;
-            this.errorDetails = null;
-            this.errorMessage = null;
-            //this.originalImageData = response.data;
-            console.log(response.data);
+        .get(`${this.context.api_root}/aiarc/v1/get/${id}`, options)
+        .then((response) => {
+          this.loading = false;
+          this.error = false;
+          this.errorDetails = null;
+          this.errorMessage = null;
+          //this.originalImageData = response.data;
+          //console.log(response.data);
 
-            this.imageData = response.data;
-            this.updateACFFieldValue(response.data.id);
+          console.log('0', this.imageData);
 
-            if (!response.data.width || !response.data.height) {
-              throw new Error('Malformed image. Height or width data missing.');
-            }
-          })
-          .catch(error => {
-            this.loading = false;
-            this.error = true;
-            this.errorMessage = this.i18n.get_data_error + ' ' + error.message;
+          this.imageData = response.data;
 
-            if (
-                error.response &&
-                error.response.data &&
-                error.response.data.data.length &&
-                error.response.data.data[0].message
-            ) {
-              this.errorMessage =
-                  this.i18n.get_data_error +
-                  ' ' +
-                  error.response.data.data[0].message;
-            }
+          console.log('1', this.imageData);
+          console.log('2', response.data);
+          console.log('3', this.imageData);
+          setTimeout(() => {
+            console.log('4', this.imageData);
+          }, 1000);
 
-            if (error.response) {
-              this.errorDetails = JSON.stringify(error.response, null, 4);
-            } else if (JSON.stringify(error) !== '{}') {
-              this.errorDetails = JSON.stringify(error, null, 4);
-            }
-          });
+          this.updateACFFieldValue(response.data.id);
+
+          if (!response.data.width || !response.data.height) {
+            throw new Error('Malformed image. Height or width data missing.');
+          }
+        })
+        .catch((error) => {
+          this.loading = false;
+          this.error = true;
+          this.errorMessage = this.i18n.get_data_error + ' ' + error.message;
+
+          if (
+            error.response &&
+            error.response.data &&
+            error.response.data.data.length &&
+            error.response.data.data[0].message
+          ) {
+            this.errorMessage =
+              this.i18n.get_data_error +
+              ' ' +
+              error.response.data.data[0].message;
+          }
+
+          if (error.response) {
+            this.errorDetails = JSON.stringify(error.response, null, 4);
+          } else if (JSON.stringify(error) !== '{}') {
+            this.errorDetails = JSON.stringify(error, null, 4);
+          }
+        });
     },
-    reCrop() {
-
-    }
+    reCrop() {},
   },
 };
 </script>

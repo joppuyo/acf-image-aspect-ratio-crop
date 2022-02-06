@@ -1,14 +1,15 @@
 <template>
   <div>
-    <div
-        v-bind:style="{ maxWidth: previewWidth }"
-    >
+    <div v-bind:style="{ maxWidth: previewWidth }">
       <div v-bind:class="$style['loader-outer']">
-        <div v-bind:class="$style['loader']" v-bind:style="{ paddingBottom: paddingBottom }">
+        <div
+          v-bind:class="$style['loader']"
+          v-bind:style="{ paddingBottom: paddingBottom }"
+        >
           <div v-bind:class="$style['loader-inner']">
             <div
-                v-bind:class="$style['spinner']"
-                v-html="require('bundle-text:./spinner.svg')"
+              v-bind:class="$style['spinner']"
+              v-html="require('bundle-text:./global/spinner.svg')"
             />
           </div>
         </div>
@@ -29,8 +30,11 @@ export default {
     },
     paddingBottom() {
       if (this.context.aspect_ratio_width && this.context.aspect_ratio_height) {
-        return (this.context.aspect_ratio_height / this.context.aspect_ratio_width) * 100 +
-            '%';
+        return (
+          (this.context.aspect_ratio_height / this.context.aspect_ratio_width) *
+            100 +
+          '%'
+        );
       }
       return (3 / 4) * 100 + '%';
     },
@@ -39,7 +43,6 @@ export default {
 </script>
 
 <style module>
-
 .loader-outer {
   position: relative;
   width: 100%;
@@ -65,7 +68,7 @@ export default {
 }
 
 .spinner svg {
-  opacity: 1;
+  opacity: 0.25;
   animation-name: aiarc-v7-spin;
   animation-duration: 2000ms;
   animation-iteration-count: infinite;
