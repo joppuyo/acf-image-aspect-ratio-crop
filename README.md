@@ -5,6 +5,9 @@
 [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/acf-image-aspect-ratio-crop?logo=wordpress)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/)
 [![Active installs](https://img.shields.io/endpoint?url=https://wpmetrics-shields-io-badge.uc.r.appspot.com/%3Fplugin%3Dacf-image-aspect-ratio-crop&logo=wordpress)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/advanced/)
 [![WordPress Plugin Rating](https://img.shields.io/wordpress/plugin/stars/acf-image-aspect-ratio-crop?logo=wordpress)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/#reviews)
+[![WordPress Plugin Required PHP Version](https://img.shields.io/wordpress/plugin/required-php/acf-image-aspect-ratio-crop)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/)
+[![WordPress Plugin: Required WP Version](https://img.shields.io/wordpress/plugin/wp-version/acf-image-aspect-ratio-crop?label=required&logo=wordpress)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/)
+[![WordPress Plugin: Tested WP Version](https://img.shields.io/badge/dynamic/json?label=tested&logo=wordpress&prefix=v&color=green&query=%24.tested&url=https%3A%2F%2Fapi.wordpress.org%2Fplugins%2Finfo%2F1.0%2Facf-image-aspect-ratio-crop.json)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/)
 [![codecov](https://codecov.io/gh/joppuyo/acf-image-aspect-ratio-crop/branch/master/graph/badge.svg?token=EQXMRSFD1L)](https://codecov.io/gh/joppuyo/acf-image-aspect-ratio-crop)
 [![Active Development](https://img.shields.io/badge/Maintenance%20Level-Actively%20Developed-brightgreen.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
 
