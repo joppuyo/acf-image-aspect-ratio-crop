@@ -33,7 +33,7 @@
   },
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "scripts": {
-    "watch": "parcel watch ./assets-v7/src/main.js --dist-dir=./assets-v7/dist",
+    "watch": "parcel watch --no-hmr ./assets-v7/src/main.js --dist-dir=./assets-v7/dist",
     "build": "parcel build ./assets-v7/src/main.js --dist-dir=./assets-v7/dist"
   },
   "alias": {

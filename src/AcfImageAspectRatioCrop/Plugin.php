@@ -424,6 +424,8 @@ class Plugin
         // WPML compat
         do_action('wpml_sync_all_custom_fields', $attachment_id);
 
+        do_action('aiarc_image_cropped', $attachment_id);
+
         $this->cleanup();
 
         return $attachment_id;

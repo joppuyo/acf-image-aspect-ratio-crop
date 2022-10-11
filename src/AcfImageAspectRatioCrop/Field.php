@@ -479,10 +479,12 @@ class Field extends acf_field
                     'acf-image-aspect-ratio-crop'
                 ),
                 'edit_image' => __('Edit Image', 'acf-image-aspect-ratio-crop'),
+                'add_image' => __('Add Image', 'acf-image-aspect-ratio-crop'),
                 'update_image' => __(
                     'Update Image',
                     'acf-image-aspect-ratio-crop'
                 ),
+                'no_image_selected' => __('No image selected', 'acf-image-aspect-ratio-crop')
             ];
 
             $original_image_data = null;

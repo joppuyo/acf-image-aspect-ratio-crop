@@ -363,14 +363,20 @@ export default {
   height: 36px;
   align-items: center;
   box-sizing: border-box;
-  padding: 6px 12px;
+  padding: 6px;
   border-radius: 2px;
   color: rgb(30, 30, 30);
+  margin-right: 12px;
+  color: var(--wp-admin-theme-color, #007cba);
+  &:last-child {
+    margin-right: 0;
+  }
 }
 
 .footer-button--primary {
+  padding: 6px 12px;
   white-space: nowrap;
-  background: var(--wp-admin-theme-color);
+  background: var(--wp-admin-theme-color, #007cba);
   color: #fff;
   text-decoration: none;
   text-shadow: none;

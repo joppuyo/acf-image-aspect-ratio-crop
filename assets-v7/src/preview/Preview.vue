@@ -149,6 +149,7 @@ export default {
 .preview-image {
   position: relative;
   padding-bottom: calc(100% * 9 / 16);
+  background-color: #f1f1f1;
 }
 
 .preview-image-inner {

@@ -1,7 +1,10 @@
 <template>
   <div>
     <div v-if="!imageData && !loading">
-      <button v-on:click.prevent="openMediaModal">Add Image</button>
+      <span>
+        <span>{{i18n.no_image_selected}}&nbsp;</span>
+        <button v-on:click.prevent="openMediaModal" class="aiarc-v7-button">{{i18n.add_image}}</button>
+      </span>
     </div>
     <Preview
       v-bind:imageData="imageData"
@@ -320,4 +323,25 @@ export default {
     background-color: transparent;
   }
 }
+
+.aiarc-v7-button {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 13px;
+  line-height: 2.15384615;
+  min-height: 30px;
+  margin: 0;
+  padding: 0 10px;
+  cursor: pointer;
+  border-width: 1px;
+  border-style: solid;
+  -webkit-appearance: none;
+  border-radius: 3px;
+  white-space: nowrap;
+  box-sizing: border-box;
+  color: #2271b1;
+  border-color: #2271b1;
+  background: #f6f7f7;
+}
+
 </style>

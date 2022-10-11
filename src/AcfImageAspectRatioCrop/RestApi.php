@@ -216,7 +216,8 @@ class RestApi
 
     public function rest_api_get_callback(WP_REST_Request $data)
     {
-        // TODO: validate nonce
+        $this->rest_api_check_nonce($data);
+
         $attachment_id = $data->get_param('id');
 
         $attachment = get_post($attachment_id);
