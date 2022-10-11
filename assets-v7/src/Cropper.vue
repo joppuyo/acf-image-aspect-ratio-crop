@@ -39,7 +39,7 @@
                   ref="cropper"
                   v-bind:class="$style['image-area-inner']"
                   v-bind:src="originalImageData.url"
-                  v-bind:aspectRatio="16 / 9"
+                  v-bind:aspectRatio="context.aspect_ratio_width / context.aspect_ratio_height"
                   v-bind:viewMode="1"
                   v-bind:autoCropArea="1"
                   v-bind:zoomable="false"
