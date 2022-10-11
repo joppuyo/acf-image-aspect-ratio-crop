@@ -20,6 +20,7 @@
                 v-html="require('bundle-text:./close.svg')"
                 v-on:click="closeCropper"
                 class="js-acf-image-aspect-ratio-crop-cancel"
+                v-bind:disabled="loading"
               ></button>
             </div>
           </div>
@@ -60,10 +61,10 @@
               </div>
             </div>
             <div v-bind:class="$style['footer-controls']">
-              <button v-bind:class="$style['footer-button']" v-on:click="resetCrop">
+              <button v-bind:class="$style['footer-button']" v-on:click="resetCrop" v-bind:disabled="loading">
                 {{ i18n.reset }}
               </button>
-              <button v-bind:class="$style['footer-button']" v-on:click="closeCropper">
+              <button v-bind:class="$style['footer-button']" v-on:click="closeCropper" v-bind:disabled="loading">
                 {{ i18n.cancel }}
               </button>
               <button
@@ -73,6 +74,7 @@
                   $style['footer-button--primary'],
                 ]"
                 v-on:click="executeCrop"
+                v-bind:disabled="loading"
               >
                 {{ i18n.crop }}
               </button>
@@ -101,6 +103,8 @@ export default {
       paddingBottom: 0,
       cropJsKey: Math.round(Math.random() * 1000),
       text: '',
+      loading: false,
+      error: false,
     };
   },
   methods: {
@@ -110,6 +114,8 @@ export default {
     executeCrop() {
 
       this.text = this.i18n.cropping_in_progress;
+      this.loading = true;
+      this.error = false;
 
       let cropData = this.$refs.cropper.getData()
 
@@ -170,6 +176,8 @@ export default {
             console.error(response);
             this.$refs.cropper.enable();
             this.text = this.i18n.cropping_failed;
+            this.loading = false;
+            this.error = true;
             /*$('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
             $('.js-acf-image-aspect-ratio-crop-reset').prop(
                 'disabled',
@@ -334,6 +342,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  &:disabled {
+    opacity: 0.5;
+  }
 }
 
 .footer {
@@ -371,6 +382,15 @@ export default {
   &:last-child {
     margin-right: 0;
   }
+  &:disabled {
+    color: #828282;
+    background: #eaeaea;
+    transform: none;
+    opacity: 1;
+    box-shadow: none;
+    outline: none;
+    cursor: not-allowed;
+  }
 }
 
 .footer-button--primary {
@@ -381,6 +401,13 @@ export default {
   text-decoration: none;
   text-shadow: none;
   outline: 1px solid transparent;
+  &:disabled {
+    color: hsla(0,0%,100%,.4);
+    background: var(--wp-admin-theme-color, #007cba);
+    border-color: var(--wp-admin-theme-color, #007cba);
+    opacity: 1;
+    outline: none;
+  }
 }
 
 .footer-info {
