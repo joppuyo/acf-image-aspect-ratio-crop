@@ -189,6 +189,7 @@ export default {
 
         select: (attachment, i) => {
           console.log('Got following data from media modal', attachment, i);
+          this.cropCoordinates = null;
           console.log(
             'Convert backbone to normal object',
             attachment.toJSON(),
