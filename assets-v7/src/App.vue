@@ -26,6 +26,7 @@
       v-if="cropperOpen"
       v-bind:cropperOpen="cropperOpen"
       v-bind:originalImageData="originalImageData"
+      v-bind:cropCoordinates="cropCoordinates"
       v-bind:context="context"
     />
   </div>
@@ -57,6 +58,7 @@ export default {
       errorDetails: null,
       cropperOpen: false,
       originalImageData: null,
+      cropCoordinates: null,
     };
   },
   mounted() {
@@ -66,6 +68,9 @@ export default {
     }
     if (this.context.initial_original_image_data) {
       this.originalImageData = this.context.initial_original_image_data;
+    }
+    if (this.context.initial_crop_coordinates) {
+      this.cropCoordinates = this.context.initial_crop_coordinates;
     }
 
     this.emitter.on('close-cropper', () => {
@@ -85,6 +90,12 @@ export default {
       this.startCrop(this.originalImageData.id);
       //this.updateImageById(id);
     });
+
+    this.emitter.on('update-crop-coordinates', (coordinates) => {
+      this.cropCoordinates = coordinates;
+      //this.updateImageById(id);
+    });
+
   },
   beforeDestroy() {},
   computed: {},

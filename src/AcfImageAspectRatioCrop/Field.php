@@ -493,6 +493,12 @@ class Field extends acf_field
                 true
             );
 
+            $crop_coordinates = get_post_meta(
+                $image_id,
+                'acf_image_aspect_ratio_crop_coordinates',
+                true
+            ) ?: null;
+
             if ($original_image_id) {
                 $original_image_data = wp_prepare_attachment_for_js($original_image_id) ?? null;
             }
@@ -501,6 +507,7 @@ class Field extends acf_field
                 'initial_image_data' =>
                     wp_prepare_attachment_for_js($image_id) ?? null,
                 'initial_original_image_data' => $original_image_data,
+                'initial_crop_coordinates' => $crop_coordinates,
                 'preview_size' => acf_get_image_size($field['preview_size']),
                 'wp_rest_nonce' => wp_create_nonce('wp_rest'),
                 'api_root' => untrailingslashit(get_rest_url()),

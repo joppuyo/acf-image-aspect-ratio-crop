@@ -48,6 +48,7 @@
                   v-bind:responsive="false"
                   v-bind:key="cropJsKey"
                   v-bind:crop="cropChanged"
+                  v-bind:ready="ready"
                 />
               </div>
             </div>
@@ -59,10 +60,10 @@
               </div>
             </div>
             <div v-bind:class="$style['footer-controls']">
-              <button v-bind:class="$style['footer-button']">
+              <button v-bind:class="$style['footer-button']" v-on:click="resetCrop">
                 {{ i18n.reset }}
               </button>
-              <button v-bind:class="$style['footer-button']">
+              <button v-bind:class="$style['footer-button']" v-on:click="closeCropper">
                 {{ i18n.cancel }}
               </button>
               <button
@@ -88,7 +89,7 @@ import VueCropper from 'vue-cropperjs';
 import axios from "axios";
 
 export default {
-  props: ['cropperOpen', 'originalImageData', 'i18n', 'context'],
+  props: ['cropperOpen', 'originalImageData', 'i18n', 'context', 'cropCoordinates'],
   components: {
     VueCropper,
   },
@@ -141,8 +142,21 @@ export default {
           .post(url, data, options)
           .then(response => {
             console.log(response.data);
+
+            console.log(cropData);
+
             this.emitter.emit('update-image-by-id', response.data.id);
             this.emitter.emit('close-cropper');
+
+            let cropCoordinates = {
+              x: cropData.x,
+              y: cropData.y,
+              width: cropData.width,
+              height: cropData.height,
+            }
+
+            this.emitter.emit('update-crop-coordinates', cropCoordinates);
+
             //self.cropComplete(response.data);
             /*$('.js-acf-image-aspect-ratio-crop-crop').prop('disabled', false);
             $('.js-acf-image-aspect-ratio-crop-reset').prop(
@@ -204,6 +218,14 @@ export default {
         this.cropJsKey = Math.round(Math.random() * 1000);
       });
     },
+    ready() {
+      if (this.cropCoordinates) {
+        this.$refs.cropper.setData(this.cropCoordinates);
+      }
+    },
+    resetCrop() {
+      this.$refs.cropper.reset();
+    }
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.calculateElementSizes);
