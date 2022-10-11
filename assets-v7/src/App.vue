@@ -289,7 +289,7 @@ export default {
   @media (min-width: 1200px) {
     .cropper-point.point-se {
       height: 5px;
-      opacity: 0.75;
+      opacity: 1;
       width: 5px;
     }
   }
