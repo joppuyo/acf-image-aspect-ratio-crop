@@ -9,6 +9,7 @@
       v-bind:previewSize="context.preview_size"
       v-bind:i18n="i18n"
       v-bind:loading="loading"
+      v-bind:originalImageData="originalImageData"
     />
     <ErrorComponent
       v-if="error"

@@ -24,7 +24,7 @@
             v-bind:class="[$style['action'], $style['action--crop']]"
             v-html="require('bundle-text:./crop.svg')"
             v-on:click.prevent="reCrop"
-            v-bind:disabled="loading"
+            v-bind:disabled="loading || originalImageData === null"
           ></button>
           <button
             class="js-aiarc-actions-edit"
@@ -55,7 +55,7 @@
 import assertEqualsWithDelta from '../assertEqualsWithDelta';
 
 export default {
-  props: ['imageData', 'previewSize', 'i18n', 'loading'],
+  props: ['imageData', 'previewSize', 'i18n', 'loading', 'originalImageData'],
   data: function () {
     return {
       imageWidth: null,
@@ -207,6 +207,10 @@ export default {
   &:hover svg,
   &:active svg {
     fill: #00b9eb;
+  }
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 }
 
