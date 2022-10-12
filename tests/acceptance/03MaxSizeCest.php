@@ -49,6 +49,9 @@ class MaxSizeCest
         $I->createField($I, 'aspect_ratio', 16, 9, 640);
     }
 
+    /**
+     * @depends createNewField
+     */
     public function createPost(AcceptanceTester $I)
     {
         global $wp_version;
@@ -98,6 +101,9 @@ class MaxSizeCest
         $I->see('Test Post');
     }
 
+    /**
+     * @depends createPost
+     */
     public function checkImage(AcceptanceTester $I)
     {
         global $wp_version;

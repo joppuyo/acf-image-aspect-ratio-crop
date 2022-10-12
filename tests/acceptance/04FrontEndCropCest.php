@@ -64,6 +64,9 @@ class FrontEndCropCest
         $I->createField($I, 'aspect_ratio', 16, 9);
     }
 
+    /**
+     * @depends createNewField
+     */
     public function createPost(AcceptanceTester $I)
     {
         global $wp_version;
@@ -94,6 +97,9 @@ class FrontEndCropCest
         $I->see('Test Post');
     }
 
+    /**
+     * @depends createPost
+     */
     public function addImage(AcceptanceTester $I)
     {
         $I->amOnPage('test-post');
@@ -113,6 +119,9 @@ class FrontEndCropCest
         $I->waitForText('Post updated', 60);
     }
 
+    /**
+     * @depends addImage
+     */
     public function checkImage(AcceptanceTester $I)
     {
         global $wp_version;

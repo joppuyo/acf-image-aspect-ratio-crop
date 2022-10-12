@@ -61,6 +61,9 @@ class FrontEndCropPixelSizeCest
         $I->createField($I, 'pixel_size', 640, 480);
     }
 
+    /**
+     * @depends createNewField
+     */
     public function createPost(AcceptanceTester $I)
     {
         global $wp_version;
@@ -91,6 +94,9 @@ class FrontEndCropPixelSizeCest
         $I->see('Test Post');
     }
 
+    /**
+     * @depends createPost
+     */
     public function addImage(AcceptanceTester $I)
     {
         $I->amOnPage('test-post');
@@ -110,6 +116,10 @@ class FrontEndCropPixelSizeCest
         $I->waitForText('Post updated', 60);
     }
 
+
+    /**
+     * @depends addImage
+     */
     public function checkImage(AcceptanceTester $I)
     {
         global $wp_version;
@@ -119,6 +129,9 @@ class FrontEndCropPixelSizeCest
         $I->verifyImage($I, 'cropped-pixel.jpg', 640, 480);
     }
 
+    /**
+     * @depends checkImage
+     */
     public function uploadTooSmallImage(AcceptanceTester $I)
     {
         $I->amOnPage('test-post');

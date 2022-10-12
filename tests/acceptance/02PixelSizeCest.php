@@ -49,6 +49,9 @@ class PixelSizeCest
         $I->createField($I, 'pixel_size', 640, 480);
     }
 
+    /**
+     * @depends createNewField
+     */
     public function createPost(AcceptanceTester $I)
     {
         global $wp_version;
@@ -98,6 +101,9 @@ class PixelSizeCest
         $I->see('Test Post');
     }
 
+    /**
+     * @depends createPost
+     */
     public function checkImage(AcceptanceTester $I)
     {
         global $wp_version;
@@ -107,6 +113,9 @@ class PixelSizeCest
         $I->verifyImage($I, 'cropped-pixel.jpg', 640, 480);
     }
 
+    /**
+     * @depends checkImage
+     */
     public function uploadTooSmallImage(AcceptanceTester $I)
     {
         global $wp_version;

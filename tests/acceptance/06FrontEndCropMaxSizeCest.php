@@ -61,6 +61,9 @@ class FrontEndCropMaxSizeCest
         $I->createField($I, 'aspect_ratio', 16, 9, 640);
     }
 
+    /**
+     * @depends createNewField
+     */
     public function createPost(AcceptanceTester $I)
     {
         global $wp_version;
@@ -91,6 +94,9 @@ class FrontEndCropMaxSizeCest
         $I->see('Test Post');
     }
 
+    /**
+     * @depends createPost
+     */
     public function addImage(AcceptanceTester $I)
     {
         $I->amOnPage('test-post');
@@ -110,6 +116,9 @@ class FrontEndCropMaxSizeCest
         $I->waitForText('Post updated', 60);
     }
 
+    /**
+     * @depends addImage
+     */
     public function checkImage(AcceptanceTester $I)
     {
         global $wp_version;
