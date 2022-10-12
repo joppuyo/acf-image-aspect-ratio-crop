@@ -67,6 +67,7 @@ jobs:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1
       CACHE_IMAGE: joppuyo/acf-image-aspect-ratio-crop
+      PARCEL_WORKER_BACKEND: process
     steps:
       - uses: actions/checkout@v1
 
