@@ -25,7 +25,8 @@
     "test": "vendor/bin/codecept run acceptance --fail-fast"
   },
   "config": {
-    "process-timeout": 0
+    "process-timeout": 0,
+    "allow-plugins": true
   },
   "autoload": {
     "psr-4": {

@@ -7,7 +7,7 @@ class PixelSizeCest
     }
 
     // tests
-    public function activateAcf(AcceptanceTester $I)
+    public function activateAcf(AcceptanceTester $I, $scenario)
     {
         $scenario->skip('Temporarily skipping this.');
         $I->cleanUploadsDir();
