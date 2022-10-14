@@ -80,6 +80,7 @@ class OldPluginMigrationCest
             '/../_data/plugins/disable-welcome-messages-and-tips/disable-welcome-messages-and-tips.1.0.8.zip',
             '--force',
         ]);
+        $I->cli(['theme', 'install', 'twentytwenty', '--force', '--activate']);
 
         $I->activatePlugin('disable-welcome-messages-and-tips');
         $I->activatePlugin('advanced-custom-fields-pro');
