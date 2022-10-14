@@ -8,7 +8,6 @@ class MaxSizeCest
     // tests
     public function activateAcf(AcceptanceTester $I, $scenario)
     {
-        $scenario->skip('Temporarily skipping this.');
         global $wp_version;
 
         $I->cli([

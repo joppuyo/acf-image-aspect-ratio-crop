@@ -66,6 +66,6 @@ modules:
       domain: '%TEST_SITE_WP_DOMAIN%'
       adminEmail: '%TEST_SITE_ADMIN_EMAIL%'
       title: 'Test site'
-      wpDebug: false
+      wpDebug: true
 step_decorators:
   - \Codeception\Step\Retry
