@@ -12,8 +12,6 @@ jobs:
           - 5.10.2
           - 5.11.4
         wp_docker_tag:
-          - 5.0-php7.0-apache
-          - 5.1-php7.1-apache
           - 5.2-php7.1-apache
           - 5.3-php7.1-apache
           - 5.4-php7.2-apache
@@ -23,12 +21,6 @@ jobs:
           - 5.8-php7.4-apache
           - 5.9-php7.4-apache
         include:
-          - wp_docker_tag: 5.0-php7.0-apache
-            xdebug_version: xdebug-2.7.2
-            php_version: '7.0'
-          - wp_docker_tag: 5.1-php7.1-apache
-            xdebug_version: xdebug-2.7.2
-            php_version: '7.1'
           - wp_docker_tag: 5.2-php7.1-apache
             xdebug_version: xdebug-2.7.2
             php_version: '7.1'
