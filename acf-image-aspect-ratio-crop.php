@@ -279,7 +279,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
         // Add plugin to WordPress admin menu
         add_action('admin_menu', function () {
             add_submenu_page(
-                null,
+                'options-general.php',
                 __(
                     'ACF Image Aspect Ratio Crop',
                     'acf-image-aspect-ratio-crop'
