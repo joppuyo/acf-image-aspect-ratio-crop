@@ -77,7 +77,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
                     $post_id = $_GET['page'];
                 }
 
-                $temp_post_id = $_POST['aiarc_temp_post_id'];
+                $temp_post_id = !empty($_POST['aiarc_temp_post_id']) ? $_POST['aiarc_temp_post_id'] : null;
 
                 // Bail early if we don't have data to process
                 if (empty($temp_post_id)) {
