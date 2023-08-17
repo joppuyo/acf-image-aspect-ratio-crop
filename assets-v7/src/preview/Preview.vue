@@ -179,6 +179,7 @@ export default {
   right: 0;
   padding: 5px;
   display: flex;
+  z-index: 10;
 }
 
 .action {
@@ -210,8 +211,10 @@ export default {
     fill: #00b9eb;
   }
   &:disabled {
-    opacity: 0.5;
     cursor: not-allowed;
+    svg {
+      opacity: 0.5;
+    }
   }
 }
 

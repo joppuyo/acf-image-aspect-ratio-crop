@@ -79,20 +79,28 @@ class Acceptance extends \Codeception\Module
         int $max_width = null,
         string $post_type = 'Post'
     ) {
+        $I->wait(1);
         $I->amOnAdminPage('edit.php?post_type=acf-field-group');
+        $I->wait(1);
         $I->click('a.page-title-action');
+        $I->wait(1);
         $I->fillField('#title', $post_type);
+        $I->wait(1);
         $I->click(
             '#acf-field-group-fields > div > div > ul.acf-hl.acf-tfoot > li > a'
         );
+        $I->wait(1);
         if ($post_type !== 'Post') {
             $I->selectOption(
                 '.acf_field_group[location][group_0][rule_0][value]',
                 $post_type
             );
+            $I->wait(1);
         }
         $I->fillField('Field Label', 'Crop Image');
+        $I->wait(1);
         $I->selectOption('Field Type', 'Image Aspect Ratio Crop');
+        $I->wait(1);
         $I->waitForText('Width', 30);
         if ($type === 'aspect_ratio') {
             $I->fillField('Width', $width);
