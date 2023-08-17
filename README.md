@@ -1,7 +1,7 @@
 # ACF Image Aspect Ratio Crop Field
 
-[![Build Status](https://img.shields.io/github/workflow/status/joppuyo/acf-image-aspect-ratio-crop/PHP%20Composer?logo=github)](https://github.com/joppuyo/acf-image-aspect-ratio-crop/actions)
-[![Test status](https://img.shields.io/github/workflow/status/joppuyo/acf-image-aspect-ratio-crop/Test?label=tests&logo=github)](https://github.com/joppuyo/acf-image-aspect-ratio-crop/actions)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/joppuyo/acf-image-aspect-ratio-crop/main.yml?branch=master&logo=github)](https://github.com/joppuyo/disable-media-pages/actions?query=workflow%3ABuild)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/joppuyo/acf-image-aspect-ratio-crop/test.yml?branch=master&label=tests&logo=github)](https://github.com/joppuyo/disable-media-pages/actions?query=workflow%3ATest)
 [![WordPress plugin](https://img.shields.io/wordpress/plugin/v/acf-image-aspect-ratio-crop?logo=wordpress)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/)
 [![Active installs](https://img.shields.io/endpoint?url=https://wpmetrics-shields-io-badge.uc.r.appspot.com/%3Fplugin%3Dacf-image-aspect-ratio-crop&logo=wordpress)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/advanced/)
 [![WordPress Plugin Rating](https://img.shields.io/wordpress/plugin/stars/acf-image-aspect-ratio-crop?logo=wordpress)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/#reviews)
