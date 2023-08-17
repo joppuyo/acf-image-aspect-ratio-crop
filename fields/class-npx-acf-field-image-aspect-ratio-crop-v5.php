@@ -11,7 +11,6 @@ if (!defined('ABSPATH')) {
     exit();
 }
 
-#[AllowDynamicProperties]
 class npx_acf_field_image_aspect_ratio_crop extends acf_field
 {
     /** @var string */
