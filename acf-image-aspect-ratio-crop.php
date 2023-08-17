@@ -1336,6 +1336,9 @@ class npx_acf_plugin_image_aspect_ratio_crop
      */
     public static function extension_list_to_mime_array($mime_types)
     {
+        if (empty($mime_types)) {
+            $mime_types = 'jpeg,png,gif';
+        }
         $extension_array = explode(',', $mime_types);
         $extension_array = array_map(function ($extension) {
             return trim($extension);
