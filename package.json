@@ -24,7 +24,7 @@
     "file-loader": "^3.0.1",
     "jquery": "^3.5.1",
     "mini-css-extract-plugin": "^0.5.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "postcss-loader": "^3.0.0",
     "qs": "^6.9.6",
     "raw-loader": "^1.0.0",
