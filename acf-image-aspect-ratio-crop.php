@@ -925,14 +925,22 @@ class npx_acf_plugin_image_aspect_ratio_crop
             !empty($max_size) &&
             $data->get_file_params()['image']['size'] > $max_size * 1000000
         ) {
+            // Convert to appropritate size unit
+            $unit = 'megabytes';
+            if($max_size < 1) {
+                $unit = 'kilobytes';
+                $max_size *= 1024;
+            }
+
             return new WP_Error(
                 'file_too_large',
                 sprintf(
                     __(
-                        'File size too large. Maximum file size is %g megabytes.',
+                        'File size too large. Maximum file size is %g %s.',
                         'acf-image-aspect-ratio-crop'
                     ),
-                    $max_size
+                    $max_size,
+                    $unit
                 ),
                 'acf-image-aspect-ratio-crop'
             );
