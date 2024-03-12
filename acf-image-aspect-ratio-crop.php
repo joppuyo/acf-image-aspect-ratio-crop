@@ -929,7 +929,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 'file_too_large',
                 sprintf(
                     __(
-                        'File size too large. Maximum file size is %d megabytes.',
+                        'File size too large. Maximum file size is %g megabytes.',
                         'acf-image-aspect-ratio-crop'
                     ),
                     $max_size
