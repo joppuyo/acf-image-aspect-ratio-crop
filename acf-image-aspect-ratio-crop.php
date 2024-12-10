@@ -60,7 +60,9 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
         // set text domain
         // https://codex.wordpress.org/Function_Reference/load_plugin_textdomain
-        load_plugin_textdomain('acf-image-aspect-ratio-crop');
+        add_action('init', function () {
+            load_plugin_textdomain('acf-image-aspect-ratio-crop');
+        });
 
         add_action('plugins_loaded', [$this, 'initialize_settings']);
 
