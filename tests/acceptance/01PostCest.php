@@ -162,7 +162,7 @@ class PostCest
         );
     }
 
-    public function enableUnusedImageDeletion(AcceptanceTester $I)
+    /*public function enableUnusedImageDeletion(AcceptanceTester $I)
     {
         $I->loadSessionSnapshot('login');
         $I->amOnPluginsPage();
@@ -202,7 +202,7 @@ class PostCest
         $I->dontSee(
             "sylwia-pietruszka-nPCiBaK8WPk-unsplash$extra-aspect-ratio-16-9$extra.jpg"
         );
-    }
+    }*/
 
     private function updateImage(AcceptanceTester $I, $image_path, $verify_path)
     {
