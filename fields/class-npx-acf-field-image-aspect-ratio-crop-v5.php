@@ -16,6 +16,9 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
     /** @var string */
     public $temp_post_id;
 
+    /** @var array */
+    public $settings;
+
     /*
      *  __construct
      *
@@ -1135,5 +1138,6 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 }
 
 // initialize
-new npx_acf_field_image_aspect_ratio_crop($this->settings);
+$instance = new npx_acf_field_image_aspect_ratio_crop($this->settings);
+acf_register_field_type($instance);
 ?>
