@@ -5,16 +5,10 @@
   "author": "Johannes Siipola <johannes@siipo.la>",
   "license": "GPL-2.0-or-later",
   "private": false,
-  "devDependencies": {
-    "husky": "^4.2.5",
-    "prettier": "^1.19.1",
-    "pretty-quick": "^3.0.0"
-  },
   "dependencies": {
     "@babel/core": "^7.4.5",
     "@babel/polyfill": "^7.4.4",
     "@babel/preset-env": "^7.4.5",
-    "@prettier/plugin-php": "^0.17.5",
     "autoprefixer": "^9.6.0",
     "axios": "^0.20.0",
     "babel-loader": "^8.0.6",
@@ -24,10 +18,10 @@
     "file-loader": "^3.0.1",
     "jquery": "^3.5.1",
     "mini-css-extract-plugin": "^0.5.0",
-    "node-sass": "^4.14.1",
     "postcss-loader": "^3.0.0",
     "qs": "^6.9.6",
     "raw-loader": "^1.0.0",
+    "sass": "^1.93.2",
     "sass-loader": "^7.1.0",
     "sprintf-js": "^1.1.2",
     "wait-on": "^5.2.0",
