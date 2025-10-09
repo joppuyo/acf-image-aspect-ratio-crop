@@ -84,15 +84,32 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         // Also options pages, taxonomies etc have ACF generated special post id that we don't know before save hook
         $this->temp_post_id = wp_generate_uuid4();
 
-        // Store temporary post id in a hidden field
+        // Store temporary post id in a hidden field, only add the hidden field if we are using a field of type 'image_aspect_ratio_crop', this to prevent double saving of user profile
         add_action(
-            'acf/input/form_data',
-            function () {
-                echo "<input type='hidden' name='aiarc_temp_post_id' value='$this->temp_post_id'>";
-            },
-            10,
-            1
-        );
+			'acf/input/form_data',
+			function () {
+				// Get all ACF fields on the current form
+				$fields = acf_get_fields(acf_get_form_data('screen'));
+
+				// Flag to check if the specific field type is found
+				$has_special_field = false;
+
+				// Check if any field is of the type 'image_aspect_ratio_crop'
+				foreach ($fields as $field) {
+					if (isset($field['type']) && $field['type'] === 'image_aspect_ratio_crop') {
+						$has_special_field = true;
+						break;
+					}
+				}
+
+				// Only add the hidden input if the specific field type is present
+				if ($has_special_field) {
+					echo "<input type='hidden' name='aiarc_temp_post_id' value='$this->$temp_post_id'>";
+				}
+			},
+			10,
+			1
+		);
 
         // filters
         add_filter('get_media_item_args', [$this, 'get_media_item_args']);
