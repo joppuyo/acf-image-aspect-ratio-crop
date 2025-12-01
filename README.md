@@ -1,15 +1,6 @@
 # ACF Image Aspect Ratio Crop Field
 
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/joppuyo/acf-image-aspect-ratio-crop/main.yml?branch=master&logo=github)](https://github.com/joppuyo/acf-image-aspect-ratio-crop/actions/workflows/main.yml)
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/joppuyo/acf-image-aspect-ratio-crop/test.yml?branch=master&label=tests&logo=github)](https://github.com/joppuyo/acf-image-aspect-ratio-crop/actions/workflows/test.yml)
-[![WordPress plugin](https://img.shields.io/wordpress/plugin/v/acf-image-aspect-ratio-crop?logo=wordpress)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/)
-[![WordPress Plugin Active Installs](https://img.shields.io/wordpress/plugin/installs/acf-image-aspect-ratio-crop?logo=wordpress)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/)
-[![WordPress Plugin Rating](https://img.shields.io/wordpress/plugin/stars/acf-image-aspect-ratio-crop?logo=wordpress)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/#reviews)
-[![WordPress Plugin Required PHP Version](https://img.shields.io/wordpress/plugin/required-php/acf-image-aspect-ratio-crop)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/)
-[![WordPress Plugin: Required WP Version](https://img.shields.io/wordpress/plugin/wp-version/acf-image-aspect-ratio-crop?label=required&logo=wordpress)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/)
-[![WordPress Plugin: Tested WP Version](https://img.shields.io/badge/dynamic/json?label=tested&logo=wordpress&prefix=v&color=green&query=%24.tested&url=https%3A%2F%2Fapi.wordpress.org%2Fplugins%2Finfo%2F1.0%2Facf-image-aspect-ratio-crop.json)](https://wordpress.org/plugins/acf-image-aspect-ratio-crop/)
-[![codecov](https://codecov.io/gh/joppuyo/acf-image-aspect-ratio-crop/branch/master/graph/badge.svg?token=EQXMRSFD1L)](https://codecov.io/gh/joppuyo/acf-image-aspect-ratio-crop)
-[![Active Development](https://img.shields.io/badge/Maintenance%20Level-Actively%20Developed-brightgreen.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
+> **Note:** This is a fork of [joppuyo/acf-image-aspect-ratio-crop](https://github.com/joppuyo/acf-image-aspect-ratio-crop) by Johannes Siipola with custom enhancements. If you have the original plugin installed, you can safely use either version. This fork uses version numbering (`6.0.5-dawn.x`) that won't conflict with the original plugin releases.
 
 A field for Advanced Custom Fields that forces the user to crop their image to specific aspect ratio or pixel size after uploading. Using an aspect ratio is especially useful in responsive image use cases.
 
@@ -101,8 +92,16 @@ The other plugin is not actively maintained and does not work well with latest A
 
 ## Thanks
 
-Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/andersthorborg/ACF-Image-Crop) which served as a inspiration for this plugin. Also, thanks to Fengyuan Chen for the [cropper.js](https://fengyuanchen.github.io/cropperjs/) library!
+This plugin is a fork of [ACF Image Aspect Ratio Crop](https://github.com/joppuyo/acf-image-aspect-ratio-crop) by **Johannes Siipola**. Special thanks to:
+
+- **Johannes Siipola** for creating and maintaining the original plugin
+- **Anders Thorborg** for [ACF Image Crop](https://github.com/andersthorborg/ACF-Image-Crop) which served as inspiration
+- **Fengyuan Chen** for the [cropper.js](https://fengyuanchen.github.io/cropperjs/) library
 
 ## License
 
 GPL v2 or later
+
+## About This Fork
+
+This fork maintains compatibility with the original plugin while including custom enhancements. Version numbering uses the format `6.0.5-dawn.x` to clearly indicate it's a variant of the base version without conflicting with official releases.

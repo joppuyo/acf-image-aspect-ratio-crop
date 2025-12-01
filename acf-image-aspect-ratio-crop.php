@@ -2,11 +2,11 @@
 
 /*
 Plugin Name: Advanced Custom Fields: Image Aspect Ratio Crop
-Plugin URI: https://github.com/joppuyo/acf-image-aspect-ratio-crop
+Plugin URI: https://github.com/adambichler/acf-image-aspect-ratio-crop
 Description: ACF field that allows user to crop image to a specific aspect ratio or pixel size
-Version: 6.0.5
-Author: Johannes Siipola
-Author URI: https://siipo.la
+Version: 6.0.5-dawn.1
+Author: Adam Bichler (fork), original by Johannes Siipola
+Author URI: https://github.com/adambichler
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Text Domain: acf-image-aspect-ratio-crop
@@ -128,7 +128,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
                     'meta_query' => [
                         [
                             'key' =>
-                                'acf_image_aspect_ratio_crop_parent_post_id',
+                            'acf_image_aspect_ratio_crop_parent_post_id',
                             'value' => $post_id,
                             'compare' => '=',
                         ],
@@ -242,7 +242,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
                     'meta_query' => [
                         [
                             'key' =>
-                                'acf_image_aspect_ratio_crop_original_image_id',
+                            'acf_image_aspect_ratio_crop_original_image_id',
                             'value' => $id,
                             'compare' => '=',
                         ],
@@ -1043,7 +1043,8 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
         // If the difference between the images is less than half a percentage, use the original image
         // prettier-ignore
-        if ($image_data['height'] - $data['height'] < $image_data['height'] * 0.005 &&
+        if (
+            $image_data['height'] - $data['height'] < $image_data['height'] * 0.005 &&
             $image_data['width'] - $data['width'] < $image_data['width'] * 0.005 &&
             $data['cropType'] !== 'pixel_size'
         ) {
