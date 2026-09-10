@@ -1,5 +1,6 @@
 /.github
 /node_modules
+/vendor
 /tests
 /.git
 /.wordpress-org
@@ -7,7 +8,9 @@
 .gitignore
 .prettierrc.js
 .distignore
+.env.testing
 .env.testing.example
+.nvmrc
 codeception.dist.yml
 composer.lock
 docker-compose.yml
