@@ -165,10 +165,20 @@ class npx_acf_plugin_image_aspect_ratio_crop
         );
 
         add_action('wp_ajax_acf_image_aspect_ratio_crop_crop', function () {
+            $this->ajax_check_nonce();
+
             // WTF WordPress
             $post = array_map('stripslashes_deep', $_POST);
 
             $data = json_decode($post['data'], true);
+
+            if (
+                empty($data['id']) ||
+                !$this->authorize_attachment($data['id'], $data)
+            ) {
+                wp_send_json_error($this->forbidden_error(), 403);
+                wp_die();
+            }
 
             $attachment_id = $this->create_crop($data);
 
@@ -179,11 +189,19 @@ class npx_acf_plugin_image_aspect_ratio_crop
         add_action(
             'wp_ajax_acf_image_aspect_ratio_crop_get_attachment',
             function () {
+                $this->ajax_check_nonce();
+
                 // WTF WordPress
                 $post = array_map('stripslashes_deep', $_POST);
 
                 $data = json_decode($post['data'], true);
                 $attachment_id = $data['attachment_id'];
+
+                if (!$this->authorize_attachment($attachment_id, $data)) {
+                    wp_send_json_error($this->forbidden_error(), 403);
+                    wp_die();
+                }
+
                 $attachment = get_post($attachment_id);
                 if (!$attachment) {
                     wp_die(
@@ -797,33 +815,28 @@ class npx_acf_plugin_image_aspect_ratio_crop
         register_rest_route('aiarc/v1', '/upload', [
             'methods' => 'POST',
             'callback' => [$this, 'rest_api_upload_callback'],
-            'permission_callback' => function () {
-                return true;
-            },
+            'permission_callback' => [$this, 'rest_api_check_nonce'],
         ]);
         register_rest_route('aiarc/v1', '/crop', [
             'methods' => 'POST',
             'callback' => [$this, 'rest_api_crop_callback'],
-            'permission_callback' => function () {
-                return true;
-            },
+            'permission_callback' => [$this, 'rest_api_check_nonce'],
         ]);
         register_rest_route('aiarc/v1', '/get/(?P<id>\d+)', [
             'methods' => 'GET',
             'callback' => [$this, 'rest_api_get_callback'],
             'args' => ['id' => []],
-            'permission_callback' => function () {
-                return true;
-            },
+            'permission_callback' => [$this, 'rest_api_check_nonce'],
         ]);
     }
 
     public function rest_api_get_callback(WP_REST_Request $data)
     {
-
-        $this->rest_api_check_nonce($data);
-
         $attachment_id = $data->get_param('id');
+
+        if (!$this->authorize_attachment($attachment_id, $data->get_params())) {
+            return $this->forbidden_error();
+        }
 
         $attachment = get_post($attachment_id);
 
@@ -853,8 +866,15 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
     public function rest_api_crop_callback(WP_REST_Request $data)
     {
-        $this->rest_api_check_nonce($data);
         $parameters = $data->get_json_params();
+
+        if (
+            empty($parameters['id']) ||
+            !$this->authorize_attachment($parameters['id'], $parameters)
+        ) {
+            return $this->forbidden_error();
+        }
+
         $attachment_id = $this->create_crop($parameters);
         return [
             'id' => $attachment_id,
@@ -863,8 +883,6 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
     public function rest_api_upload_callback(WP_REST_Request $data)
     {
-        $this->rest_api_check_nonce($data);
-
         if (empty($data->get_file_params()['image'])) {
             return new WP_Error(
                 'image_field_missing',
@@ -1009,6 +1027,22 @@ class npx_acf_plugin_image_aspect_ratio_crop
             $upload['file']
         );
         wp_update_attachment_metadata($attachment_id, $attachment_data);
+
+        /* Record which form session uploaded this so that session is allowed to
+           crop it later. This deliberately uses its own meta key instead of
+           acf_image_aspect_ratio_crop_temp_post_id, because that key opts an
+           attachment into the unused attachment cleanup on save, and originals
+           are never field values so they would be deleted as unused. */
+        $temp_post_id = $data->get_param('temp_post_id');
+
+        if (!empty($temp_post_id)) {
+            add_post_meta(
+                $attachment_id,
+                'acf_image_aspect_ratio_crop_upload_session_id',
+                $temp_post_id,
+                true
+            );
+        }
 
         return new WP_REST_Response(['attachment_id' => $attachment_id]);
     }
@@ -1296,31 +1330,246 @@ class npx_acf_plugin_image_aspect_ratio_crop
     }
 
     /**
+     * Permission callback for every REST route. Returning a WP_Error here stops
+     * the request before the callback runs and lets the REST API format the
+     * response itself.
+     *
      * @param WP_REST_Request $data
+     * @return bool|WP_Error
      */
-    public function rest_api_check_nonce(WP_REST_Request $data)
+    public function rest_api_check_nonce($data)
     {
         $nonce = $data->get_header('X-Aiarc-Nonce');
 
         if (empty($nonce)) {
-            wp_send_json_error(
-                new WP_Error(
-                    'nonce_missing',
-                    __('Nonce missing.', 'acf-image-aspect-ratio-crop')
-                ),
-                400
+            return new WP_Error(
+                'nonce_missing',
+                __('Nonce missing.', 'acf-image-aspect-ratio-crop'),
+                ['status' => 400]
             );
         }
 
         if (!wp_verify_nonce($nonce, 'aiarc')) {
+            return new WP_Error(
+                'invalid_nonce',
+                __('Invalid nonce.', 'acf-image-aspect-ratio-crop'),
+                ['status' => 403]
+            );
+        }
+
+        return true;
+    }
+
+    /**
+     * Nonce check for the admin-ajax compatibility endpoints. These are plain
+     * admin-ajax actions rather than REST routes, so they cannot use a
+     * permission callback and have to bail out by themselves.
+     */
+    public function ajax_check_nonce()
+    {
+        $nonce = !empty($_POST['nonce']) ? $_POST['nonce'] : null;
+
+        if (empty($nonce) || !wp_verify_nonce($nonce, 'aiarc')) {
             wp_send_json_error(
                 new WP_Error(
                     'invalid_nonce',
                     __('Invalid nonce.', 'acf-image-aspect-ratio-crop')
                 ),
-                400
+                403
             );
         }
+    }
+
+    /**
+     * @return WP_Error
+     */
+    public function forbidden_error()
+    {
+        return new WP_Error(
+            'attachment_not_allowed',
+            __(
+                'You are not allowed to access this attachment.',
+                'acf-image-aspect-ratio-crop'
+            ),
+            ['status' => 403]
+        );
+    }
+
+    /**
+     * Decide whether the current request may read or crop an attachment.
+     *
+     * There are three ways to pass, checked in order:
+     *
+     * 1. The user can upload files. This covers everyone editing in wp-admin
+     *    and any logged in editor using a front end form.
+     * 2. The attachment was created by this form session. Uploads and crops are
+     *    both stamped with the temp post id of the form that produced them, so
+     *    a visitor can always work with an image they just added themselves.
+     * 3. The attachment is what the given field on the given post currently
+     *    points at, and that post is one this visitor is allowed to see. This
+     *    keeps recropping an already saved image working on public front end
+     *    forms.
+     *
+     * Everything here is a database lookup. The request only supplies
+     * identifiers, and every answer is read back out of the database.
+     *
+     * @param int $attachment_id
+     * @param array $data Parameters submitted with the request
+     * @return bool
+     */
+    public function authorize_attachment($attachment_id, $data)
+    {
+        $attachment_id = intval($attachment_id);
+
+        if (!is_array($data)) {
+            $data = [];
+        }
+
+        if ($attachment_id < 1) {
+            $allowed = false;
+        } elseif (current_user_can('upload_files')) {
+            $allowed = true;
+        } elseif ($this->attachment_belongs_to_session($attachment_id, $data)) {
+            $allowed = true;
+        } elseif ($this->attachment_is_field_value($attachment_id, $data)) {
+            $allowed = true;
+        } else {
+            $allowed = false;
+        }
+
+        return apply_filters(
+            'aiarc_authorize_attachment',
+            $allowed,
+            $attachment_id,
+            $data
+        );
+    }
+
+    /**
+     * Was this attachment uploaded or cropped by the form session making the
+     * request?
+     *
+     * @param int $attachment_id
+     * @param array $data
+     * @return bool
+     */
+    public function attachment_belongs_to_session($attachment_id, $data)
+    {
+        if (empty($data['temp_post_id'])) {
+            return false;
+        }
+
+        $temp_post_id = (string) $data['temp_post_id'];
+
+        $stamps = [
+            // Set by create_crop on every crop
+            get_post_meta(
+                $attachment_id,
+                'acf_image_aspect_ratio_crop_temp_post_id',
+                true
+            ),
+            // Set by rest_api_upload_callback on every upload
+            get_post_meta(
+                $attachment_id,
+                'acf_image_aspect_ratio_crop_upload_session_id',
+                true
+            ),
+        ];
+
+        foreach ($stamps as $stamp) {
+            if (empty($stamp)) {
+                continue;
+            }
+
+            /* hash_equals is a plain string comparison that always takes the
+               same amount of time, so the token cannot be guessed one character
+               at a time by measuring how long the comparison took. */
+            if (hash_equals((string) $stamp, $temp_post_id)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Is this attachment the value of the given field on the given post, or the
+     * original that value was cropped from? The post also has to be one the
+     * visitor may view, otherwise this would expose images attached to drafts
+     * and private posts.
+     *
+     * @param int $attachment_id
+     * @param array $data
+     * @return bool
+     */
+    public function attachment_is_field_value($attachment_id, $data)
+    {
+        if (empty($data['key']) || empty($data['post_id'])) {
+            return false;
+        }
+
+        if (!$this->can_view_post($data['post_id'])) {
+            return false;
+        }
+
+        $value = get_field($data['key'], $data['post_id'], false);
+
+        if (empty($value) || !is_numeric($value)) {
+            return false;
+        }
+
+        $value = intval($value);
+
+        if ($value === $attachment_id) {
+            return true;
+        }
+
+        // The field holds a crop, so also allow the image it was cropped from,
+        // because that is what the cropper reopens when recropping.
+        $original = get_post_meta(
+            $value,
+            'acf_image_aspect_ratio_crop_original_image_id',
+            true
+        );
+
+        return !empty($original) && intval($original) === $attachment_id;
+    }
+
+    /**
+     * Post ids that are not numeric are ACF pseudo ids for options pages, terms
+     * and users. Those are not public, so they never satisfy this check and
+     * fall back to the capability check instead.
+     *
+     * @param mixed $post_id
+     * @return bool
+     */
+    public function can_view_post($post_id)
+    {
+        if (!is_numeric($post_id)) {
+            return false;
+        }
+
+        $post = get_post(intval($post_id));
+
+        if (!$post) {
+            return false;
+        }
+
+        if (current_user_can('edit_post', $post->ID)) {
+            return true;
+        }
+
+        if ($post->post_status !== 'publish') {
+            return false;
+        }
+
+        if (!empty($post->post_password)) {
+            return false;
+        }
+
+        $post_type = get_post_type_object($post->post_type);
+
+        return $post_type && $post_type->public;
     }
 
     /**
@@ -1369,4 +1618,4 @@ class npx_acf_plugin_image_aspect_ratio_crop
 }
 
 // initialize
-new npx_acf_plugin_image_aspect_ratio_crop();
+$GLOBALS['acf_image_aspect_ratio_crop'] = new npx_acf_plugin_image_aspect_ratio_crop();
