@@ -74,12 +74,21 @@ class npx_acf_plugin_image_aspect_ratio_crop
         add_action(
             'acf/save_post',
             function ($post_id) {
+                // ACF verifies its own nonce before acf/save_post fires, so the
+                // nonce warnings on the superglobals below are not actionable.
+                // phpcs:disable WordPress.Security.NonceVerification
                 if ($post_id === 'options' && !empty($_GET['page'])) {
                     // Options page needs an unique id
-                    $post_id = $_GET['page'];
+                    $post_id = sanitize_text_field(
+                        wp_unslash($_GET['page'])
+                    );
                 }
 
-                $temp_post_id = !empty($_POST['aiarc_temp_post_id']) ? $_POST['aiarc_temp_post_id'] : null;
+                $temp_post_id = !empty($_POST['aiarc_temp_post_id'])
+                    ? sanitize_text_field(
+                        wp_unslash($_POST['aiarc_temp_post_id'])
+                    )
+                    : null;
 
                 // Bail early if we don't have data to process
                 if (empty($temp_post_id)) {
@@ -145,7 +154,10 @@ class npx_acf_plugin_image_aspect_ratio_crop
                     $blocks = parse_blocks($current_post->post_content);
                 }
 
-                $fields = $_POST['acf'];
+                /* Only ever compared against attachment ids that came out of
+                   the database, never output or used in a query, so unslashing
+                   is enough here. */
+                $fields = isset($_POST['acf']) ? wp_unslash($_POST['acf']) : []; // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
                 $preserve_ids = [];
 
@@ -160,12 +172,16 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 foreach ($delete_ids as $delete_id) {
                     wp_delete_attachment($delete_id, true);
                 }
+                // phpcs:enable WordPress.Security.NonceVerification
             },
             15
         );
 
         add_action('wp_ajax_acf_image_aspect_ratio_crop_crop', function () {
-            $this->ajax_check_nonce();
+            if (!check_ajax_referer('aiarc', 'nonce', false)) {
+                wp_send_json_error($this->invalid_nonce_error(), 403);
+                wp_die();
+            }
 
             // WTF WordPress
             $post = array_map('stripslashes_deep', $_POST);
@@ -189,7 +205,10 @@ class npx_acf_plugin_image_aspect_ratio_crop
         add_action(
             'wp_ajax_acf_image_aspect_ratio_crop_get_attachment',
             function () {
-                $this->ajax_check_nonce();
+                if (!check_ajax_referer('aiarc', 'nonce', false)) {
+                    wp_send_json_error($this->invalid_nonce_error(), 403);
+                    wp_die();
+                }
 
                 // WTF WordPress
                 $post = array_map('stripslashes_deep', $_POST);
@@ -205,7 +224,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 $attachment = get_post($attachment_id);
                 if (!$attachment) {
                     wp_die(
-                        __(
+                        esc_html__(
                             'Attachment not found',
                             'acf-image-aspect-ratio-crop'
                         ),
@@ -452,19 +471,21 @@ class npx_acf_plugin_image_aspect_ratio_crop
             check_admin_referer('acf-image-aspect-ratio-crop');
 
             if (!empty($_POST['modal_type'])) {
-                $settings['modal_type'] = $_POST['modal_type'];
+                $settings['modal_type'] = sanitize_text_field(
+                    wp_unslash($_POST['modal_type'])
+                );
             }
 
             if (!empty($_POST['delete_unused'])) {
                 $settings['delete_unused'] = filter_var(
-                    $_POST['delete_unused'],
+                    wp_unslash($_POST['delete_unused']),
                     FILTER_VALIDATE_BOOLEAN
                 );
             }
 
             if (!empty($_POST['rest_api_compat'])) {
                 $settings['rest_api_compat'] = filter_var(
-                    $_POST['rest_api_compat'],
+                    wp_unslash($_POST['rest_api_compat']),
                     FILTER_VALIDATE_BOOLEAN
                 );
             }
@@ -478,13 +499,13 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
         echo '<div class="wrap">';
         echo '<h1>' .
-            __('ACF Image Aspect Ratio Crop', 'acf-image-aspect-ratio-crop') .
+            esc_html__('ACF Image Aspect Ratio Crop', 'acf-image-aspect-ratio-crop') .
             '</h1>';
         echo '<div class="js-finnish-base-forms-admin-notices"></div>';
         if ($updated) {
             echo '<div class="notice notice-success">';
             echo '<p>' .
-                __('Options have been updated', 'acf-image-aspect-ratio-crop') .
+                esc_html__('Options have been updated', 'acf-image-aspect-ratio-crop') .
                 '</p>';
             echo '</div>';
         }
@@ -494,7 +515,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
         echo '<tr>';
         echo '<th scope="row">';
         echo '<label for="modal_type">' .
-            __(
+            esc_html__(
                 'Image displayed in attachment edit modal dialog',
                 'acf-image-aspect-ratio-crop'
             ) .
@@ -504,39 +525,39 @@ class npx_acf_plugin_image_aspect_ratio_crop
         echo '<p><input type="radio" id="cropped" name="modal_type" value="cropped" ' .
             checked($modal_type, 'cropped', false) .
             '><label for="cropped"> ' .
-            __('Cropped image', 'acf-image-aspect-ratio-crop') .
+            esc_html__('Cropped image', 'acf-image-aspect-ratio-crop') .
             '</label></p>';
         echo '<p><input type="radio" id="original" name="modal_type" value="original" ' .
             checked($modal_type, 'original', false) .
             '><label for="original"> ' .
-            __('Original image', 'acf-image-aspect-ratio-crop') .
+            esc_html__('Original image', 'acf-image-aspect-ratio-crop') .
             '</label></p>';
         echo '</td>';
         echo '</tr>';
         echo '<tr>';
         echo '<th scope="row">';
         echo '<label for="modal_type">' .
-            __('Delete unused cropped images', 'acf-image-aspect-ratio-crop') .
+            esc_html__('Delete unused cropped images', 'acf-image-aspect-ratio-crop') .
             ' ' .
-            __('(Beta feature)', 'acf-image-aspect-ratio-crop') .
+            esc_html__('(Beta feature)', 'acf-image-aspect-ratio-crop') .
             '</label>';
         echo '</th>';
         echo '<td>';
         echo '<p><input type="radio" id="delete_unused_true" name="delete_unused" value="true" ' .
             checked($delete_unused, true, false) .
             '><label for="delete_unused_true"> ' .
-            __('Enabled', 'acf-image-aspect-ratio-crop') .
+            esc_html__('Enabled', 'acf-image-aspect-ratio-crop') .
             '</label></p>';
         echo '<p><input type="radio" id="delete_unused_false" name="delete_unused" value="false" ' .
             checked($delete_unused, false, false) .
             '><label for="delete_unused_false"> ' .
-            __('Disabled', 'acf-image-aspect-ratio-crop') .
+            esc_html__('Disabled', 'acf-image-aspect-ratio-crop') .
             '</label></p>';
         echo '</td>';
         echo '</tr>';
         echo '<tr>';
         echo '<td colspan="2" style="padding: 0">';
-        echo __(
+        echo esc_html__(
             'Please note that "Delete unused cropped images" feature is a beta feature because it requires more testing. Please do not enable the option without first backing up your database and uploads in order to prevent potential data loss.',
             'acf-image-aspect-ratio-crop'
         );
@@ -545,25 +566,25 @@ class npx_acf_plugin_image_aspect_ratio_crop
         echo '<tr>';
         echo '<th scope="row">';
         echo '<label for="modal_type">' .
-            __('REST API compatibility mode', 'acf-image-aspect-ratio-crop') .
+            esc_html__('REST API compatibility mode', 'acf-image-aspect-ratio-crop') .
             '</label>';
         echo '</th>';
         echo '<td>';
         echo '<p><input type="radio" id="rest_api_compat_true" name="rest_api_compat" value="true" ' .
             checked($rest_api_compat, true, false) .
             '><label for="rest_api_compat_true"> ' .
-            __('Enabled', 'acf-image-aspect-ratio-crop') .
+            esc_html__('Enabled', 'acf-image-aspect-ratio-crop') .
             '</label></p>';
         echo '<p><input type="radio" id="rest_api_compat_false" name="rest_api_compat" value="false" ' .
             checked($rest_api_compat, false, false) .
             '><label for="rest_api_compat_false"> ' .
-            __('Disabled', 'acf-image-aspect-ratio-crop') .
+            esc_html__('Disabled', 'acf-image-aspect-ratio-crop') .
             '</label></p>';
         echo '</td>';
         echo '</tr>';
         echo '<tr>';
         echo '<td colspan="2" style="padding: 0">';
-        echo __(
+        echo esc_html__(
             'When you enable the REST API compatibility mode, cropping in the WordPress administration interface will use admin-ajax.php instead of the REST API. Use this compatibility mode if you do not have REST API enabled. Please note that this is a temporary fix since the REST API is the way forward. The compatibility mode will be removed in a future major release of the plugin.',
             'acf-image-aspect-ratio-crop'
         );
@@ -625,7 +646,7 @@ class npx_acf_plugin_image_aspect_ratio_crop
     private function cleanup()
     {
         if ($this->temp_path) {
-            @unlink($this->temp_path);
+            wp_delete_file($this->temp_path);
         }
     }
 
@@ -1361,23 +1382,14 @@ class npx_acf_plugin_image_aspect_ratio_crop
     }
 
     /**
-     * Nonce check for the admin-ajax compatibility endpoints. These are plain
-     * admin-ajax actions rather than REST routes, so they cannot use a
-     * permission callback and have to bail out by themselves.
+     * @return WP_Error
      */
-    public function ajax_check_nonce()
+    public function invalid_nonce_error()
     {
-        $nonce = !empty($_POST['nonce']) ? $_POST['nonce'] : null;
-
-        if (empty($nonce) || !wp_verify_nonce($nonce, 'aiarc')) {
-            wp_send_json_error(
-                new WP_Error(
-                    'invalid_nonce',
-                    __('Invalid nonce.', 'acf-image-aspect-ratio-crop')
-                ),
-                403
-            );
-        }
+        return new WP_Error(
+            'invalid_nonce',
+            __('Invalid nonce.', 'acf-image-aspect-ratio-crop')
+        );
     }
 
     /**

@@ -90,7 +90,9 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
         add_action(
             'acf/input/form_data',
             function () {
-                echo "<input type='hidden' name='aiarc_temp_post_id' value='$this->temp_post_id'>";
+                echo "<input type='hidden' name='aiarc_temp_post_id' value='" .
+                    esc_attr($this->temp_post_id) .
+                    "'>";
             },
             10,
             1
@@ -555,14 +557,14 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                 ); ?>" alt="<?php echo esc_attr($alt); ?>"/>
                 <div class="acf-actions -hover">
                     <a class="acf-icon -crop dark" data-name="crop" href="#"
-                       title="<?php _e('Crop', 'acf'); ?>"></a>
+                       title="<?php esc_attr_e('Crop', 'acf'); ?>"></a>
                     <?php if ($uploader != 'basic'): ?>
                     <a class="acf-icon -pencil dark" data-name="edit" href="#"
-                       title="<?php _e(
+                       title="<?php esc_attr_e(
                            'Edit',
                            'acf'
                        ); ?>"></a><?php endif; ?><a class="acf-icon -cancel-custom dark" data-name="remove" href="#"
-                         title="<?php _e('Remove', 'acf'); ?>"></a>
+                         title="<?php esc_attr_e('Remove', 'acf'); ?>"></a>
                 </div>
             </div>
             <div class="hide-if-value">
@@ -576,12 +578,14 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 
                 <div class="js-aiarc-upload-progress" style="display: none"></div>
 
-                <input type="file" class="aiarc-upload js-aiarc-upload" data-id="<?php echo $field[
-                    'name'
-                ]; ?>" accept="<?php echo implode(',', $mime_array); ?>">
+                <input type="file" class="aiarc-upload js-aiarc-upload" data-id="<?php echo esc_attr(
+                    $field['name']
+                ); ?>" accept="<?php echo esc_attr(
+    implode(',', $mime_array)
+); ?>">
 
                     <?php if ($image_id && !is_numeric($image_id)): ?>
-                        <div class="acf-error-message"><p><?php echo acf_esc_html(
+                        <div class="acf-error-message"><p><?php echo esc_html(
                             $image_id
                         ); ?></p></div>
                     <?php endif; ?>
@@ -592,11 +596,11 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 
                     <!-- advanced uploader start -->
 
-                    <p><?php _e(
+                    <p><?php esc_html_e(
                         'No image selected',
                         'acf'
                     ); ?> <a data-name="add" class="acf-button button"
-                                                                   href="#"><?php _e(
+                                                                   href="#"><?php esc_html_e(
                                                                        'Add Image',
                                                                        'acf'
                                                                    ); ?></a></p>
@@ -637,7 +641,9 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
                 ? md5_file(
                     $this->settings['path'] . '/assets/dist/input-script.js'
                 )
-                : $version
+                : $version,
+            // Explicitly in the header, which is where this has always loaded.
+            false
         );
         $translation_array = [
             'cropping_in_progress' => __(
