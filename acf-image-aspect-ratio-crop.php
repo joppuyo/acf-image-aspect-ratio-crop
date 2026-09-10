@@ -820,7 +820,9 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
     public function rest_api_get_callback(WP_REST_Request $data)
     {
-        // TODO: validate nonce
+
+        $this->rest_api_check_nonce($data);
+
         $attachment_id = $data->get_param('id');
 
         $attachment = get_post($attachment_id);
@@ -832,6 +834,15 @@ class npx_acf_plugin_image_aspect_ratio_crop
                     __('Attachment not found', 'acf-image-aspect-ratio-crop')
                 ),
                 404
+            );
+        }
+
+        if ($attachment->post_type !== 'attachment') {
+            wp_send_json_error(
+                new WP_Error(
+                    'attachment_not_found',
+                    __('Attachment not found', 'acf-image-aspect-ratio-crop')
+                )
             );
         }
 

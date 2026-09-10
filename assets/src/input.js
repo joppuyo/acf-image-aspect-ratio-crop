@@ -91,6 +91,12 @@ import { sprintf } from 'sprintf-js';
           axios
             .get(
               `${window.aiarc.api_root}/aiarc/v1/get/${response.data.attachment_id}`,
+              {
+                headers: {
+                  'X-Aiarc-Nonce': window.aiarc.nonce,
+                  'X-WP-Nonce': window.aiarc.wp_rest_nonce,
+                },
+              },
             )
             .then(response => {
               let attachment = new window.Backbone.Model(response.data);
@@ -116,6 +122,12 @@ import { sprintf } from 'sprintf-js';
           axios
             .get(
               `${window.aiarc.api_root}/aiarc/v1/get/${response.data.attachment_id}`,
+              {
+                headers: {
+                  'X-Aiarc-Nonce': window.aiarc.nonce,
+                  'X-WP-Nonce': window.aiarc.wp_rest_nonce,
+                },
+              },
             )
             .then(response => {
               let attachment = new window.Backbone.Model(response.data);
@@ -521,7 +533,12 @@ import { sprintf } from 'sprintf-js';
 
       if (window.aiarc_settings.rest_api_compat === '') {
         axios
-          .get(`${window.aiarc.api_root}/aiarc/v1/get/${originalImageId}`)
+          .get(`${window.aiarc.api_root}/aiarc/v1/get/${originalImageId}`, {
+            headers: {
+              'X-Aiarc-Nonce': window.aiarc.nonce,
+              'X-WP-Nonce': window.aiarc.wp_rest_nonce,
+            },
+          })
           .then(response => callback(response));
       }
 
@@ -783,7 +800,12 @@ import { sprintf } from 'sprintf-js';
 
       if (window.aiarc_settings.rest_api_compat === '') {
         axios
-          .get(`${window.aiarc.api_root}/aiarc/v1/get/${data.id}`)
+          .get(`${window.aiarc.api_root}/aiarc/v1/get/${data.id}`, {
+            headers: {
+              'X-Aiarc-Nonce': window.aiarc.nonce,
+              'X-WP-Nonce': window.aiarc.wp_rest_nonce,
+            },
+          })
           .then(response => callback(response));
       }
 
