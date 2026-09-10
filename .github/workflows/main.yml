@@ -34,10 +34,16 @@ jobs:
           SVN_USERNAME: ${{ secrets.SVN_USERNAME }}
           SVN_PASSWORD: ${{ secrets.SVN_PASSWORD }}
 
-      - name: Release
+      - name: Build release ZIP
+        env:
+          SLUG: acf-image-aspect-ratio-crop
         run: |
-          rm -fr .github node_modules .travis.yml .editorconfig .gitignore .prettierrc.js deploy.sh deploy-github.sh tests codeception.dist.yml
-          zip -r acf-image-aspect-ratio-crop.zip . -x *.git*
+          # Same exclusion list the wordpress.org deploy uses, so the two
+          # artifacts contain the same files.
+          BUILD_DIR="$RUNNER_TEMP/build"
+          mkdir -p "$BUILD_DIR/$SLUG"
+          rsync -a --exclude-from=.distignore ./ "$BUILD_DIR/$SLUG/"
+          cd "$BUILD_DIR" && zip -r "$GITHUB_WORKSPACE/$SLUG.zip" "$SLUG"
 
       - uses: actions/upload-artifact@master
         with:
