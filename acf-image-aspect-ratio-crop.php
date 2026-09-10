@@ -142,17 +142,10 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 $current_post = get_post($post_id);
 
                 if (function_exists('parse_blocks') && $current_post) {
-                    $this->debug('parse blocks');
                     $blocks = parse_blocks($current_post->post_content);
-                    $this->debug($blocks);
                 }
 
-                $this->debug('found following post attachments');
-                $this->debug($post_attachments);
-
-                $this->debug('found following fields');
                 $fields = $_POST['acf'];
-                $this->debug($fields);
 
                 $preserve_ids = [];
 
@@ -163,13 +156,6 @@ class npx_acf_plugin_image_aspect_ratio_crop
                 }, $post_attachments);
 
                 $delete_ids = array_diff($post_attachment_ids, $preserve_ids);
-
-                $this->debug('preserve ids');
-                $this->debug($preserve_ids);
-                $this->debug('all ids');
-                $this->debug($post_attachment_ids);
-                $this->debug('delete ids');
-                $this->debug($delete_ids);
 
                 foreach ($delete_ids as $delete_id) {
                     wp_delete_attachment($delete_id, true);
@@ -627,11 +613,8 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
     public function delete_unused_attachments()
     {
-        $this->debug('delete unused attachments cron');
-
         // Bail early if unused attachment deletion is disabled
         if (!$this->user_settings['delete_unused']) {
-            $this->debug('user has disabled unused attachment deletion');
             return;
         }
 
@@ -650,7 +633,6 @@ class npx_acf_plugin_image_aspect_ratio_crop
         ]);
 
         foreach ($posts as $post) {
-            $this->debug('deleting unused attachment ' . $post->ID);
             wp_delete_attachment($post->ID, true);
         }
     }
@@ -677,8 +659,6 @@ class npx_acf_plugin_image_aspect_ratio_crop
 
     public function check_fields($fields, &$preserve_ids)
     {
-        $this->debug($preserve_ids);
-
         foreach ($fields as $key => $field) {
             if (is_array($field)) {
                 $this->check_fields($field, $preserve_ids);
