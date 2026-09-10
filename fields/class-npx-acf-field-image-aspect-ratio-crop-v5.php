@@ -349,7 +349,14 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
     {
         global $wp_version;
 
-        if (version_compare($wp_version, '7.0', '>=')) {
+        // random_int is PHP 7 and up. The plugin still declares support for
+        // PHP 5.6, where it only exists if WordPress bundles random_compat, so
+        // it cannot be assumed. A missing function raises an Error rather than
+        // an Exception, so the try/catch below would not catch it.
+        if (
+            version_compare($wp_version, '7.0', '>=') ||
+            !function_exists('random_int')
+        ) {
             return wp_generate_uuid4();
         }
 
