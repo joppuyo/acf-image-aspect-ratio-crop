@@ -1,4 +1,4 @@
-=== Advanced Custom Fields: Image Aspect Ratio Crop Field ===
+=== Image Aspect Ratio Crop Field for Advanced Custom Fields ===
 Contributors: joppuyo
 Tags: acf, field, image, crop
 Requires at least: 4.9
