@@ -97,6 +97,16 @@ Possibility to use a pixel size instead of aspect ratio was added later on becau
 
 The other plugin is not actively maintained and does not work well with latest ACF versions. I try to maintain this plugin as best as I can when new versions of ACF and WordPress come out.
 
+## Development
+
+### Building the assets
+
+The field's JavaScript and SCSS live in `assets/src` and are compiled with webpack into `assets/dist`, which is not committed.
+
+1. Use the Node.js version in `.nvmrc` (`nvm use`).
+2. Run `npm install`.
+3. Run `npm run build` for a development build with source maps, or `NODE_OPTIONS=--openssl-legacy-provider npx webpack -p` for the production build the release uses.
+
 ## Thanks
 
 Special thanks to Anders Thorborg for [ACF Image Crop](https://github.com/andersthorborg/ACF-Image-Crop) which served as a inspiration for this plugin. Also, thanks to Fengyuan Chen for the [cropper.js](https://fengyuanchen.github.io/cropperjs/) library!

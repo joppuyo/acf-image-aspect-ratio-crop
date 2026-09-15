@@ -4,6 +4,13 @@ import { waitFor } from './browser.mjs';
 
 export async function login(page) {
   await page.goto(await loginUrl(), { waitUntil: 'load' });
+  // The login page focuses and selects the username field 200ms after load,
+  // which would replace anything typed before that moment
+  await page
+    .waitForFunction(() => document.activeElement?.id === 'user_login', {
+      timeout: 2000,
+    })
+    .catch(() => {});
   await page.type('#user_login', admin.username);
   await page.type('#user_pass', admin.password);
   await Promise.all([
@@ -75,10 +82,16 @@ export async function createCropFieldGroup(
     await page.type(`${scope} .js-max-width`, String(maxWidth));
   }
 
-  await Promise.all([
-    page.waitForNavigation({ waitUntil: 'load' }),
-    page.click('.acf-publish, #publish'),
-  ]);
+  // WordPress rewrites the URL with history.replaceState when the publish
+  // button is clicked, which waitForNavigation would mistake for the real
+  // navigation, so wait for the saved field group page itself
+  await page.click('.acf-publish, #publish');
+  await page.waitForFunction(
+    () =>
+      document.readyState === 'complete' &&
+      /\/post\.php\?post=\d+/.test(location.href),
+    { timeout: 60000 },
+  );
 
   const saved = await page.$(`${scope}`);
 
@@ -115,6 +128,16 @@ export function editorCanvas(page) {
 }
 
 async function dismissWelcomeGuide(page) {
+  // WordPress 5.0 to 5.3 show tip popovers instead of the guide, and the
+  // first one takes the focus
+  await page.evaluate(() => {
+    const nux = window.wp.data.select('core/nux');
+
+    if (nux?.areTipsEnabled?.()) {
+      window.wp.data.dispatch('core/nux').disableTips();
+    }
+  });
+
   const guide = await page
     .waitForSelector('.edit-post-welcome-guide, .editor-welcome-guide', {
       timeout: 3000,
@@ -129,6 +152,31 @@ async function dismissWelcomeGuide(page) {
   }
 }
 
+/**
+ * WordPress 6.7 and newer keep meta boxes in a panel below the canvas that is
+ * collapsed until the user opens it, which would leave the ACF field
+ * unclickable.
+ */
+async function openMetaBoxesPanel(page) {
+  const panel = await page
+    .waitForSelector('.edit-post-meta-boxes-main', { timeout: 3000 })
+    .catch(() => null);
+
+  if (!panel) {
+    return;
+  }
+
+  await page.evaluate(() => {
+    const preferences = window.wp.data.dispatch('core/preferences');
+
+    preferences.set('core/edit-post', 'metaBoxesMainIsOpen', true);
+    preferences.set('core/edit-post', 'metaBoxesMainOpenHeight', 600);
+  });
+  await page.waitForSelector('.edit-post-meta-boxes-main .acf-field', {
+    visible: true,
+  });
+}
+
 async function waitForEditor(page) {
   await page.waitForFunction(
     () => Boolean(window.wp?.data?.select('core/editor')?.getCurrentPost()),
@@ -138,6 +186,7 @@ async function waitForEditor(page) {
     '.editor-post-publish-button, .editor-post-publish-panel__toggle',
   );
   await dismissWelcomeGuide(page);
+  await openMetaBoxesPanel(page);
 }
 
 export async function openNewPost(page) {
@@ -152,12 +201,21 @@ export async function openPost(page, postId) {
 
 export async function setPostTitle(page, title) {
   const canvas = editorCanvas(page);
-  const input = await canvas.waitForSelector(
-    '.editor-post-title__input, .editor-post-title',
-  );
+  // Older editors wrap the title textarea in a .editor-post-title element,
+  // newer ones use a single element carrying both classes
+  const input =
+    (await canvas.$('.editor-post-title__input')) ||
+    (await canvas.waitForSelector('.editor-post-title'));
 
   await input.click();
   await page.keyboard.type(title);
+  await page.waitForFunction(
+    (expected) =>
+      window.wp.data.select('core/editor').getEditedPostAttribute('title') ===
+      expected,
+    { timeout: 10000 },
+    title,
+  );
 }
 
 export async function currentPostId(page) {
@@ -202,11 +260,12 @@ async function waitForSnackbar(page, text) {
  * Publishes the post in the block editor and returns its id.
  */
 export async function publishPost(page) {
-  await page.click('.editor-post-publish-panel__toggle');
-  await page.waitForSelector(
-    '.editor-post-publish-panel .editor-post-publish-button',
-  );
-  await page.click('.editor-post-publish-panel .editor-post-publish-button');
+  // Locators wait until the button is visible, enabled and has stopped
+  // moving, which matters for the publish panel that slides in
+  await page.locator('.editor-post-publish-panel__toggle').click();
+  await page
+    .locator('.editor-post-publish-panel .editor-post-publish-button')
+    .click();
   await waitForSnackbar(page, 'Post published.');
   await waitForSaveToFinish(page);
 
@@ -214,7 +273,7 @@ export async function publishPost(page) {
 }
 
 export async function updatePost(page) {
-  await page.click('.editor-post-publish-button');
+  await page.locator('.editor-post-publish-button').click();
   await waitForSnackbar(page, 'Post updated.');
   await waitForSaveToFinish(page);
 }
