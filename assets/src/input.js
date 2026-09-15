@@ -708,27 +708,15 @@ import { sprintf } from 'sprintf-js';
         responsive: true,
       };
 
-      let adjustingCrop = false;
-      // Small source images can make the requested minimum impossible. Do not recurse after clamping.
-      // Cropper reports fractional pixels; compare the integer pixels sent to the API.
       if (cropType === 'pixel_size') {
         options.crop = function(event) {
           let width = event.detail.width;
           let height = event.detail.height;
-          if (
-            !adjustingCrop &&
-            (Math.round(width) < aspectRatioWidth ||
-              Math.round(height) < aspectRatioHeight)
-          ) {
-            adjustingCrop = true;
-            try {
-              this.cropper.setData({
-                width: aspectRatioWidth,
-                height: aspectRatioHeight,
-              });
-            } finally {
-              adjustingCrop = false;
-            }
+          if (width < aspectRatioWidth || height < aspectRatioHeight) {
+            this.cropper.setData({
+              width: aspectRatioWidth,
+              height: aspectRatioHeight,
+            });
           }
         };
       }
@@ -737,19 +725,11 @@ import { sprintf } from 'sprintf-js';
         options.crop = function(event) {
           let width = event.detail.width;
           let height = event.detail.height;
-          if (
-            !adjustingCrop &&
-            (Math.round(width) < minWidth || Math.round(height) < minHeight)
-          ) {
-            adjustingCrop = true;
-            try {
-              this.cropper.setData({
-                width: minWidth,
-                height: minHeight,
-              });
-            } finally {
-              adjustingCrop = false;
-            }
+          if (width < minWidth || height < minHeight) {
+            this.cropper.setData({
+              width: minWidth,
+              height: minHeight,
+            });
           }
         };
       }
