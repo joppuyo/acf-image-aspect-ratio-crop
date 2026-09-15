@@ -200,7 +200,6 @@ import { sprintf } from 'sprintf-js';
 
     initialize: function() {
       this.isFirstCrop = null;
-      var self = this;
 
       // add attribute to form
       if (this.o.uploader == 'basic') {
@@ -208,20 +207,24 @@ import { sprintf } from 'sprintf-js';
       }
 
       this.escapeHandlerBound = this.escapeHandler.bind(this);
+    },
 
-      $(document).on('click', '.js-acf-image-aspect-ratio-crop-cancel', () =>
-        this.closeModal(),
-      );
+    // Bind after modal creation: ACF V3 stops clicks before document.
+    attachCropModalEvents: function() {
+      var self = this;
+      $('.js-acf-image-aspect-ratio-crop-cancel')
+        .off('click.aiarc')
+        .on('click.aiarc', () => this.closeModal());
 
-      $(document)
-        .off('click', '.js-acf-image-aspect-ratio-crop-reset')
-        .on('click', '.js-acf-image-aspect-ratio-crop-reset', () => {
+      $('.js-acf-image-aspect-ratio-crop-reset')
+        .off('click.aiarc')
+        .on('click.aiarc', () => {
           this.cropper.reset();
         });
 
-      $(document)
-        .off('click', '.js-acf-image-aspect-ratio-crop-crop')
-        .on('click', '.js-acf-image-aspect-ratio-crop-crop', function() {
+      $('.js-acf-image-aspect-ratio-crop-crop')
+        .off('click.aiarc')
+        .on('click.aiarc', function() {
           var cropData = self.cropper.getData(true);
 
           $('.js-acf-image-aspect-ratio-crop-modal').css(
@@ -705,15 +708,27 @@ import { sprintf } from 'sprintf-js';
         responsive: true,
       };
 
+      let adjustingCrop = false;
+      // Small source images can make the requested minimum impossible. Do not recurse after clamping.
+      // Cropper reports fractional pixels; compare the integer pixels sent to the API.
       if (cropType === 'pixel_size') {
         options.crop = function(event) {
           let width = event.detail.width;
           let height = event.detail.height;
-          if (width < aspectRatioWidth || height < aspectRatioHeight) {
-            this.cropper.setData({
-              width: aspectRatioWidth,
-              height: aspectRatioHeight,
-            });
+          if (
+            !adjustingCrop &&
+            (Math.round(width) < aspectRatioWidth ||
+              Math.round(height) < aspectRatioHeight)
+          ) {
+            adjustingCrop = true;
+            try {
+              this.cropper.setData({
+                width: aspectRatioWidth,
+                height: aspectRatioHeight,
+              });
+            } finally {
+              adjustingCrop = false;
+            }
           }
         };
       }
@@ -722,11 +737,19 @@ import { sprintf } from 'sprintf-js';
         options.crop = function(event) {
           let width = event.detail.width;
           let height = event.detail.height;
-          if (width < minWidth || height < minHeight) {
-            this.cropper.setData({
-              width: minWidth,
-              height: minHeight,
-            });
+          if (
+            !adjustingCrop &&
+            (Math.round(width) < minWidth || Math.round(height) < minHeight)
+          ) {
+            adjustingCrop = true;
+            try {
+              this.cropper.setData({
+                width: minWidth,
+                height: minHeight,
+              });
+            } finally {
+              adjustingCrop = false;
+            }
           }
         };
       }
@@ -798,6 +821,8 @@ import { sprintf } from 'sprintf-js';
         $('.js-acf-image-aspect-ratio-crop-modal-image')[0],
         options,
       );
+
+      this.attachCropModalEvents();
 
       // Test helper
       window._acf_image_aspect_ratio_cropper = this.cropper;
