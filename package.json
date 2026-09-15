@@ -24,10 +24,12 @@
     "sass": "^1.93.2",
     "sass-loader": "^7.1.0",
     "sprintf-js": "^1.1.2",
-    "wait-on": "^5.2.0",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-watch-time-plugin": "^0.3.0"
+  },
+  "devDependencies": {
+    "puppeteer": "^25.11.0"
   },
   "husky": {
     "hooks": {
@@ -35,6 +37,14 @@
     }
   },
   "scripts": {
-    "build": "webpack"
+    "build": "NODE_OPTIONS=--openssl-legacy-provider webpack",
+    "test": "node --test --test-concurrency=1 'tests/e2e/*.test.mjs'"
+  },
+  "allowScripts": {
+    "@parcel/watcher@2.5.1": true,
+    "core-js@2.6.12": true,
+    "fsevents@2.3.2": true,
+    "fsevents@1.2.13": true,
+    "puppeteer@25.11.0": true
   }
 }

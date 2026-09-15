@@ -8,13 +8,7 @@
 .gitignore
 .prettierrc.js
 .distignore
-.env.testing
-.env.testing.example
 .nvmrc
-codeception.dist.yml
 composer.lock
-docker-compose.yml
-Dockerfile
 package-lock.json
 webpack.config.js
-wp-su.sh

@@ -21,9 +21,15 @@ jobs:
           node-version-file: '.nvmrc'
         
       - name: Install dependencies
+        # The browser Puppeteer downloads is only needed for the test suite
+        env:
+          PUPPETEER_SKIP_DOWNLOAD: true
         run: npm install
 
       - name: Build
+        # webpack 4 needs the legacy OpenSSL provider on current Node versions
+        env:
+          NODE_OPTIONS: --openssl-legacy-provider
         run: npx webpack -p
 
       - name: WordPress Plugin Deploy
