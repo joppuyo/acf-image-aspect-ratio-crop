@@ -2,9 +2,18 @@ import path from 'node:path';
 import { fixturesDir } from './config.mjs';
 import { waitFor } from './browser.mjs';
 
-const fieldSelector = '.acf-field-image-aspect-ratio-crop';
-const uploaderSelector = `${fieldSelector} .acf-image-uploader-aspect-ratio-crop`;
 const cropModalSelector = '.js-acf-image-aspect-ratio-crop-modal';
+
+// Every helper that looks for the field takes an optional root selector, for
+// pages where the field can be in more than one place, such as a block form
+// in the editor canvas or in the sidebar
+function fieldSelector(root = '') {
+  return `${root} .acf-field-image-aspect-ratio-crop`.trim();
+}
+
+function uploaderSelector(root = '') {
+  return `${fieldSelector(root)} .acf-image-uploader-aspect-ratio-crop`;
+}
 
 export function imagePath(name) {
   return path.join(fixturesDir, 'images', name);
@@ -22,8 +31,14 @@ export function fileName(url) {
  * Opens the media modal from the field, uploads an image from
  * tests/fixtures/images and selects it, which opens the crop modal.
  */
-export async function addImageFromMediaModal(page, imageName) {
-  await page.click(`${fieldSelector} a[data-name="add"]`);
+export async function addImageFromMediaModal(page, imageName, { root } = {}) {
+  // Block forms are loaded with AJAX after the block is inserted
+  const add = await page.waitForSelector(
+    `${fieldSelector(root)} a[data-name="add"]`,
+    { visible: true },
+  );
+
+  await add.click();
   await page.waitForSelector('.media-modal', { visible: true });
 
   // The plupload file input is always in the modal, whichever tab is open
@@ -45,17 +60,15 @@ export async function addImageFromMediaModal(page, imageName) {
  * Uploads an image through the basic uploader of a front end form, which
  * opens the crop modal on success.
  */
-export async function uploadImageFromFrontEnd(page, imageName) {
-  const input = await page.waitForSelector(`${fieldSelector} .js-aiarc-upload`);
+export async function uploadImageFromFrontEnd(page, imageName, { root } = {}) {
+  const input = await page.waitForSelector(
+    `${fieldSelector(root)} .js-aiarc-upload`,
+  );
 
   await input.uploadFile(imagePath(imageName));
 }
 
-/**
- * Waits for the crop modal, accepts the default crop area and waits for the
- * modal to close again.
- */
-export async function cropInModal(page) {
+async function waitForCropModal(page) {
   await page.waitForSelector(cropModalSelector, {
     visible: true,
     timeout: 60000,
@@ -64,19 +77,99 @@ export async function cropInModal(page) {
     visible: true,
     timeout: 60000,
   });
+}
+
+async function waitForCropModalToClose(page, action) {
+  try {
+    await page.waitForSelector(cropModalSelector, {
+      hidden: true,
+      timeout: 60000,
+    });
+  } catch (error) {
+    throw new Error(`The crop modal did not close after ${action}`, {
+      cause: error,
+    });
+  }
+}
+
+/**
+ * Waits for the crop modal, accepts the default crop area and waits for the
+ * modal to close again.
+ */
+export async function cropInModal(page) {
+  await waitForCropModal(page);
   await page.click(`${cropModalSelector} .js-acf-image-aspect-ratio-crop-crop`);
-  await page.waitForSelector(cropModalSelector, {
-    hidden: true,
-    timeout: 60000,
+  await waitForCropModalToClose(page, 'clicking Crop');
+}
+
+/**
+ * Opens the crop modal for the image the field already holds, using the crop
+ * icon that shows when hovering the preview image.
+ */
+export async function openRecropModal(page, { root } = {}) {
+  await page.hover(`${uploaderSelector(root)} img[data-name="image"]`);
+  await page.click(`${uploaderSelector(root)} a[data-name="crop"]`);
+  await waitForCropModal(page);
+}
+
+/**
+ * Closes the crop modal with the Cancel button in its footer.
+ */
+export async function cancelCropModal(page) {
+  await page.click(
+    `${cropModalSelector} button.js-acf-image-aspect-ratio-crop-cancel`,
+  );
+  await waitForCropModalToClose(page, 'clicking Cancel');
+}
+
+/**
+ * Closes the crop modal with the Escape key.
+ */
+export async function escapeCropModal(page) {
+  await page.keyboard.press('Escape');
+  await waitForCropModalToClose(page, 'pressing Escape');
+}
+
+/**
+ * Counts the crop requests the page sends, through the REST API or through
+ * admin-ajax in REST API compatibility mode. A doubled click handler still
+ * produces a correct looking crop, so tests compare the count instead.
+ */
+export function trackCropRequests(page) {
+  let count = 0;
+
+  page.on('request', (request) => {
+    if (request.method() !== 'POST') {
+      return;
+    }
+
+    const url = decodeURIComponent(request.url());
+    const body = request.postData() || '';
+
+    if (
+      url.includes('aiarc/v1/crop') ||
+      body.includes('action=acf_image_aspect_ratio_crop_crop')
+    ) {
+      count += 1;
+    }
   });
+
+  return {
+    get count() {
+      return count;
+    },
+    reset() {
+      count = 0;
+    },
+  };
 }
 
 /**
  * The attachment id in the hidden input and the preview image URL of the
  * field.
  */
-export async function fieldValue(page) {
-  return page.$eval(uploaderSelector, (el) => ({
+export async function fieldValue(page, { root } = {}) {
+  return page.$eval(uploaderSelector(root), (el) => ({
     id: el.querySelector('input[type="hidden"]').value,
     imageUrl: el.querySelector('img[data-name="image"]').getAttribute('src'),
     originalId: el.dataset.originalImageId || null,
@@ -86,10 +179,12 @@ export async function fieldValue(page) {
 /**
  * Waits until the field holds a cropped attachment and returns its value.
  */
-export async function waitForCroppedValue(page) {
+export async function waitForCroppedValue(page, { root } = {}) {
+  await page.waitForSelector(uploaderSelector(root));
+
   return waitFor(
     async () => {
-      const value = await fieldValue(page);
+      const value = await fieldValue(page, { root });
 
       return /^\d+$/.test(value.id) &&
         fileName(value.imageUrl).includes('-aspect-ratio-')
@@ -103,10 +198,10 @@ export async function waitForCroppedValue(page) {
 /**
  * Clicks the remove icon that shows when hovering the preview image.
  */
-export async function removeImage(page) {
-  await page.hover(`${uploaderSelector} img[data-name="image"]`);
-  await page.click(`${uploaderSelector} a[data-name="remove"]`);
-  await page.waitForSelector(`${uploaderSelector}:not(.has-value)`);
+export async function removeImage(page, { root } = {}) {
+  await page.hover(`${uploaderSelector(root)} img[data-name="image"]`);
+  await page.click(`${uploaderSelector(root)} a[data-name="remove"]`);
+  await page.waitForSelector(`${uploaderSelector(root)}:not(.has-value)`);
 }
 
 /**
@@ -132,8 +227,12 @@ export async function imageSize(page, url) {
  * Uploads an image the field should reject and returns the error the media
  * modal shows for it, then closes the modal.
  */
-export async function addRejectedImageFromMediaModal(page, imageName) {
-  await page.click(`${fieldSelector} a[data-name="add"]`);
+export async function addRejectedImageFromMediaModal(
+  page,
+  imageName,
+  { root } = {},
+) {
+  await page.click(`${fieldSelector(root)} a[data-name="add"]`);
   await page.waitForSelector('.media-modal', { visible: true });
 
   const input = await page.waitForSelector(

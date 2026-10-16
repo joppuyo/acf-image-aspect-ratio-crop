@@ -18,3 +18,16 @@ export async function readFieldOutput(page, postId) {
 
   return output.evaluate((el) => JSON.parse(el.textContent));
 }
+
+/**
+ * Reads the field values the blocks of the aiarc-test-blocks fixture plugin
+ * print on the front end of a post. Returns one { name, fields, raw } entry
+ * per block, in the order the blocks appear in the post.
+ */
+export async function readBlockOutput(page, postId) {
+  await page.goto(await postUrl(postId), { waitUntil: 'load' });
+
+  return page.$$eval('.aiarc-test-block-fields', (elements) =>
+    elements.map((el) => JSON.parse(el.textContent)),
+  );
+}

@@ -41,8 +41,8 @@ export function wp(...args) {
 /**
  * Runs a snippet of PHP inside the site and returns what it printed.
  */
-export function wpEval(code) {
-  return wp('eval', code);
+export function wpEval(code, flags = []) {
+  return wp('eval', code, ...flags);
 }
 
 /**

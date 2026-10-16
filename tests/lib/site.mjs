@@ -67,7 +67,10 @@ export function installFixturePlugin(slug) {
  * is what WordPress checks on activation.
  */
 export async function pluginInfo(slug) {
-  const output = await wpEval(`
+  // Only plugin headers are read, and the theme a previous matrix row left
+  // active may not load on the current core version
+  const output = await wpEval(
+    `
     require_once ABSPATH . 'wp-admin/includes/plugin.php';
     $slug = ${JSON.stringify(slug)};
     foreach (get_plugins() as $file => $data) {
@@ -82,7 +85,9 @@ export async function pluginInfo(slug) {
       }
     }
     echo 'null';
-  `);
+  `,
+    ['--skip-themes', '--skip-plugins'],
+  );
 
   return JSON.parse(output);
 }
