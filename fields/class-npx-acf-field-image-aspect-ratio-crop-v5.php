@@ -952,29 +952,62 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
      *  @return    $value (mixed) the modified value
      */
 
+    /**
+     * Compatibility note:
+     * @date: 2026-09
+     *
+     * Some ACF installations pass an already-normalised attachment object/array
+     * here instead of the legacy JSON string format used by the older crop plugin.
+     * Older code called json_decode() on every non-numeric value without checking
+     * the value type first, which caused warnings like:
+     * "json_decode() expects parameter 1 to be string, object given".
+     *
+     * The value handling below therefore supports three shapes safely:
+     * - numeric attachment IDs
+     * - legacy JSON strings with a cropped_image field
+     * - object/array values already containing an attachment ID
+     *
+     * This guard was added for compatibility with current ACF value payloads while
+     * preserving support for historical data saved by the older image crop plugin.
+     */
+
     function format_value($value, $post_id, $field)
     {
         // bail early if no value
         if (empty($value)) {
-            return false;
+        return false;
         }
 
         $image_id = null;
 
-        // For migration compatibility with acf-image-crop plugin.
-        // Retrieves the image from that plugin which it has saved inside JSON encoded value.
+        // Handle already-normalised numeric IDs
         if (is_numeric($value)) {
-            $image_id = $value;
-        } elseif (
-            json_decode($value) !== false &&
-            !empty(json_decode($value)->cropped_image)
+        $image_id = (int) $value;
+        }
+        // Handle legacy JSON string from the older crop plugin
+        elseif (is_string($value)) {
+        $decoded = json_decode($value);
+
+        if (
+            json_last_error() === JSON_ERROR_NONE &&
+            is_object($decoded) &&
+            !empty($decoded->cropped_image)
         ) {
-            $image_id = json_decode($value)->cropped_image;
+            $image_id = (int) $decoded->cropped_image;
+        }
+        }
+        // Handle ACF objects/arrays that already contain the attachment ID
+        elseif (is_array($value) && !empty($value['ID'])) {
+        $image_id = (int) $value['ID'];
+        } elseif (is_object($value) && !empty($value->ID)) {
+        $image_id = (int) $value->ID;
+        } elseif (is_object($value) && !empty($value->cropped_image)) {
+        $image_id = (int) $value->cropped_image;
         }
 
-        // bail early if not numeric (error message)
+        // bail early if not numeric
         if (!is_numeric($image_id)) {
-            return false;
+        return false;
         }
 
         // convert to int
@@ -982,27 +1015,32 @@ class npx_acf_field_image_aspect_ratio_crop extends acf_field
 
         // format
         if ($field['return_format'] == 'url') {
-            return wp_get_attachment_url($image_id);
+        return wp_get_attachment_url($image_id);
         } elseif ($field['return_format'] == 'array') {
-            $output = acf_get_attachment($image_id);
-            if ($output) {
-                $output['original_image'] = null;
-                // TODO: use singular
-                $original = get_post_meta(
-                    $image_id,
-                    'acf_image_aspect_ratio_crop_original_image_id'
-                );
-                if (count($original)) {
-                    $output['original_image'] = acf_get_attachment(
-                        $original[0]
-                    );
-                }
+        $output = acf_get_attachment($image_id);
+        if ($output) {
+            // Compatibility refactor: older crop payloads may store an original-image ID
+            // in post meta, but current ACF can also pass already-normalised attachment
+            // objects/arrays. Guard the metadata fetch so we only attach an original
+            // image when the stored value is valid and cannot trigger the json_decode
+            // type warning path elsewhere in the plugin.
+            $output['original_image'] = null;
+            $original = get_post_meta(
+                $image_id,
+                'acf_image_aspect_ratio_crop_original_image_id',
+                true
+            );
+
+            if (is_array($original) && !empty($original[0])) {
+                $output['original_image'] = acf_get_attachment((int) $original[0]);
+            } elseif (is_numeric($original)) {
+                $output['original_image'] = acf_get_attachment((int) $original);
             }
 
             return $output;
         }
+        }
 
-        // return
         return $image_id;
     }
 
