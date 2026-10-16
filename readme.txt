@@ -7,7 +7,7 @@ Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Donate link: https://github.com/sponsors/joppuyo
-Stable Tag: 6.0.6
+Stable Tag: 6.0.7
 
 ACF field that allows user to crop image to a specific aspect ratio or pixel size
 
@@ -105,6 +105,9 @@ The other plugin is not actively maintained and does not work well with latest A
 3. Option to re-crop the image after upload
 
 == Changelog ==
+
+= 6.0.7 (2026-10-16) =
+* Fix: Fixed issue where the crop modal did not function properly with ACF block API v3
 
 = 6.0.6 (2026-09-10) =
 * Fix: Improved security on admin-ajax endpoints
