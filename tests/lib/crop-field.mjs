@@ -107,8 +107,12 @@ export async function cropInModal(page) {
  * icon that shows when hovering the preview image.
  */
 export async function openRecropModal(page, { root } = {}) {
-  await page.hover(`${uploaderSelector(root)} img[data-name="image"]`);
-  await page.click(`${uploaderSelector(root)} a[data-name="crop"]`);
+  // Locators wait for the image and icon to stop moving, which matters inside
+  // the expanded editor while its modal animates in
+  await page
+    .locator(`${uploaderSelector(root)} img[data-name="image"]`)
+    .hover();
+  await page.locator(`${uploaderSelector(root)} a[data-name="crop"]`).click();
   await waitForCropModal(page);
 }
 
@@ -126,6 +130,15 @@ export async function cancelCropModal(page) {
  * Closes the crop modal with the Escape key.
  */
 export async function escapeCropModal(page) {
+  // The crop icon keeps the focus for a few milliseconds after it is clicked,
+  // until the modal covers it and it hides. An Escape that early would also
+  // reach whatever the icon is in, such as the expanded editor of an ACF
+  // block, which no person could press fast enough to do.
+  await page
+    .waitForFunction(() => !document.activeElement?.closest('.acf-actions'), {
+      timeout: 5000,
+    })
+    .catch(() => {});
   await page.keyboard.press('Escape');
   await waitForCropModalToClose(page, 'pressing Escape');
 }

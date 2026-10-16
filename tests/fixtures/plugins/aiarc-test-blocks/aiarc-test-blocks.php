@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: AIARC Test: Blocks
- * Description: Registers an ACF block version 1 block with acf_register_block_type() and, on ACF 6 and newer, an ACF block version 2 block with block.json, each with a 16:9 crop field, for the end to end tests. Test fixture, do not use on a real site.
+ * Description: Registers an ACF block version 1 block with acf_register_block_type(), on ACF 6 and newer an ACF block version 2 block with block.json, and on ACF 6.6 and newer an ACF block version 3 block, each with a 16:9 crop field, for the end to end tests. Test fixture, do not use on a real site.
  * Version: 1.0.0
  * Author: Johannes Siipola
  * License: GPL-2.0-or-later
@@ -38,6 +38,11 @@ add_action('acf/init', function () {
         register_block_type(__DIR__ . '/blocks/v2');
     }
 
+    // ACF block version 3 arrived in ACF 6.6
+    if (version_compare(acf_get_setting('version'), '6.6', '>=')) {
+        register_block_type(__DIR__ . '/blocks/v3');
+    }
+
     // The location UI for blocks differs between ACF versions, so unlike the
     // other scenarios the block field group is registered in code
     acf_add_local_field_group([
@@ -57,6 +62,7 @@ add_action('acf/init', function () {
         'location' => [
             [['param' => 'block', 'operator' => '==', 'value' => 'acf/aiarc-test-v1']],
             [['param' => 'block', 'operator' => '==', 'value' => 'acf/aiarc-test-v2']],
+            [['param' => 'block', 'operator' => '==', 'value' => 'acf/aiarc-test-v3']],
         ],
     ]);
 });
@@ -73,7 +79,13 @@ function aiarc_test_blocks_render($block)
         'raw' => get_fields(false, false),
     ];
 
-    echo '<div class="aiarc-test-block">';
+    // ACF block version 3 strips script elements from the editor preview, so
+    // the tests read the raw value from an attribute there
+    $raw = get_field('crop_image', false, false);
+
+    echo '<div class="aiarc-test-block" data-crop-image="' .
+        esc_attr($raw ? $raw : '') .
+        '">';
     echo '<p>' . esc_html($block['title']) . '</p>';
     // JSON_HEX_TAG keeps a value containing </script> from ending the element
     echo '<script type="application/json" class="aiarc-test-block-fields">' .

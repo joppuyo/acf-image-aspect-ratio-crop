@@ -401,6 +401,45 @@ export async function waitForBlockForm(page, clientId) {
   return root.jsonValue();
 }
 
+// The full screen modal ACF block version 3 edits fields in
+export const expandedEditorRoot = '.acf-block-form-modal';
+
+/**
+ * Opens the expanded editor of the selected ACF block version 3 block from
+ * the button in the block sidebar.
+ */
+export async function openExpandedEditor(page) {
+  await page.locator('.acf-blocks-open-expanded-editor-btn').click();
+  await page.waitForSelector(
+    `${expandedEditorRoot} .acf-field-image-aspect-ratio-crop`,
+    { visible: true },
+  );
+}
+
+/**
+ * Closes the expanded editor with its Done button, which stays disabled
+ * while ACF saves the form.
+ */
+export async function closeExpandedEditor(page) {
+  const done = await page.waitForFunction(
+    (root) =>
+      Array.from(document.querySelectorAll(`${root} button`)).find(
+        (button) => button.textContent.trim() === 'Done' && !button.disabled,
+      ),
+    { timeout: 30000 },
+    expandedEditorRoot,
+  );
+
+  await done.click();
+  await page.waitForSelector(expandedEditorRoot, { hidden: true });
+}
+
+/**
+ * Root selector of the meta box of the aiarc-test-meta-box fixture plugin.
+ * ACF gives each meta box the id acf-<field group key>.
+ */
+export const metaBoxRoot = '#acf-group_aiarc_test_meta_box';
+
 /**
  * File names shown in the list view of the media library, which is the only
  * place cropped images are listed.

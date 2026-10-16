@@ -1,0 +1,14 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "acf/aiarc-test-v3",
+    "title": "AIARC Test Block V3",
+    "category": "widgets",
+    "icon": "format-image",
+    "acf": {
+        "blockVersion": 3,
+        "mode": "preview",
+        "postTypes": ["post"],
+        "renderTemplate": "render.php"
+    }
+}
