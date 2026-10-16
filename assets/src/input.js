@@ -21,6 +21,7 @@ import { sprintf } from 'sprintf-js';
     actions: {
       ready: 'initialize',
       append: 'initialize',
+      remount: 'initialize',
     },
 
     events: {
@@ -209,9 +210,11 @@ import { sprintf } from 'sprintf-js';
 
       this.escapeHandlerBound = this.escapeHandler.bind(this);
 
-      $(document).on('click', '.js-acf-image-aspect-ratio-crop-cancel', () =>
-        this.closeModal(),
-      );
+      $(document)
+        .off('click', '.js-acf-image-aspect-ratio-crop-cancel')
+        .on('click', '.js-acf-image-aspect-ratio-crop-cancel', () =>
+          this.closeModal(),
+        );
 
       $(document)
         .off('click', '.js-acf-image-aspect-ratio-crop-reset')
